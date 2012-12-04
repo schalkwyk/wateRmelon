@@ -1,0 +1,50 @@
+tost <-
+function( mn, un, da, pn ) {
+
+# make a methylumi object
+s <- colnames(mn)
+pData <- data.frame(sampleID = s, label = s)
+rownames(pData) <- s
+varMetadata <- data.frame(labelDescription = colnames(pData))
+rownames(varMetadata) <- colnames(pData)
+data <- new("AnnotatedDataFrame", data = pData, varMetadata = varMetadata)
+
+
+d               <- new("MethyLumiSet")
+methylated(d)   <- mn
+unmethylated(d) <- un
+fData(d)        <- da
+#phenoData(d)    <- as(fac, "AnnotatedDataFrame")
+phenoData(d)    <- data 
+pvals(d)        <- pn
+
+
+e <- preprocessIlluminaMethylation(
+
+        d,
+#       path2data,
+#       path2controlData,
+#       projectName,
+        nbBeads.threshold=NULL,
+        detectionPval.threshold=NULL,
+        detectionPval.perc.threshold=80,
+        sample2keep =NULL,
+        probeSNP_LIST=NULL,
+        XY.filtering=FALSE,
+        colorBias.corr=TRUE,
+        bg.adjust="separatecolors",
+        PATH="./"
+        )
+
+data.preprocess.norm <- normalizeIlluminaMethylation(
+        beta = getMethylumiBeta(e),
+        detect.pval = pvals(e),
+        quantile.norm.pvalThreshold = .01,
+        probeAnnotations = fData(e),
+        probeAnnotationsCategory = "relationToCpG"
+        )
+
+
+data.preprocess.norm$beta 
+
+}

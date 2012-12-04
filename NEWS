@@ -1,0 +1,24 @@
+VERSION	NEWS
+0.9.8	MethyLumiSet methods now update history slot
+
+	new MethyLumiSet method for pfilter
+
+	RGtoy2 removed from data(minfitoy).  This is because minfi 
+	now expects the manifest to be a package.
+
+	swan function patched so that it can process subsets of array data
+	(provided by Jovana Maksimovic).  Now works with melon data set.
+
+	as.methylumi generic function added. Gets fData from 
+	package:IlluminaHumanMethylation450k.db . The MethyLumiSet method 
+	is useful for ensuring methylumi objects contain this data.
+
+	Andrew Teschendorff's BMIQ function and a MethyLumiSet method
+	added 
+ 	
+	minfi 1.4.0 has a changed manifest structure resulting in
+	SNP probes being left out of the MethylSet.  This breaks genki()
+	for the minfi objects and also the minfitoy data() set. 
+
+
+
