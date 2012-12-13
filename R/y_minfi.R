@@ -592,6 +592,7 @@ setMethod(
       object3 <-new("MethylSet",
          Meth=l$mn,
          Unmeth=l$un,
+         annotation=annotation(object2),
          phenoData=phenoData(object2[,colnames(l$mn)])
       )  			      	
       object3@preprocessMethod <- c(
