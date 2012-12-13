@@ -1,4 +1,8 @@
 VERSION	NEWS
+0.99.11	RGChannelSetExtended pfilter method bug fixed
+
+0.99.10	BioConductor submission
+
 0.9.8	MethyLumiSet methods now update history slot
 
 	new MethyLumiSet method for pfilter
