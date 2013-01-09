@@ -134,7 +134,7 @@ setMethod(
 setMethod(
    f= "danes",
    signature(mn="MethyLumiSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
@@ -146,7 +146,7 @@ setMethod(
          mn     , 
          un     = unmethylated(object),
          onetwo = object@featureData@data[,ds],  
-         fudge
+         fudge, ...
        ) 
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with danes method (wateRmelon)"
@@ -166,7 +166,7 @@ setMethod(
 setMethod(
    f= "danet",
    signature(mn="MethyLumiSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
@@ -178,7 +178,7 @@ setMethod(
          mn , 
          un     = unmethylated(object),
          onetwo = object@featureData@data[,ds],
-         fudge
+         fudge, ...
        ) 
       history.finished <- as.character(Sys.time())
       history.command  <- "Normalized with danet method (wateRmelon)"
@@ -198,7 +198,7 @@ setMethod(
 setMethod(
    f= "daten1",
    signature(mn="MethyLumiSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
@@ -210,7 +210,7 @@ setMethod(
             mn , 
             un     = unmethylated(object),
             onetwo = object@featureData@data[,ds],
-            fudge
+            fudge, ...
        ) 
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with daten1 method (wateRmelon)"
@@ -230,7 +230,7 @@ setMethod(
 setMethod(
    f= "daten2",
    signature(mn="MethyLumiSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
@@ -242,7 +242,7 @@ setMethod(
          mn , 
          un = unmethylated(object),
          onetwo = object@featureData@data[,ds],
-         fudge
+         fudge, ...
      )
      history.finished <- as.character(Sys.time())
       history.command <- "Normalized with daten2 method (wateRmelon)"
@@ -293,7 +293,7 @@ setMethod(
 setMethod(
    f= "dasen",
    signature(mns="MethyLumiSet"),
-   definition=function(mns, fudge=100){
+   definition=function(mns, fudge=100, roco=NULL){
          if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
             stop('can\'t load methylumi package')
          }
@@ -304,7 +304,7 @@ setMethod(
             mns = methylated(object), 
             uns = unmethylated(object),
             onetwo=mns@featureData@data[,ds],
-            fudge
+            fudge, roco
          ) 
          history.finished <- as.character(Sys.time())
          history.command <- "Normalized with dasen method (wateRmelon)"
@@ -324,7 +324,7 @@ setMethod(
 setMethod(
    f= "danen",
    signature(mns="MethyLumiSet"),
-   definition=function(mns, fudge=100){
+   definition=function(mns, fudge=100, ...){
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
@@ -335,7 +335,7 @@ setMethod(
          mns = methylated(object), 
          uns = unmethylated(object),
          onetwo=mns@featureData@data[,ds],
-         fudge
+         fudge, ... 
        ) 
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with danen method (wateRmelon)"

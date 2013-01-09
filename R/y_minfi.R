@@ -202,7 +202,7 @@ setMethod(
 setMethod(
    f= "daten1",
    signature(mn="MethylSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
    if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load minfi package')
       }
@@ -212,7 +212,7 @@ setMethod(
             mn , 
             un = getUnmeth(object),
             onetwo = got(object),
-            fudge
+            fudge, ...
        ) 
    }
 )
@@ -220,12 +220,12 @@ setMethod(
 setMethod(
    f= "daten1",
    signature(mn="RGChannelSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
    if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load minfi package')
       }
       mn  <- preprocessRaw(mn)    
-      daten1 ( mn ) 
+      daten1 ( mn, ... ) 
    }
 )
 
@@ -233,7 +233,7 @@ setMethod(
 setMethod(
    f= "daten2",
    signature(mn="MethylSet"),
-   definition=function(mn, fudge=100){
+   definition=function(mn, fudge=100, ...){
    if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load minfi package')
       }
@@ -243,7 +243,7 @@ setMethod(
             mn , 
             un = getUnmeth(object),
             onetwo = got(object),
-            fudge
+            fudge, ...
        ) 
    }
 )
@@ -327,7 +327,7 @@ setMethod(
 setMethod(
    f= "danen",
    signature(mns="MethylSet"),
-   definition=function(mns, fudge=100){
+   definition=function(mns, fudge=100, ...){
    if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load minfi package')
       }
@@ -336,7 +336,7 @@ setMethod(
          mns = getMeth(object), 
          uns = getUnmeth(object),
          onetwo=got(object),
-         fudge
+         fudge, ...
        ) 
    }
 )
@@ -344,12 +344,12 @@ setMethod(
 setMethod(
    f= "danen",
    signature(mns="RGChannelSet"),
-   definition=function(mns, fudge=100){
+   definition=function(mns, fudge=100, ...){
    if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load minfi package')
       }
       mns  <- preprocessRaw(mns)    
-      danen ( mns ) 
+      danen ( mns, ... ) 
    }
 )
 

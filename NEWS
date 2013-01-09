@@ -1,4 +1,8 @@
 VERSION	NEWS
+0.99.12 methods d**** now have ... argument so that data without
+        Sentrix IDs should work (thanks to Elodie Portales-Casamar
+        for bug report).
+
 0.99.11	RGChannelSetExtended pfilter method bug fixed
 
 0.99.10	BioConductor submission

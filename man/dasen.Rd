@@ -98,7 +98,7 @@ character vector of strings like 'R01C01' (only 3rd and 6th characters used).
 }
 
 \details{
-\bold{dasen}	same as nasen but type I and type II backgrounds are normalized first.  This is our recommended method
+\bold{dasen}	same as nasen but type I and type II backgrounds are equalized first.  This is our recommended method
 
 \bold{betaqn}	quantile normalizes betas 
 
