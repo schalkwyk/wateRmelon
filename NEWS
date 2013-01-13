@@ -1,4 +1,6 @@
 VERSION	NEWS
+0.99.13 fixed swan wrapper generic and MethyLumiSet method bugs 
+
 0.99.12 methods d**** now have ... argument so that data without
         Sentrix IDs should work (thanks to Elodie Portales-Casamar
         for bug report).

@@ -26,12 +26,12 @@ swan <- function (mn, un, qc, da=NULL, return.MethylSet=FALSE ) {
     
   typeI <- getProbeInfo(rgSet, type = "I")[, c("Name", "nCpG")]
    typeII <- getProbeInfo(rgSet, type = "II")[, c("Name", "nCpG")]
-browser()
-   CpG.counts <- rbind(typeI, typeII)
+   CpG.counts <- rbind(data.frame(typeI@listData), data.frame(typeII@listData))
    CpG.counts$Name <- as.character(CpG.counts$Name)
    CpG.counts$Type <- rep(c("I", "II"), times = c(nrow(typeI), 
        nrow(typeII)))
    names(CpG.counts)[2] <- "CpGs"
+browser()
    counts <- CpG.counts[CpG.counts$Name %in% featureNames(mSet), 
        ]
    subset <- min(table(counts$CpGs[counts$Type == "I" & counts$CpGs

@@ -414,7 +414,7 @@ setMethod(
 setMethod(
    f= "swan",
    signature(mn="MethyLumiSet"),
-   definition=function(mn){
+   definition=function(mn, da=NULL){
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
