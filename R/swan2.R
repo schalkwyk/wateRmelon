@@ -31,7 +31,6 @@ swan <- function (mn, un, qc, da=NULL, return.MethylSet=FALSE ) {
    CpG.counts$Type <- rep(c("I", "II"), times = c(nrow(typeI), 
        nrow(typeII)))
    names(CpG.counts)[2] <- "CpGs"
-browser()
    counts <- CpG.counts[CpG.counts$Name %in% featureNames(mSet), 
        ]
    subset <- min(table(counts$CpGs[counts$Type == "I" & counts$CpGs
