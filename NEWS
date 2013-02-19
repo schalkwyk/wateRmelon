@@ -1,4 +1,7 @@
 VERSION	NEWS
+0.99.14 MethylSet methods [dn]a[st]en now return objects containing normalized intensities as well as betas
+        fixed a bug in as.methylumi
+
 0.99.13 fixed swan wrapper generic and MethyLumiSet method bugs 
 
 0.99.12 methods d**** now have ... argument so that data without

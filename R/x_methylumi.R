@@ -98,7 +98,7 @@ setMethod(
 )
 
 fot <- function(x){
-   ds <- grep( 'DESIGN', colnames(x@featureData@data) )
+   ds <- grep( 'DESIGN', colnames(x@featureData@data), ignore.case = TRUE  )
    stopifnot ( length(ds) == 1 )
    ds
 }
