@@ -5,8 +5,7 @@
 # representation("VIRTUAL", description = "character")
 #)
 
-
-# betaqn <- function (bn){ 
+# betaqn <- function (bn){
 setMethod(
    f= "betaqn",
    signature(bn="MethyLumiSet"),
@@ -14,18 +13,18 @@ setMethod(
       if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load methylumi package')
       }
-      history.submitted <- as.character(Sys.time())   
+      history.submitted <- as.character(Sys.time())
       object <- bn
       betas(object) <- betaqn (
-      bn = betas(object) 
-      ) 
+      bn = betas(object)
+      )
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with betaqn method (wateRmelon)"
       object@history <- rbind(
-         object@history, 
+         object@history,
          data.frame(
-            submitted = history.submitted, 
-            finished = history.finished, 
+            submitted = history.submitted,
+            finished = history.finished,
             command = history.command
          )
       )
@@ -33,7 +32,7 @@ setMethod(
    }
 )
 
-# naten <- function (mn, un, fudge=100 ) {
+# naten <- function (mn, un, fudge=100 ) {  # beta1
 setMethod(
    f= "naten",
    signature(mn="MethyLumiSet"),
@@ -43,11 +42,15 @@ setMethod(
       }
       history.submitted <- as.character(Sys.time())   
          object <- mn
-         betas(object) <- naten (
+         norm <- naten (
          mn = methylated(object), 
          un = unmethylated(object),
-         fudge
-       ) 
+         fudge,
+         ret2=TRUE
+      ) 
+      betas(object) <- norm$beta 
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with naten method (wateRmelon)"
       object@history <- rbind(
@@ -62,7 +65,7 @@ setMethod(
    }
 )
 
-#nanet <- function(mn, un, fudge=100){
+#nanet <- function(mn, un, fudge=100){ dyebuy1
 setMethod(
    f= "nanet",
    signature(mn="MethyLumiSet"),
@@ -72,11 +75,14 @@ setMethod(
       }
       history.submitted <- as.character(Sys.time())   
          object <- mn
-         betas(object) <- nanet (
+         norm <- nanet (
          mn = methylated(object), 
          un = unmethylated(object),
-         fudge
+         fudge, ret2=TRUE
        ) 
+      betas(object)        <- norm$beta
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with nanet method (wateRmelon)"
       object@history <- rbind(
@@ -99,7 +105,7 @@ fot <- function(x){
 
 
 
-#nanes <- function(mns, uns, onetwo, fudge=100){
+#nanes <- function(mns, uns, onetwo, fudge=100){ dyebuy2.R
 setMethod(
    f= "nanes",
    signature(mns="MethyLumiSet"),
@@ -110,12 +116,15 @@ setMethod(
       history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
-         betas(object) <- nanes (
+         norm <- nanes (
          mns    = methylated(object), 
          uns    = unmethylated(object),
          onetwo = object@featureData@data[,ds],
-         fudge
+         fudge, ret2=TRUE
        ) 
+      betas(object)        <- norm$beta
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with nanes method (wateRmelon)"
       object@history <- rbind(
@@ -130,7 +139,7 @@ setMethod(
    }
 )
 
-#danes <- function(mn, un, onetwo, fudge=100, ...){ 
+#danes <- function(mn, un, onetwo, fudge=100, ...){ # dyebuy3.R
 setMethod(
    f= "danes",
    signature(mn="MethyLumiSet"),
@@ -142,12 +151,15 @@ setMethod(
          object <- mn
          mn <- methylated(object)
          ds <- fot(object)
-         betas(object) <- danes (
+         norm <- danes (
          mn     , 
          un     = unmethylated(object),
          onetwo = object@featureData@data[,ds],  
-         fudge, ...
+         fudge, ret2=TRUE, ...
        ) 
+      betas(object)        <- norm$beta
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with danes method (wateRmelon)"
       object@history <- rbind(
@@ -162,7 +174,7 @@ setMethod(
    }
 )
 
-#danet <- function(mn, un, onetwo, fudge=100, ...){
+#danet <- function(mn, un, onetwo, fudge=100, ...){ # dyebuy4.R
 setMethod(
    f= "danet",
    signature(mn="MethyLumiSet"),
@@ -174,12 +186,15 @@ setMethod(
       object <- mn
       ds <- fot(mn)
       mn <- methylated(object) 
-      betas(object) <- danet (
+      norm <- danet (
          mn , 
          un     = unmethylated(object),
          onetwo = object@featureData@data[,ds],
-         fudge, ...
-       ) 
+         fudge, ret2=TRUE, ...
+      )
+      betas(object)        <- norm$beta
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command  <- "Normalized with danet method (wateRmelon)"
       object@history   <- rbind(
@@ -194,7 +209,7 @@ setMethod(
    }
 )
 
-#daten1 <- function(mn, un, onetwo, fudge=100, ...){
+#daten1 <- function(mn, un, onetwo, fudge=100, ...){ # bgeqqn
 setMethod(
    f= "daten1",
    signature(mn="MethyLumiSet"),
@@ -206,12 +221,15 @@ setMethod(
          object <- mn
          ds     <- fot(mn)
          mn     <- methylated(object) 
-         betas(object) <- daten1 (
+         norm   <- daten1 (
             mn , 
             un     = unmethylated(object),
             onetwo = object@featureData@data[,ds],
-            fudge, ...
+            fudge, ret2=TRUE, ...
        ) 
+      betas(object)        <- norm$beta
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with daten1 method (wateRmelon)"
       object@history <- rbind(
@@ -226,7 +244,7 @@ setMethod(
    }
 )
 
-#daten2 <- function(mn, un, onetwo, fudge=100, ...){
+#daten2 <- function(mn, un, onetwo, fudge=100, ...){  # bgeqq2.R
 setMethod(
    f= "daten2",
    signature(mn="MethyLumiSet"),
@@ -238,12 +256,15 @@ setMethod(
       object <- mn
       ds <- fot(mn)
       mn <- methylated(object) 
-      betas(object) <- daten2 (
+      norm <- daten2 (
          mn , 
          un = unmethylated(object),
          onetwo = object@featureData@data[,ds],
-         fudge, ...
+         fudge, ret2=TRUE, ...
      )
+     betas(object)        <- norm$beta
+     methylated(object)   <- norm$methylated
+     unmethylated(object) <- norm$unmethylated
      history.finished <- as.character(Sys.time())
       history.command <- "Normalized with daten2 method (wateRmelon)"
       object@history  <- rbind(
@@ -269,15 +290,18 @@ setMethod(
          history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
-         betas(object) <- nasen (
+         norm <- nasen (
             mns = methylated(object), 
             uns = unmethylated(object),
             onetwo = object@featureData@data[,ds],
-            fudge
-        )
-        history.finished <- as.character(Sys.time())
-        history.command <- "Normalized with nasen method (wateRmelon)"
-        object@history <- rbind(
+            fudge, ret2=TRUE
+         )
+         betas(object)        <- norm$beta
+         methylated(object)   <- norm$methylated
+         unmethylated(object) <- norm$unmethylated
+         history.finished <- as.character(Sys.time())
+         history.command <- "Normalized with nasen method (wateRmelon)"
+         object@history <- rbind(
            object@history, 
            data.frame(
               submitted = history.submitted, 
@@ -300,12 +324,15 @@ setMethod(
          history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
-         betas(object) <- dasen (
+         norm <- dasen (
             mns = methylated(object), 
             uns = unmethylated(object),
             onetwo=mns@featureData@data[,ds],
-            fudge, roco
+            fudge, roco, ret2=TRUE 
          ) 
+         betas(object)        <- norm$beta
+         methylated(object)   <- norm$methylated
+         unmethylated(object) <- norm$unmethylated
          history.finished <- as.character(Sys.time())
          history.command <- "Normalized with dasen method (wateRmelon)"
          object@history <- rbind(
@@ -331,12 +358,15 @@ setMethod(
    history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
-         betas(object) <- danen (
+         norm <- danen (
          mns = methylated(object), 
          uns = unmethylated(object),
          onetwo=mns@featureData@data[,ds],
-         fudge, ... 
+         fudge, ret2=TRUE, ... 
        ) 
+         betas(object)        <- norm$beta
+         methylated(object)   <- norm$methylated
+         unmethylated(object) <- norm$unmethylated
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with danen method (wateRmelon)"
       object@history <- rbind(
@@ -351,7 +381,7 @@ setMethod(
    }
 )
 
-#tost <- function( mn, un, da, pn ) {
+#tost <- function( mn, un, da, pn ) {  #pasteque
 setMethod(
    f= "tost",
    signature(mn="MethyLumiSet"),
@@ -368,6 +398,8 @@ setMethod(
             da = object@featureData@data,
             pn = pvals(object)
          ) 
+#      unmethylated(object) <- NULL
+#      methylated(object) <- NULL
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with tost method (wateRmelon)"
       object@history <- rbind(
@@ -396,6 +428,8 @@ setMethod(
          data = betas(object), 
          anno = object@featureData@data
        ) 
+  #    unmethylated(object) <- NULL
+  #    methylated(object) <- NULL
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with fuks method (wateRmelon)"
       object@history <- rbind(
@@ -410,7 +444,7 @@ setMethod(
    }
 )
 
-#swan <- function (mn, un, qc ) {
+#swan <- function (mn, un, qc ) {  swan2.R
 setMethod(
    f= "swan",
    signature(mn="MethyLumiSet"),
@@ -421,12 +455,17 @@ setMethod(
       history.submitted <- as.character(Sys.time())   
       object <- mn
       mn <- methylated(object)
-      methylumi:::betas(object) <- swan (
+      norm <- swan (
          mn,
          un = unmethylated(object), 
          qc = intensitiesByChannel(QCdata(object)),
-         da
-       ) 
+         da,
+         return.MethylSet=TRUE
+       )
+      methylumi:::betas(object) <- getBeta(norm)
+      methylumi:::methylated(object) <- getMeth(norm)
+      methylumi:::unmethylated(object) <- getUnmeth(norm)
+      fData(object) <- fData(object)[rownames(betas(object)),] 
       history.finished <- as.character(Sys.time())
       history.command <- "Normalized with swan method (wateRmelon)"
       object@history <- rbind(

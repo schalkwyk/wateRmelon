@@ -1,5 +1,11 @@
 tost <-
 function( mn, un, da, pn ) {
+## da requirements should be checked: color channel required
+# @#$%^&* mapping Illumina heads to IlluminaHumanMethylation450k.db
+# 'COLOR_CHANNEL'  "IlluminaHumanMethylation450kCOLORCHANNEL"
+#, 'CHROMOSOME', 'POSITION', 
+# 'TargetID'  
+
 
 # make a methylumi object
 s <- colnames(mn)

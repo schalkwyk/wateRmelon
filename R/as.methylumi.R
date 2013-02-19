@@ -29,8 +29,8 @@ as.methylumi <- function(
    fData(x) <- da
       history.finished <- as.character(Sys.time())
       history.command <- "created with as.methylumi (wateRmelon)"
-      object@history <- rbind(
-         object@history, 
+      x@history <- rbind(
+         x@history, 
          data.frame(
             submitted = history.submitted, 
             finished = history.finished, 
@@ -101,7 +101,7 @@ setMethod(
   mn <- getMeth(object)
   un <- getUnmeth(object) 
   bn <- getBeta(object) 
-  browser()
+  #browser()
   as.methylumi(
       mn,
       un, 

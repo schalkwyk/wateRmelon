@@ -10,7 +10,8 @@ function(
          ), 
          stringsAsFactors=FALSE
       )[2,] 
-   )
+   ),
+   ...
 ){
 
    mdf<-apply(mn,2,dfs2,onetwo)
@@ -18,8 +19,9 @@ function(
    if (! is.null(roco) ) {
       scol  <- as.numeric(substr(roco,6,6))
       srow  <- as.numeric(substr(roco,3,3))
-      fit   <- lm( mdf ~ srow + scol )
-      mdf   <- fit$fitted.values
+      fit   <- try(  lm( mdf ~ srow + scol ), silent=TRUE) 
+      if (! inherits (fit, "try-error") ) {mdf   <- fit$fitted.values}
+      else { message ('Sentrix position model failed, skipping') }
    }
    otcor <-  matrix(
       rep( mdf, sum(onetwo=='I')),

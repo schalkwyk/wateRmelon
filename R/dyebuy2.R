@@ -1,5 +1,5 @@
 nanes <-
-function(mns, uns, onetwo, fudge=100){
+function(mns, uns, onetwo, fudge=100, ret2=FALSE, ...){
 
    
    mns[onetwo=='I' ,] <- normalizeQuantiles(mns[onetwo=='I', ])
@@ -10,6 +10,8 @@ function(mns, uns, onetwo, fudge=100){
    mns[onetwo=='II' ,] <- a[[1]]
    uns[onetwo=='II' ,] <- a[[2]]
    
-   mns/(mns + uns + fudge)
+   beta <- mns/(mns + uns + fudge)
+   if (ret2) return (list(methylated=mns,unmethylated=uns,beta=beta))
+   beta
 
 }

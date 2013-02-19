@@ -1,5 +1,5 @@
 nasen <-
-function ( mns, uns, onetwo, fudge=100) {
+function ( mns, uns, onetwo, ret2=FALSE, fudge=100) {
 
    mns[onetwo=='I' ,] <- normalizeQuantiles(mns[onetwo=='I', ])
    mns[onetwo=='II',] <- normalizeQuantiles(mns[onetwo=='II',])
@@ -7,5 +7,7 @@ function ( mns, uns, onetwo, fudge=100) {
    uns[onetwo=='I' ,] <- normalizeQuantiles(uns[onetwo=='I', ])
    uns[onetwo=='II',] <- normalizeQuantiles(uns[onetwo=='II',])
 
-   mns/(mns + uns + fudge)
+   beta <-  mns/(mns + uns + fudge)
+   if (ret2) return (list(methylated=mns, unmethylated=uns, beta=beta))
+   beta
 }
