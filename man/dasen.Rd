@@ -27,18 +27,18 @@ RGSet and exprmethy450 objects.
 }
 
 \usage{
-dasen ( mns, uns, onetwo, fudge = 100, ... )
-nasen ( mns, uns, onetwo, fudge = 100 )
+dasen ( mns, uns, onetwo, fudge = 100, ret2=FALSE, ... )
+nasen ( mns, uns, onetwo, ret2=FALSE, fudge = 100 )
 betaqn( bn ) 
-naten ( mn,  un,          fudge = 100 )
-naten ( mn,  un,          fudge = 100 )
-nanet ( mn,  un,          fudge = 100 )
-nanes ( mns, uns, onetwo, fudge = 100 )
+naten ( mn,  un, fudge = 100, ret2=FALSE )
+naten ( mn,  un, fudge = 100, ret2=FALSE )
+nanet ( mn,  un, fudge = 100, ret2=FALSE )
+nanes ( mns, uns, onetwo, fudge = 100, ret2=FALSE, ... )
 danes ( mn,  un,  onetwo, fudge = 100, ... ) 
-danet ( mn,  un,  onetwo, fudge = 100, ... )
-danen ( mns, uns, onetwo, fudge = 100, ... )
-daten1( mn,  un,  onetwo, fudge = 100, ... )
-daten2( mn,  un,  onetwo, fudge = 100, ... )
+danet ( mn,  un,  onetwo, fudge = 100, ret2=FALSE, ... )
+danen ( mns, uns, onetwo, fudge = 100, ret2=FALSE, ... )
+daten1( mn,  un,  onetwo, fudge = 100, ret2=FALSE, ... )
+daten2( mn,  un,  onetwo, fudge = 100, ret2=FALSE, ... )
 tost  ( mn,  un,  da, pn )
 fuks  ( data, anno)
 swan  ( mn,  un,  qc, da=NULL, return.MethylSet=FALSE )
@@ -86,6 +86,11 @@ calculating betas
 
   \item{return.MethylSet}{
 if TRUE, returns a MethylSet object instead of a naked matrix of betas.
+   }
+
+  \item{ret2}{
+if TRUE, returns a list of intensities and betas instead of a naked 
+matrix of betas.
    }
 
   \item{...}{

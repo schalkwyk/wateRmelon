@@ -1,5 +1,9 @@
 VERSION	NEWS
-0.99.14 MethylSet methods [dn]a[st]en now return objects containing normalized intensities as well as betas
+0.99.15 codoc corrections.  
+        temporarily removed dependency on ROCR (and thus gdata)
+
+0.99.14 MethylSet methods [dn]a[st]e[nt] now return objects containing 
+        normalized intensities as well as betas
         fixed a bug in as.methylumi
 
 0.99.13 fixed swan wrapper generic and MethyLumiSet method bugs 

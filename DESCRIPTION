@@ -1,16 +1,16 @@
 Package: wateRmelon
 Type: Package
 Title: Illumina 450 methylation array normalization and metrics
-Version: 0.99.14
+Version: 0.99.15
 Date: 2013-01-12
 Author: Leonard C Schalkwyk, Ruth Pidsley, Chloe CY Wong, with functions contributed by Nizar Touleimat, Matthieu Defrance, Andrew Teschendorff, Jovana Maksimovic
 Maintainer: Leo <Leonard.Schalkwyk@kcl.ac.uk>
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi, minfi and IMA packages.
 License: GPL-3
-Depends: R (>= 2.10), limma, ROCR, methods, matrixStats, methylumi,
+Depends: R (>= 2.10), limma, methods, matrixStats, methylumi,
         lumi, IlluminaHumanMethylation450k.db
 Enhances: minfi, methylumi, IMA
-Suggests: RPMM
+Suggests: RPMM, ROCR
 LazyLoad: yes
 biocViews: DNAMethylation, Microarray, TwoChannel, Preprocessing,
         QualityControl

@@ -9,13 +9,15 @@ as.methylumi <- function(
    pv=NULL, 
    qc=NULL, 
    da=NULL,
-   fd=c('CHR','DESIGN')  
+   fd=c('CHR','DESIGN'),
+   ad=NULL  
 ) {
    dt <-  list ( mn, un, bn, pv, da )
    data <- ! sapply ( dt, is.null )
    if (! any (data) ) {
       stop('no data!')}
    rn <- rownames(dt[[ which(data)[1] ]])
+   cn <- colnames(dt[[ which(data)[1] ]])
    if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
       stop('can\'t load methylumi package')}
    history.submitted <- as.character(Sys.time())   
@@ -27,6 +29,10 @@ as.methylumi <- function(
    if(!is.null(qc))QCdata(x)          <- qc
    if (is.null(da))da <- data.frame(pop(fd, rn))
    fData(x) <- da
+   if (is.null(ad))ad <- AnnotatedDataFrame(
+      data=data.frame(row.names=cn)
+   )
+   assayData(x) <- ad
       history.finished <- as.character(Sys.time())
       history.command <- "created with as.methylumi (wateRmelon)"
       x@history <- rbind(
@@ -101,7 +107,6 @@ setMethod(
   mn <- getMeth(object)
   un <- getUnmeth(object) 
   bn <- getBeta(object) 
-  #browser()
   as.methylumi(
       mn,
       un, 

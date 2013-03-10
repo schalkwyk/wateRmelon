@@ -20,7 +20,7 @@ do any checks!
 
 # default method
 as.methylumi (mn = NULL, un = NULL, bn = NULL, pv = NULL, qc = NULL, da = NULL,
-fd = c("CHR", "DESIGN")) 
+fd = c("CHR", "DESIGN"), ad=NULL) 
 
 }
 
@@ -83,6 +83,7 @@ just the chromosome and DESIGN (ie typeI or type II assay).  Other
 data can be included using the \code{fd} argument, available data 
 is listed by the function \code{getColumns()}  
    }
+  \item{ad}{ optional assayData }
 }
 
 
