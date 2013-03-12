@@ -55,7 +55,10 @@ leonard.schalkwyk@kcl.ac.uk
 %\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
+%%dontrun is a temporary measure because of problems with gdata package
+
 \examples{
+  \dontrun{
    library(methylumi)
    data(melon)
    sex  <- pData(melon)$sex
@@ -64,7 +67,7 @@ leonard.schalkwyk@kcl.ac.uk
 
 # methylumi method
    seabi(melon, sex=sex, X=X)
-
+   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
