@@ -1,4 +1,7 @@
 VERSION	NEWS
+0.99.16 replaced dependency on ROCR with ROC (bioconductor) package
+        seabird() no longer takes a vector for the stop argument
+
 0.99.15 codoc corrections.  
         temporarily removed dependency on ROCR (and thus gdata)
 

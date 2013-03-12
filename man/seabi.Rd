@@ -16,7 +16,7 @@ a matrix of betas (default method) or an object containing betas i.e. a \code{Me
 
 }
   \item{stop}{
-partial areas under curve are calculated if stop values <1 are provided
+partial area under curve is calculated if stop value <1 is provided
 }
   \item{sex}{
 a factor giving the sex of each sample (column)
@@ -55,10 +55,8 @@ leonard.schalkwyk@kcl.ac.uk
 %\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
-%%dontrun is a temporary measure because of problems with gdata package
 
 \examples{
-  \dontrun{
    library(methylumi)
    data(melon)
    sex  <- pData(melon)$sex
@@ -67,7 +65,6 @@ leonard.schalkwyk@kcl.ac.uk
 
 # methylumi method
    seabi(melon, sex=sex, X=X)
-   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

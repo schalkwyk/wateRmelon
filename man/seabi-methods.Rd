@@ -25,4 +25,3 @@ male from female samples.
 
 }
 \keyword{methods}
-\keyword{ ~~ other possible keyword(s) ~~ }

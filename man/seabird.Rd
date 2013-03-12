@@ -19,7 +19,7 @@ a vector of p-values, such as calculated by \code{seabird}
 }
   \item{stop}{
 fraction for partial area under curve.  For example 0.1 gives you the
-area for the lowest 10\% of p-values.  Can be a vector. 
+area for the lowest 10\% of p-values. 
 }
   \item{X}{
 logical vector the same length as pv, true for features mapped to X-chromosome
@@ -34,7 +34,7 @@ logical vector the same length as pv, true for features mapped to X-chromosome
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
-Returns an area value between 0 and 1, where 1 is the best possible performance.  If stop is a vector, returns a vector of (partial) areas.
+Returns an area value between 0 and 1, where 1 is the best possible performance. 
 }
 \references{
 Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: 

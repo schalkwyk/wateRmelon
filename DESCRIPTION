@@ -8,9 +8,9 @@ Maintainer: Leo <Leonard.Schalkwyk@kcl.ac.uk>
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi, minfi and IMA packages.
 License: GPL-3
 Depends: R (>= 2.10), limma, methods, matrixStats, methylumi,
-        lumi, IlluminaHumanMethylation450k.db
+        lumi, IlluminaHumanMethylation450k.db, ROC
 Enhances: minfi, methylumi, IMA
-Suggests: RPMM, ROCR
+Suggests: RPMM 
 LazyLoad: yes
 biocViews: DNAMethylation, Microarray, TwoChannel, Preprocessing,
         QualityControl
