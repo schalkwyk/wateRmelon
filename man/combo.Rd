@@ -10,7 +10,8 @@ combo(...)
 }
 \arguments{
   \item{\dots}{
-any number of MethyLumiSet objects
+Eventually, any number of MethyLumiSet objects. Currently only guaranteed for 
+2 objects. 
 }
 }
 \details{
@@ -34,7 +35,9 @@ Leo Schalkwyk <leonard.schalkwyk@kcl.ac.uk>
 
 }
 \note{
-the function uses \code{sampleNames} and gets rid of duplicates
+the function uses \code{sampleNames} and gets rid of duplicates. 
+Numeric sampleNames cause problems (and are a Bad Idea anyway).  They
+should be turned into names with \code{make.names()} first.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

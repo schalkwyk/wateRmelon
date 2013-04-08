@@ -17,7 +17,7 @@ combo <- function (...){
    pData(clod)          <- do.call(methylumi::combine,peda) 
    protocolData(clod)   <- do.call(methylumi::combine,prda) 
    experimentData(clod) <- do.call(methylumi::combine,exda) 
-   qcod <-  new('MethyLumiQC', assayData=do.call(methylumi::combine,qcda))
+    QCdata(clod) <- new("MethyLumiQC", assayData = do.call(methylumi::combine, 
    fData(clod)     <- fData(vict[[1]] )
    annotation(clod)<- annotation(vict[[1]] )
    history.finished <- as.character(Sys.time())
