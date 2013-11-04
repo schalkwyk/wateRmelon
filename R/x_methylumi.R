@@ -395,7 +395,8 @@ setMethod(
          betas(object) <- tost (
             mn, 
             un = unmethylated(object),
-            da = object@featureData@data,
+ #           da = object@featureData@data,
+	    da = dfort(featureNames(object)),
             pn = pvals(object)
          ) 
 #      unmethylated(object) <- NULL

@@ -368,7 +368,8 @@ setMethod(
       tost (
          mn, 
          un = getUnmeth(object),
-         da = object@featureData@data,  # prob need more columns
+ #        da = object@featureData@data,  # prob need more columns
+	 da = dfort(featureNames(object)),
          pn
       ) 
    }
