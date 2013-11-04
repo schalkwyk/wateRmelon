@@ -1,19 +1,21 @@
 VERSION	NEWS
-0.99.16 replaced dependency on ROCR with ROC (bioconductor) package
-        seabird() no longer takes a vector for the stop argument
+1.3.1	Changed annotation method for tost() (minfi and methylumi methods.
+	thanks to several users for bug reports!
+0.99.16	replaced dependency on ROCR with ROC (bioconductor) package
+	seabird() no longer takes a vector for the stop argument
 
-0.99.15 codoc corrections.  
-        temporarily removed dependency on ROCR (and thus gdata)
+0.99.15	codoc corrections.  
+	temporarily removed dependency on ROCR (and thus gdata)
 
-0.99.14 MethylSet methods [dn]a[st]e[nt] now return objects containing 
-        normalized intensities as well as betas
-        fixed a bug in as.methylumi
+0.99.14	MethylSet methods [dn]a[st]e[nt] now return objects containing 
+	normalized intensities as well as betas
+	fixed a bug in as.methylumi
 
-0.99.13 fixed swan wrapper generic and MethyLumiSet method bugs 
+0.99.13	fixed swan wrapper generic and MethyLumiSet method bugs 
 
-0.99.12 methods d**** now have ... argument so that data without
-        Sentrix IDs should work (thanks to Elodie Portales-Casamar
-        for bug report).
+0.99.12	methods d**** now have ... argument so that data without
+	Sentrix IDs should work (thanks to Elodie Portales-Casamar
+	for bug report).
 
 0.99.11	RGChannelSetExtended pfilter method bug fixed
 
@@ -35,7 +37,7 @@ VERSION	NEWS
 
 	Andrew Teschendorff's BMIQ function and a MethyLumiSet method
 	added 
- 	
+	
 	minfi 1.4.0 has a changed manifest structure resulting in
 	SNP probes being left out of the MethylSet.  This breaks genki()
 	for the minfi objects and also the minfitoy data() set. 
