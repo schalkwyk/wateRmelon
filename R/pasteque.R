@@ -1,3 +1,13 @@
+
+dfort <- function(rn){
+  # object names in IlluminaHumanMethylation450k
+  cols  <- c( "COLORCHANNEL", "CPGIRELATION", "DESIGN" )    
+  thing <- pop( cols, rn )
+  # col names in FinalReport
+  colnames(thing) <- c( "COLOR_CHANNEL", "RELATION_TO_UCSC_CPG_ISLAND", "INFINIUM_DESIGN_TYPE" )
+  data.frame( TargetID=rownames(thing), thing )
+}
+
 tost <-
 function( mn, un, da, pn ) {
 ## da requirements should be checked: color channel required
