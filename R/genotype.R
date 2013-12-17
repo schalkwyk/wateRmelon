@@ -1,7 +1,8 @@
 # genotyping for 450k
 
-# convert  vector of betas to numeric genotypes
-genme <- function (y, peaks = c(0.2, 0.5, 0.8)) 
+# convert  vector of betas to numeric genotypes (1,2,3,NA)
+# when beta is high that is allele A so should be coded 1
+genme <- function (y, peaks = c(0.8, 0.5, 0.2)) 
 {
    cl <- try(kmeans(as.numeric(y), peaks), silent = TRUE)
    if (inherits(cl, "try-error")) {
