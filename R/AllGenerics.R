@@ -22,4 +22,5 @@ setGeneric ( name= "dmrse"          )
 setGeneric ( name= "dmrse_row"      )
 setGeneric ( name= "dmrse_col"      )
 setGeneric ( name= "BMIQ"           )
-
+setGeneric ( name= "as.methylumi"   )
+#setGeneric ( name= "as.exprmethy450")

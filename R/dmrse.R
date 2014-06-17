@@ -1,3 +1,43 @@
+#' Standard error of iDMR 450k array DNA methylation features
+#' 
+#' Imprinting differentially methylated regions (iDMRs) are expected to be
+#' approximately half methylated, as is observed at the 227 probes in known
+#' iDMRs. These functions calculate measures of dispersion for the beta values
+#' at these CpG sites, of which the most useful is dmrse_row, which is the
+#' between-sample standard error.
+#' 
+#' 
+#' @aliases dmrse dmrse_col dmrse_row
+#' @param betas a matrix of betas (default method), a \code{MethyLumiSet}
+#' object (\code{methylumi} package), a \code{MethylSet} or \code{RGChannelSet}
+#' object ( \code{minfi} package) or a \code{exprmethy450} object (\code{IMA}
+#' package).
+#' @param idmr %% ~~Describe \code{idmr} here~~ a character vector of iDMR
+#' probe names such as returned by iDMR()
+#' @return %% ~Describe the value returned %% If it is a LIST, use %%
+#' \item{comp1 }{Description of 'comp1'} %% \item{comp2 }{Description of
+#' 'comp2'} %% ... return a standard error of the mean of betas for all samples
+#' and iDMR probes (dmrse) or the standard error of the mean for just the
+#' between sample component(dmrse_row) or between probe(dmrse_col) component.
+#' @author %% ~~who you are~~ Leonard.Schalkwyk@@kcl.ac.uk
+#' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
+#' \code{\link{seabi}}, a sex-difference metric, and \code{\link{genki}}, based
+#' on SNPs.
+#' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
+#' data-driven approach to preprocessing Illumina 450K methylation array data
+#' (submitted)
+#' @examples
+#' 
+#' 
+#'   #MethyLumiSet method
+#'      data(melon)
+#'      dmrse(melon)
+#' 
+#'   #MethyLumiSet method after normalization
+#'      melon.dasen <- dasen(melon)
+#'      dmrse(melon.dasen)
+#' 
+#' @export dmrse
 dmrse <-
 function(betas, idmr=iDMR()) {  # formerly SDO - both
     idmr <- idmr[idmr %in% rownames(betas)]

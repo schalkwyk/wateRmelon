@@ -61,10 +61,6 @@ pop <- function (fd, rn){
    o
 }
 
-
-
-setGeneric ( name= "as.methylumi"    )
-
 setMethod(
    f= "as.methylumi",
    signature(mn="MethyLumiSet"),

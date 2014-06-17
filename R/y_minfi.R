@@ -96,6 +96,27 @@ setMethod(
    }
 )
 
+
+
+#' Internal functions for Illumina i450 normalization functions
+#' 
+#' got and fot find the annotation column differentiating type I and type II
+#' assays in MethylSet (got) or MethyLumiSet (fot) objects. pop extracts
+#' columns from IlluminaHumanMethylation450k.db
+#' 
+#' \code{got} returns a character vector of 'I' and 'II', \code{fot} returns
+#' the index of the relevant column. \code{pop} returns a data frame
+#' 
+#' @aliases got fot pop
+#' @param x a MethyLumiSet
+#' @param obj a MethylSet
+#' @param fd a character vector of the desired annotation columns
+#' @param rn a character vector of the desired features
+#' @author Leonard.Schalkwyk@@kcl.ac.uk
+#' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
+#' data-driven approach to preprocessing Illumina 450K methylation array data
+#' (submitted)
+#' @export got
 got <- function(obj){
    I  <- getProbeInfo(obj)$Name
    rn <- rownames( obj@featureData@data )
@@ -579,29 +600,21 @@ setMethod(
          stop('can\'t load minfi package')
       }
       object   <- mn
-      object2  <- preprocessRaw(object)
-      mn       <- getMeth(object2)
-      un       <- getUnmeth(object2)
+#      object2  <- preprocessRaw(object)
+#      mn       <- getMeth(object2)
+#      un       <- getUnmeth(object2)
       pn       <- detectionP(object)
       bc       <- beadcount(object)
       l        <- pfilter (
-         mn=mn, un=un, bn=NULL, 
+         mn=NULL, un=NULL, bn=NULL, 
          da=NULL, 
-         pn=pn, bc=bc,perCount, 
-	 pnthresh,perc,pthresh
-      ) 
-      object3 <-new("MethylSet",
-         Meth=l$mn,
-         Unmeth=l$un,
-         annotation=annotation(object2),
-         phenoData=phenoData(object2[,colnames(l$mn)])
-      )  			      	
-      object3@preprocessMethod <- c(
-         "Raw (no normalization or bg correction) with wateRmelon pfilter",
-         as.character(packageVersion("minfi")), 
-         as.character(packageVersion("IlluminaHumanMethylation450kmanifest"))
+         pn=pn, bc=bc,
+         perCount, 
+	 pnthresh,perc,pthresh,
+         logical.return= TRUE
       )
-      object3     
+      object3 <- object[l$probes,] 
+      object3 <- object3[,l$samples] 
    }
 )
 

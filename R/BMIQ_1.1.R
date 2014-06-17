@@ -33,6 +33,89 @@
 
 #require(RPMM);
 
+
+
+#' Beta-Mixture Quantile (BMIQ) Normalisation method for Illumina 450k arrays
+#' 
+#' BMIQ is an intra-sample normalisation procedure, correcting the bias of
+#' type-2 probe values. BMIQ uses a 3-step procedure: (i) fitting of a 3-state
+#' beta mixture model, (ii) transformation of state-membership probabilities of
+#' type2 probes into quantiles of the type1 distribution, and (iii) a conformal
+#' transformation for the hemi-methylated probes. Exact details can be found in
+#' the reference below.
+#' 
+#' Full details can be found in the reference below. Note: these functions
+#' require the RPMM package, not currently a dependency of the wateRmelon
+#' package.
+#' 
+#' @aliases BMIQ CheckBMIQ BMIQ,MethyLumiSet-method BMIQ-methods
+#' BMIQ,ANY-method
+#' @param beta.v vector consisting of beta-values for a given sample. NAs are
+#' passed through. Beta-values that are exactly 0 or 1 will be replaced by the
+#' minimum positive or maximum value below 1, respectively. For the
+#' MethyLumiSet method, a MethyLumiSet is the only required argument, and the
+#' function will be run on each sample.
+#' @param design.v corresponding vector specifying probe design type
+#' (1=type1,2=type2). This must be of the same length as beta.v and in the same
+#' order.
+#' @param nL number of states in beta mixture model. 3 by default. At present
+#' BMIQ only works for nL=3.
+#' @param doH perform normalisation for hemimethylated type2 probes. These are
+#' normalised using an empirical conformal transformation and also includes the
+#' left-tailed type2 methylated probes since these are not well described by a
+#' beta distribution. By default TRUE.
+#' @param nfit number of probes of a given design type to use for the fitting.
+#' Default is 50000. Smaller values (~10000) will make BMIQ run faster at the
+#' expense of a small loss in accuracy. For most applications, 5000 or 10000 is
+#' ok.
+#' @param th1.v thresholds used for the initialisation of the EM-algorithm,
+#' they should represent buest guesses for calling type1 probes hemi-methylated
+#' and methylated, and will be refined by the EM algorithm. Default values work
+#' well in most cases.
+#' @param th2.v thresholds used for the initialisation of the EM-algorithm,
+#' they should represent buest guesses for calling type2 probes hemi-methylated
+#' and methylated, and will be refined by the EM algorithm. By default this is
+#' null, and the thresholds are estimated based on th1.v and a modified PBC
+#' correction method.
+#' @param niter maximum number of EM iterations to do. This number should be
+#' large enough to yield good fits to the type1 distribution. By default 5.
+#' @param tol tolerance convergence threshold for EM algorithm. By default
+#' 0.001.
+#' @param plots logical specifying whether to plot the fits and normalised
+#' profiles out. By default TRUE.
+#' @param sampleID the ID of the sample being normalised.
+#' @param pri logical: print verbose progress information?
+#' @param pnbeta.v BMIQ normalised profile.
+#' @return Default method: A list with following entries:
+#' 
+#' MethyLumiSet method: A methyLumiSet object
+#' @returnItem nbeta the normalised beta-profile for the sample
+#' @returnItem class1 the assigned methylation state of type1 probes
+#' @returnItem class2 the assigned methylation state of type2 probes
+#' @returnItem av1 the mean beta-values for the nL states for type1 probes
+#' @returnItem av2 the mean beta-values for the nL states for type2 probes
+#' @returnItem hf the estimated "Hubble" dilation factor used in the
+#' normalisation of hemi-methylated probes
+#' @returnItem th1 estimated thresholds for calling unmethylated and methylated
+#' type1 probes
+#' @returnItem th2 estimated thresholds for calling unmethylated and methylated
+#' type2 probes
+#' @author Andrew Teschendorff, MethyLumiSet method by Leo Schalkwyk
+#' Leonard.Schalkwyk@@kcl.ac.uk
+#' @references Teschendorff AE, Marabita F, Lechner M, Bartlett T, Tegner J,
+#' Gomez-Cabrero D, Beck S. A Beta-Mixture Quantile Normalisation method for
+#' correcting probe design bias in Illumina Infinium 450k DNA methylation data.
+#' Bioinformatics. 2012 Nov 21.
+#' @keywords ~kwd1 ~kwd2
+#' @examples
+#' 
+#' 
+#' library(RPMM)
+#' data(melon)
+#' BMIQ(melon,nfit=100)
+#' 
+#' 
+#' @export BMIQ
 BMIQ <- function(beta.v,design.v,nL=3,doH=TRUE,nfit=50000,th1.v=c(0.2,0.75),th2.v=NULL,niter=5,tol=0.001,plots=TRUE,sampleID=1,pri=TRUE){
 
 ##LS>
