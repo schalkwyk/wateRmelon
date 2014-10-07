@@ -46,20 +46,20 @@ as.methylumi <- function(
    x  
 }
 
-pop <- function (fd, rn){
-   o <- data.frame(row.names=rn)
-   for (col in fd){
-      thing  <- paste("IlluminaHumanMethylation450k", col, sep='')
-      stuff <- get(thing)
-      log  <- rn %in% keys(stuff)
-      data <- toTable(stuff[rn[log]])
-      #for (item in colnames(data)[-1]){
-      #   o[log,item] <- data[,item]
-      #}
-      o[data[,1],colnames(data)[-1]] <- data[,-1]
-   }
-   o
-}
+#pop <- function (fd, rn){
+#   o <- data.frame(row.names=rn)
+#   for (col in fd){
+#      thing  <- paste("IlluminaHumanMethylation450k", col, sep='')
+#      stuff <- get(thing)
+#      log  <- rn %in% keys(stuff)
+#      data <- toTable(stuff[rn[log]])
+#      #for (item in colnames(data)[-1]){
+#      #   o[log,item] <- data[,item]
+#      #}
+#      o[data[,1],colnames(data)[-1]] <- data[,-1]
+#   }
+#   o
+#}
 
 setMethod(
    f= "as.methylumi",
@@ -116,13 +116,13 @@ setMethod(
 )
 
 
-getColumns <- function(){
-   gsub(
-      'IlluminaHumanMethylation450k', 
-      '', 
-      ls("package:IlluminaHumanMethylation450k.db")
-   )
-}
+#getColumns <- function(){
+#   gsub(
+#      'IlluminaHumanMethylation450k', 
+#      '', 
+#      ls("package:IlluminaHumanMethylation450k.db")
+#   )
+#}
 
 
 
@@ -131,3 +131,21 @@ getColumns <- function(){
 #        stop (pv not in the same order as mn)
 #      }
 #   } 
+
+
+
+
+
+
+# get the current Illumina annotation file 
+
+
+aoget <- function(url= paste(
+   'ftp://webdata2:webdata2@ussd-ftp.illumina.com/downloads/ProductFiles/HumanMethylation450/',
+   'HumanMethylation450_15017482_v1-2.csv', sep='')
+   ) {
+   op <- options(stringsAsFactors=FALSE)
+   ao <- read.csv(url, skip =7 )
+   options(op)
+   
+}
