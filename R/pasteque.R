@@ -8,6 +8,26 @@
 #  data.frame( TargetID=rownames(thing), thing )
 #}
 
+dfort <- function(rn){
+#  # object names in IlluminaHumanMethylation450k
+#  cols  <- c( "COLORCHANNEL", "CPGIRELATION", "DESIGN" )    
+stopifnot(
+   all.equal(
+      rownames(IlluminaHumanMethylation450kanno.ilmn12.hg19@data$Manifest), 
+      rownames(IlluminaHumanMethylation450kanno.ilmn12.hg19@data$Islands.UCSC)
+   )
+)
+
+data.frame( 
+      TargetID =   rownames(IlluminaHumanMethylation450kanno.ilmn12.hg19@data$Manifest),
+      COLOR_CHANNEL = IlluminaHumanMethylation450kanno.ilmn12.hg19@data$Manifest$Color,
+      RELATION_TO_UCSC_CPG_ISLAND = IlluminaHumanMethylation450kanno.ilmn12.hg19@data$Islands.UCSC$Relation_to_Island,
+      INFINIUM_DESIGN_TYPE =  IlluminaHumanMethylation450kanno.ilmn12.hg19@data$Manifest$Type
+)
+
+}
+
+
 tost <-
 function( mn, un, da, pn ) {
 ## da requirements should be checked: color channel required
