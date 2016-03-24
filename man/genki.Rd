@@ -51,9 +51,10 @@ array data (submitted)
 \author{
 Leonard.Schalkwyk@kcl.ac.uk
 }
-%\note{
-%%  ~~further notes~~
-%}
+
+\note{
+Corrected \code{RGChannelSet} methods - 12/10/2015
+}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
