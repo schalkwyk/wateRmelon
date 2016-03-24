@@ -99,8 +99,11 @@ setMethod(
 
 fot <- function(x){
    ds <- grep( 'DESIGN', colnames(x@featureData@data), ignore.case = TRUE  )
-   stopifnot ( length(ds) == 1 )
-   ds
+#   stopifnot ( length(ds) == 1 )
+#   ds
+# Seeing as I accidently introduced this bug, until I correct the manifest
+# this is my solution.
+    ds[1]
 }
 
 
@@ -581,14 +584,20 @@ setMethod(
       }
       object <- mn
       bn     <- betas(object)
-      bc     <- betas(object)
+#      bc     <- betas(object)
+      if(exists("NBeads", assayData(object))){
+        bc       <- assayData(object)$NBeads
+        bc[bc<3] <- NA
+      } else { 
+        bc       <- betas(object)
+      }
       mn     <- methylated(object)
       un     <- unmethylated(object)
       pn     <- pvals(object)
-      da     <- object@featureData@data
+      da     <- object@featureData@data    
       l      <- pfilter (
          mn=mn, un=un, bn=bn, da=da, 
-         pn=pn, bc=bn, perCount, pnthresh,perc,
+         pn=pn, bc=bc, perCount, pnthresh,perc,
          pthresh, logical.return=TRUE
       ) 
       object <- object[, l$samples]
@@ -656,3 +665,35 @@ setMethod(
 
 
 
+# bscon <- function(x, ...) { UseMethod (bscon, x ) }
+# see also bscon_methy and bscon_minfi
+
+setMethod(
+   f= "bscon",
+   signature(x="MethyLumiSet"),
+   definition=function( x ){
+      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
+         stop('can\'t load methylumi package')
+      }
+      bscon_methy(x)
+   }
+)
+
+# outlyx <- function(x, full, iqr, iqrP, pc, mv, mvP)
+setMethod(
+   f= "outlyx",
+   signature(x="MethyLumiSet"),
+   definition=function(x, iqr, iqrP, pc, mv, mvP, plot){
+   x <- betas(x)
+   outlyx(x, iqr, iqrP, pc, mv, mvP, plot)
+   }
+)
+
+setMethod(
+   f= "pwod",
+   signature(object="MethyLumiSet"),
+   definition=function(object, mul){
+   object <- betas(object)
+   pwod(object, mul)
+   }
+)

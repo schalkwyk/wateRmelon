@@ -454,7 +454,7 @@ setMethod(
       bn     <- getBeta(object)
       g      <- getsnp(rownames(bn))
       genki( bn, g, se ) 
-     
+
    }
 )
 
@@ -465,11 +465,15 @@ setMethod(
    if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
          stop('can\'t load minfi package')
       }
+#     object <- bn
+#     bn     <- getBeta(object)
+#     g      <- getsnp(rownames(bn))
+#     genki( bn, g, se ) 
+     
       object <- bn
-      bn     <- getBeta(object)
+      bn     <- getSnpBeta(object)
       g      <- getsnp(rownames(bn))
       genki( bn, g, se ) 
-     
    }
 )
 
@@ -600,7 +604,7 @@ setMethod(
          stop('can\'t load minfi package')
       }
       object   <- mn
-#      object2  <- preprocessRaw(object)
+      object2  <- preprocessRaw(object)
 #      mn       <- getMeth(object2)
 #      un       <- getUnmeth(object2)
       pn       <- detectionP(object)
@@ -613,9 +617,114 @@ setMethod(
 	 pnthresh,perc,pthresh,
          logical.return= TRUE
       )
-      object3 <- object[l$probes,] 
-      object3 <- object3[,l$samples] 
+#     object3 <- object[l$probes,] 
+      object3 <- object2[,l$samples] 
+
+#      output <-list("RGobject" = object3,
+#                    "Filter" = l$probes)
+
+    fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"), 
+                        Unmeth = assayDataElement(object3,"Unmeth"),
+                        Filter=matrix(rep(l$probes, length(l$sample)), nrow=length(l$probes), ncol=length(l$sample))
+                       )
+    newObject <- new("MethylSet", assayData=fil)
+    newObject@annotation <- annotation(object3)
+    newObject@phenoData <- phenoData(object3)
+    return(newObject)
+    }
+)
+
+#BMIQ <- function(beta.v,design.v,nL=3,doH=TRUE,nfit=50000,th1.v=c(0.2,0.75),th2.v=NULL,niter=5,tol=0.001,plots=TRUE,sampleID=1){
+setMethod(
+   f= "BMIQ",
+   signature(beta.v="MethylSet"),
+   definition=function(
+		 beta.v,
+      nL=3, doH=TRUE, nfit=5000,
+      th1.v=c(0.2,0.75), th2.v=NULL, 
+      niter=5, tol=0.001, plots=FALSE, 
+      pri=FALSE       
+		       
+		       ){
+   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
+         stop('can\'t load minfi package')
+      }
+      object <- beta.v
+      d <- as.numeric(factor(got(object)))
+      ibetas <- getBeta(object) 
+      betas <- sapply ( 
+         colnames(ibetas), 
+         function(name){
+            ou <- try(
+               BMIQ(
+                  ibetas[,name],
+                  design.v=d, nL, doH, 
+                  nfit, th1.v, th2.v, 
+                  niter, tol, plots, 
+                  sampleID=name, 
+                  pri=FALSE 
+               )
+            )
+            if(inherits(ou, 'try-error')){
+               ou <- rep(NA,dim(ibetas)[1])
+               warn(paste(name, "failed!"))
+            }else{
+               ou <- ou$nbeta
+            }
+          }
+       )
    }
 )
+# bscon <- function(x, ...) { UseMethod (bscon, x ) }
+# see also bscon_methy and bscon_minfi
+
+setMethod(
+   f= "bscon",
+   signature(x="RGChannelSet"),
+   definition=function( x ){
+   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
+         stop('can\'t load minfi package')
+      }
+      bscon_minfi(x)
+   }
+)
+
+# outlyx <- function(x, y, dist1, dist2) 
+setMethod(
+   f= "outlyx",
+   signature(x="RGChannelSet"),
+   definition=function(x, iqr, iqrP, pc, mv, mvP, plot){
+   x <- getBeta(x)
+   outlyx(x, iqr, iqrP, pc, mv, mvP, plot)
+   }
+)
+
+setMethod(
+   f= "outlyx",
+   signature(x="MethylSet"),
+   definition=function(x, iqr, iqrP, pc, mv, mvP, plot){
+   x <- getBeta(x)
+   outlyx(x, iqr, iqrP, pc, mv, mvP, plot)
+   }
+)
+
+setMethod(
+   f= "pwod",
+   signature(object="RGChannelSet"), 
+   definition=function(object, mul){
+   object <- getBeta(object)
+   pwod(object, mul)
+   }
+)
+
+setMethod(
+   f= "pwod",
+   signature(object="MethylSet"), 
+   definition=function(object, mul){
+   object <- getBeta(object)
+   pwod(object, mul)
+   }
+)
+
 
 

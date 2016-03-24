@@ -93,7 +93,7 @@ If it is TRUE, FALSE or TRUE is returned to indicate success
 }
 }
 \value{
-a filtered MethyLumiSet or RGChannelSetExtended object or
+a filtered MethyLumiSet or
 
 a list of the filtered matrices:
 
@@ -104,6 +104,11 @@ un : unmethylated intensities
 bn : betas
 
 da : feature data
+
+or
+
+a MethylSet object containing a Logical Matrix names "Filter" within the assayData,
+which then can be used for down-stream subsetting.
 }
 \references{
 [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: 
@@ -114,6 +119,10 @@ array data (submitted)
 Ruth.Pidsley@kcl.ac.uk
 }
 
+\note{
+Adjusted \code{RGChannelSetExtended} methods - 12/10/2015
+Now outputs a MethylSet object using preprocessRaw from minfi.
+}
 
 \examples{
 # MethyLumiSet method
