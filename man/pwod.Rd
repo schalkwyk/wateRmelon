@@ -7,35 +7,34 @@ Probe-Wise Outlier Detection
 'P'robe-'W'ise 'O'utlier 'D'etection via interquartile ranges.
  }
 \usage{
-library(wateRmelon)
-data(melon)
-cattle <- betas(melon)
-pwod(cattle) -> filter 
+pwod(object, mul)
 }
 \arguments{
-  \item{betas}{
-Matrix of betas 
+  \item{object}{MethyLumiSet, RGChannelSet, MethylSet object or matrix containing betas.
 }
   \item{mul}{
 Number of interquatile ranges used to determine outlying probes.
 }
+
 }
 \details{
-Detects outlying probes across arrays in methylumi and minfi objects. Outliers are probable low MAF SNP heterozygotes(?)
+Detects outlying probes across arrays in methylumi and minfi objects. Outliers are probable low MAF/SNP heterozygotes.
 }
-
 \value{
-Returns inputted beta matrix with outlying probes coerced to NA
+Returns supplied beta matrix with outlying probes coerced to NA
 }
-\references{
-
-}
-
+%\references{}
+%\note{}
 \author{
 Tyler Gorrie-Stone - tgorri@essex.ac.uk
 }
-
-\note{
-
+\examples{
+library(wateRmelon)
+data(melon)
+cattle <- betas(melon)
+newbetas <- pwod(cattle, mul=4)
 }
+
+
+
 

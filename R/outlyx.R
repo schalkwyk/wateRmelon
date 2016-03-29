@@ -1,8 +1,8 @@
 # Author: Tyler Gorrie-Stone, tgorri@essex.ac.uk
 # Revision Date: 01-02-2016
 
-outlyx <- function(x, iqr=T, iqrP=2, pc=1,
-                   mv=T, mvP=0.15, plot=F, ...) { # {{{
+outlyx <- function(x, iqr=TRUE, iqrP=2, pc=1,
+                   mv=TRUE, mvP=0.15, plot=FALSE, ...) { # {{{
 ### Computes outliers within methylomic datasets
  # Arguments: 
  # x    : Methylumi/Minfi object or raw betas.
@@ -63,7 +63,7 @@ outlyx <- function(x, iqr=T, iqrP=2, pc=1,
    plot(pccompbetx$rot[,pc],
         out2[[2]],
         xlim=c(low, upp),
-        xlab="Transformed Betas",
+        xlab=paste0("PC",pc),
         ylab="Final Weight")
    abline(v=c(out1[["low"]],out1[["hi"]]),
           h=mvP,

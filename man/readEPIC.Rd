@@ -7,24 +7,21 @@ readEPIC
 Reads Epic arrays from raw idats into \code{MethyLumiSet} objects from directory.
  }
 \usage{
-#Ficticious file pathway 
-path <- "Data/Experiment/Idatlocation"
-data <- readEPIC(path, ...)
+readEPIC(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F, ...) 
 }
 \arguments{
   \item{path}{
-Path directory where idats are located. \code{readEPIC} uses string manipulation
-to generate a vector of barcodes which is then passed to a modified
-version of \code{methylumIDAT} to read in all idats present in the directory. 
+Path directory where idats are located. \code{readEPIC} looks in the specified path and
+converts all .idats within path to relevant barcodes, which is then passed to a modified
+version of \code{methylumIDAT} to parse all idats present in the specified directory. 
 }
   \item{...}{
-See \code{methylumIDAT}
+Additional arguments passed to \code{methylumIDAT}
 }
 }
 \details{
-Read a set of .idat files within a file directory and return a \code{MethylumiSet}
+Read a set of .idat files within a file directory and return a \code{MethylumiSet} object
 }
-
 
 \value{
 A \code{MethyLumiSet} object.
@@ -43,7 +40,13 @@ functions used to construct a \code{MethylumiSet} object, specifically tailored
 for EPIC arrays. \code{readEPIC} can also handle 450k and 27k arrays as 
 \code{methylumIDAT} functionality for these platforms remains unchanged. 
 
-If barcodes are the preffered input, use \code{methylumIDAT} as normal. 
-Specifiying idatPath.
+Alternatively it is possible to invoke \code{methylumIDATepic} to use the modified
+version \code{methylumIDAT}, which has similar usage.
+}
+
+\examples{
+#Ficticious file pathway 
+# path <- "Data/Experiment/Idatlocation"
+# data <- readEPIC(path, pdat=NULL, oob=F, n=T)
 }
 

@@ -1,0 +1,43 @@
+\name{agep}
+\alias{agep}
+\title{
+Age Prediction from methylomic expression data
+}
+\description{
+Predict age of samples using Horvath's Coefficients
+}
+\usage{
+agep(betas, coeff=NULL, verbose=FALSE)
+}
+\arguments{
+  \item{betas}{
+Matrix of betas 
+}
+  \item{coeff}{
+If NULL, will default to Horvath's coefficients. Otherwise can be supplied with 
+vector of own coefficients with an intercept as first element.
+}
+  \item{verbose}{
+If TRUE, agep will additionally print out names of probes that are missing from within matrix.
+}
+}
+%\details{}
+\value{
+Returns matrix of predicted ages per sample.
+}
+\references{
+Horvath S: DNA methylation age of human tissues and cell types. Genome Biology 2013, 14:R115
+}
+\author{
+Original Functions: Steve Horvath
+wateRmelon Implementation: Leo Schalkwyk
+}
+\note{
+Is extremely sensitive to NAs and will return NA if probes have NA values.
+}
+\examples{
+library(wateRmelon)
+data(melon)
+beta <- betas(melon)
+agep(beta, coeff=NULL, verbose=FALSE)
+}

@@ -5,52 +5,56 @@
 Identify Outliers within Methylumi and Minfi packaged objects
 }
 \description{
-Seeks to identify outliers based on multiple (currently 2) outlier detection methods for (unnormalized) \code{methylumi} and \code{minfi} packaged objects.
+Seeks to identify outliers based on multiple (currently 2) outlier detection methods for \code{methylumi} and \code{minfi} packaged objects.
 }
 \usage{
-outlyx(x, y = 1, dist1 = 2, dist2 = 0.15)
+outlyx(x, iqr=TRUE, iqrP=2, pc=1,
+       mv=TRUE, mvP=0.15, plot=FALSE, ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A \code{MethyLumiSet}, \code{MethylSet}, \code{RGChannelSet} object or matrix containing raw betas.
+A \code{MethyLumiSet}, \code{MethylSet} object or matrix containing raw betas.
 }
-  \item{y}{
-Desired principal component for outlier identification - only used if other principal components want to be discriminated, only used for IQR outlier detection.
+  \item{iqr}{
+If TRUE, the outliers based on interquartile ranges will be determined
 }
-  \item{dist1}{
+  \item{iqrP}{
 The number of interquartile ranges outliers are to be identified from designated principle component.
 }
-  \item{dist2}{
+  \item{pc}{
+Desired principal component for outlier identification - only used if other principal components want to be discriminated, only used for IQR outlier detection.
+}
+  \item{mv}{
+If TRUE, the outliers will detected using \code{pcout}
+}
+  \item{mvP}{
 Arbitrary cut-off point for identifying outliers via \code{pcout}
 }
+  \item{plot}{
+If TRUE, alongside regular output, a plot will be constructed displaying relative 'location'
+of each sample. Outliers are those that fall within the highlighted regions.
 }
-\details{
+  \item{...}{
+Additional arguments passed to \code{pcout}
 }
+}
+%\details{}
 \value{
-Returns a character vector containing the names of outliers.
+Returns a dataframe of TRUE/FALSE per sample. Where TRUE is outlying.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+%\references{}
 \author{
-Tyler Gorrie-Stone
+Tyler Gorrie-Stone - tgorri@essex.ac.uk
 }
 \note{
 May perform poorly on normalized data
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
  library(wateRmelon)
  data(melon)
- outliers <- outlyx(melon, dist1=2, dist2=0.15)
- # Subsetting Example (won't work with melon dataset)
- # example <- melon[,!colnames(melon)%in%outliers]
+ outliers <- outlyx(melon,iqr=TRUE, iqrP=2, pc=1,
+                    mv=TRUE, mvP=0.15, plot=TRUE)
 }
 
 \keyword{outlier}

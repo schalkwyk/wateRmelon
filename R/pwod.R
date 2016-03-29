@@ -4,7 +4,7 @@ pwod <- function(object, mul=4){
  # 'P'robe-'W'ise 'O'utlier 'D'etection via interquartile ranges.
  # -- probable low MAF SNP heterozygotes --
  # Arguments:
- #  betas   : Matrix of Betas
+ #  object   : methylumi object or minfi object or Matrix of Betas
  #  mul     : Number of interquartile ranges to determine outlying probes.
  #            Default = 4. To exclude the very obvious.
  #

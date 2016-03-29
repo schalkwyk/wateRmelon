@@ -36,21 +36,19 @@ The beta values from type II chemistry are calculated by dividing the methylated
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+%\references{}
 \author{Louis El Khoury (louis.el-khoury@essex.ac.uk), Eilis Hannon, Leonard Schalkwyk (lschal@essex.ac.uk)
 %%  ~~who you are~~
 }
 \note{
-%%  ~~further notes~~
+Updates to HumanMethylationEPIC manifest has seen the removal of control probes C6 and U6. 
+This does not appear to grossly affect how function performs however we will consider additional
+approaches to account for this.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%\seealso{}
 \examples{
 library(wateRmelon)
 data(melon)
