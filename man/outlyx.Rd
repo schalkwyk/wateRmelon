@@ -14,7 +14,7 @@ outlyx(x, iqr=TRUE, iqrP=2, pc=1,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A \code{MethyLumiSet}, \code{MethylSet} object or matrix containing raw betas.
+A \code{MethyLumiSet}, \code{MethylSet}, \code{RGChannelset} object or matrix containing raw betas.
 }
   \item{iqr}{
 If TRUE, the outliers based on interquartile ranges will be determined

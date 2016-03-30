@@ -18,7 +18,7 @@ If NULL, will default to Horvath's coefficients. Otherwise can be supplied with
 vector of own coefficients with an intercept as first element.
 }
   \item{verbose}{
-If TRUE, agep will additionally print out names of probes that are missing from within matrix.
+If TRUE, agep will additionally print out names of probes that are missing from within supplied beta matrix.
 }
 }
 %\details{}
@@ -30,10 +30,11 @@ Horvath S: DNA methylation age of human tissues and cell types. Genome Biology 2
 }
 \author{
 Original Functions: Steve Horvath
+
 wateRmelon Implementation: Leo Schalkwyk
 }
 \note{
-Is extremely sensitive to NAs and will return NA if probes have NA values.
+Is extremely sensitive to NAs and will return NA if any probes (listed in coefficients) have NA values.
 }
 \examples{
 library(wateRmelon)

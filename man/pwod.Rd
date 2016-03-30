@@ -7,13 +7,14 @@ Probe-Wise Outlier Detection
 'P'robe-'W'ise 'O'utlier 'D'etection via interquartile ranges.
  }
 \usage{
-pwod(object, mul)
+pwod(object, mul=4)
 }
 \arguments{
   \item{object}{MethyLumiSet, RGChannelSet, MethylSet object or matrix containing betas.
 }
   \item{mul}{
-Number of interquatile ranges used to determine outlying probes.
+Number of interquartile ranges used to determine outlying probes. Default is 4 to ensure only very
+obvious outliers are removed.
 }
 
 }
@@ -32,7 +33,7 @@ Tyler Gorrie-Stone - tgorri@essex.ac.uk
 library(wateRmelon)
 data(melon)
 cattle <- betas(melon)
-newbetas <- pwod(cattle, mul=4)
+new.betas <- pwod(cattle, mul=4)
 }
 
 

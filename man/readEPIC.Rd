@@ -10,10 +10,14 @@ Reads Epic arrays from raw idats into \code{MethyLumiSet} objects from directory
 readEPIC(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F, ...) 
 }
 \arguments{
-  \item{path}{
-Path directory where idats are located. \code{readEPIC} looks in the specified path and
+  \item{idatPath}{
+Path directory where .idat files are located. \code{readEPIC} looks in the specified path and
 converts all .idats within path to relevant barcodes, which is then passed to a modified
-version of \code{methylumIDAT} to parse all idats present in the specified directory. 
+version of \code{methylumIDAT} to parse all idats present in the specified directory.
+}
+  \item{barcodes}{
+If NULL, function will search supplied argument in "idatPath" for all idats within directory. 
+If given a vector of barcodes, readEPIC will search for those specific barcodes within the idatPath supplied. 
 }
   \item{...}{
 Additional arguments passed to \code{methylumIDAT}
