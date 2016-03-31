@@ -1,23 +1,19 @@
 \name{bscon}
 \alias{bscon}
-%- Also NEED an '\alias' for EACH other topic documented here.
+\alias{bscon,MethyLumiSet-method}
+\alias{bscon,RGSet-method}
 \title{ Calculate bisulphite conversion
-%%  ~~function to do ... ~~
 }
 \description{
-Uses control data from Infinium HumanMethylation450 BeadChip Kit to calculate bisulfite conversion for each array
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Uses control data from Infinium HumanMethylation450 BeadChip to calculate bisulfite conversion for each array
 }
 \usage{
 bscon(x, ...)  # S4 methods exist for RGset and MethyLumiset objects
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{ IDAT or report files containing 450k data 
-%%     ~~Describe \code{x} here~~
 }
   \item{\dots}{ current methods have no optional arguments
-%%     ~~Describe \code{\dots} here~~
 }
 }
 \details{ This function uses the green and red channels reading of the type I and type II bisilfite conversion data to return the median bisulfite conversion percentage value for each array.
@@ -27,7 +23,6 @@ For the type I chemistry the beta values are calculated by dividing the first th
 The beta values from type II chemistry are calculated by dividing the methylated (red) channels by the sum of methylated (red) and unmethylated (green) channels.
 
 
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{A vector of percentage values referring to the bisulfite conversion levels of each array.
 %%  ~Describe the value returned
@@ -38,7 +33,6 @@ The beta values from type II chemistry are calculated by dividing the methylated
 }
 %\references{}
 \author{Louis El Khoury (louis.el-khoury@essex.ac.uk), Eilis Hannon, Leonard Schalkwyk (lschal@essex.ac.uk)
-%%  ~~who you are~~
 }
 \note{
 Updates to HumanMethylationEPIC manifest has seen the removal of control probes C6 and U6. 
@@ -46,16 +40,12 @@ This does not appear to grossly affect how function performs however we will con
 approaches to account for this.
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{}
 \examples{
 library(wateRmelon)
 data(melon)
 bs <- bscon(melon)
 bs
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{ QC data }
 \keyword{ Bisulphite Conversion Rate}% __ONLY ONE__ keyword per line
