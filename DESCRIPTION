@@ -8,8 +8,9 @@ Author: Leonard C Schalkwyk, Ruth Pidsley, Chloe CY Wong, with functions contrib
 Maintainer: Leo <lschal@essex.ac.uk>
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi and minfi packages.
 License: GPL-3
-Depends: R (>= 2.10), limma, methods, matrixStats, methylumi, 
+Depends: R (>= 2.10), Biobase, limma, methods, matrixStats, methylumi, 
         lumi, ROC, IlluminaHumanMethylation450kanno.ilmn12.hg19, illuminaio
+Imports: Biobase
 Enhances: minfi
 Suggests: RPMM 
 LazyLoad: yes
