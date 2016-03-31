@@ -1,7 +1,7 @@
 \name{got}
 \alias{got}
 \alias{fot}
-\alias{pop}
+%\alias{pop}
 \title{
 Internal functions for Illumina i450 normalization functions
 }
@@ -13,7 +13,7 @@ from IlluminaHumanMethylation450k.db
 \usage{
 got(obj)
 fot(x)
-pop(fd,rn)
+%pop(fd,rn)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

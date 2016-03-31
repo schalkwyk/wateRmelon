@@ -11,7 +11,7 @@ db1 is used for quantile normalizing methylated together with unmethylated (dye 
 \usage{
 db1(mn, un)
 dfsfit(mn, onetwo, roco=unlist(data.frame(strsplit(colnames(mn), "_"),
-                 stringsAsFactors = FALSE)[2, ]) )
+                 stringsAsFactors = FALSE)[2, ])i, ... )
 
 dfs2(x, onetwo)
 
