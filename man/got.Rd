@@ -19,8 +19,8 @@ fot(x)
 \arguments{
   \item{x}{  a MethyLumiSet }
   \item{obj}{  a MethylSet  }
-  \item{fd}{ a character vector of the desired annotation columns    }
-  \item{rn}{ a character vector of the desired features   }
+%  \item{fd}{ a character vector of the desired annotation columns    }
+%  \item{rn}{ a character vector of the desired features   }
 
 }
 \details{
