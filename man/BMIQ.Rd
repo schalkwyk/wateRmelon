@@ -2,6 +2,7 @@
 \alias{BMIQ}
 \alias{CheckBMIQ}
 \alias{BMIQ,MethyLumiSet-method}
+\alias{BMIQ,MethySet-method}
 \alias{BMIQ-methods}
 \alias{BMIQ,ANY-method}
 \title{
@@ -16,7 +17,7 @@ BMIQ(beta.v, design.v, nL = 3, doH = TRUE, nfit = 50000, th1.v = c(0.2, 0.75), t
 CheckBMIQ(beta.v, design.v, pnbeta.v)
 }
 \arguments{
-  \item{beta.v}{vector consisting of beta-values for a given sample. NAs are passed through. Beta-values that are exactly 0 or 1 will be replaced by the minimum positive or maximum value below 1, respectively. For the MethyLumiSet method, a MethyLumiSet is the only required argument, and the function will be run on each sample.}
+  \item{beta.v}{vector consisting of beta-values for a given sample, or a MethyLumiSet or MethylSet containing multiple samples. For the MethyLumiSet and MethylSet methods, this is the only required argument, and the function will be run on each sample.}
   \item{design.v}{corresponding vector specifying probe design type (1=type1,2=type2). This must be of the same length as beta.v and in the same order.}
   \item{nL}{number of states in beta mixture model. 3 by default. At present BMIQ only works for nL=3.}
   \item{doH}{perform normalisation for hemimethylated type2 probes. These are normalised using an empirical conformal transformation and also includes the left-tailed type2 methylated probes since these are not well described by a beta distribution. By default TRUE.}
