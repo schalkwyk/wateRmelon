@@ -1,5 +1,6 @@
 \name{agep}
 \alias{agep}
+\alias{coef}
 \title{
 Age Prediction from methylomic expression data
 }
