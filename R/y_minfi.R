@@ -14,9 +14,6 @@ setMethod(
    f= "betaqn",
    signature(bn="MethylSet"),
    definition=function(bn){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- bn
       betaqn (
          bn = getBeta(object) 
@@ -28,9 +25,6 @@ setMethod(
    f= "betaqn",
    signature(bn="RGChannelSet"),
    definition=function(bn){
-      if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-            stop('can\'t load minfi package')
-      }
       object <- bn
       betaqn (
       bn = getBeta(object) 
@@ -43,9 +37,6 @@ setMethod(
    f= "naten",
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- mn
       naten (
          mn = getMeth(object), 
@@ -59,9 +50,6 @@ setMethod(
    f= "naten",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mn  <- preprocessRaw(mn)    
       naten ( mn ) 
    }
@@ -72,9 +60,6 @@ setMethod(
    f= "nanet",
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- mn
       nanet (
          mn = getMeth(object), 
@@ -88,9 +73,6 @@ setMethod(
    f= "nanet",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mn  <- preprocessRaw(mn)    
       nanet ( mn ) 
    }
@@ -131,9 +113,6 @@ setMethod(
    f= "nanes",
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mns
          nanes (
             mns    = getMeth(object), 
@@ -148,9 +127,6 @@ setMethod(
    f= "nanes",
    signature(mn="RGChannelSet"),
    definition=function(mns, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mns  <- preprocessRaw(mns)    
       nanes ( mns ) 
    }
@@ -161,9 +137,6 @@ setMethod(
    f= "danes",
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mn
          mn <- getMeth(object)
          danes (
@@ -179,9 +152,6 @@ setMethod(
    f= "danes",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mn  <- preprocessRaw(mn)    
       danes ( mn ) 
    }
@@ -192,9 +162,6 @@ setMethod(
    f= "danet",
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mn
          mn <- getMeth(object) 
          danet (
@@ -210,9 +177,6 @@ setMethod(
    f= "danet",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mn  <- preprocessRaw(mn)    
       danet ( mn ) 
    }
@@ -224,9 +188,6 @@ setMethod(
    f= "daten1",
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100, ...){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mn
          mn <- getMeth(object) 
          daten1 (
@@ -242,9 +203,6 @@ setMethod(
    f= "daten1",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100, ...){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mn  <- preprocessRaw(mn)    
       daten1 ( mn, ... ) 
    }
@@ -255,9 +213,6 @@ setMethod(
    f= "daten2",
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100, ...){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mn
          mn <- getMeth(object) 
          daten2 (
@@ -273,9 +228,6 @@ setMethod(
    f= "daten2",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mn  <- preprocessRaw(mn)    
       daten2 ( mn ) 
    }
@@ -287,9 +239,6 @@ setMethod(
    f= "nasen",
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mns
          nasen (
             mns = getMeth(object), 
@@ -304,9 +253,6 @@ setMethod(
    f= "nasen",
    signature(mns="RGChannelSet"),
    definition=function(mns, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mns  <- preprocessRaw(mns)    
       nasen ( mns ) 
    }
@@ -318,9 +264,6 @@ setMethod(
    f= "dasen",
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- mns
       dasen (
          mns = getMeth(object), 
@@ -336,9 +279,6 @@ setMethod(
    f= "dasen",
    signature(mns="RGChannelSet"),
    definition=function(mns, fudge=100){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mns  <- preprocessRaw(mns)    
       dasen ( mns ) 
    }
@@ -349,9 +289,6 @@ setMethod(
    f= "danen",
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100, ...){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
          object <- mns
          danen (
          mns = getMeth(object), 
@@ -366,9 +303,6 @@ setMethod(
    f= "danen",
    signature(mns="RGChannelSet"),
    definition=function(mns, fudge=100, ...){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       mns  <- preprocessRaw(mns)    
       danen ( mns, ... ) 
    }
@@ -380,9 +314,6 @@ setMethod(
    f= "tost",
    signature(mn="RGChannelSet"),
    definition=function(mn){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       pn <- detectionP(mn)
       object <- preprocessRaw(mn)
       mn <- getMeth(object) 
@@ -401,9 +332,6 @@ setMethod(
    f= "fuks",
    signature(data ="MethylSet"),
    definition=function(data){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- data
       fuks (
          data = getBeta(object), 
@@ -416,9 +344,6 @@ setMethod(
    f= "fuks",
    signature(data ="RGChannelSet"),
    definition=function(data){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- preprocessRaw(data)
       fuks (
          data = getBeta(object), 
@@ -434,9 +359,6 @@ setMethod(
    signature(mn ="RGChannelSet"),
    definition=function(mn){
 
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
 
    preprocessSWAN(mn)
 
@@ -447,9 +369,6 @@ setMethod(
    f= "genki",
    signature(bn="MethylSet"),
    definition=function(bn, se=TRUE){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- bn
       bn     <- getBeta(object)
       g      <- getsnp(rownames(bn))
@@ -462,9 +381,6 @@ setMethod(
    f= "genki",
    signature(bn= "RGChannelSet"),
    definition=function(bn, se=TRUE){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
 #     object <- bn
 #     bn     <- getBeta(object)
 #     g      <- getsnp(rownames(bn))
@@ -483,9 +399,6 @@ setMethod(
    f= "dmrse",
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bn     <- getBeta(betas)
       dmrse( bn, idmr ) 
      
@@ -496,9 +409,6 @@ setMethod(
    f= "dmrse",
    signature(betas= "RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bn     <- getBeta(betas)
       dmrse( bn, idmr ) 
      
@@ -512,9 +422,6 @@ setMethod(
    f= "dmrse_row",
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bn     <- getBeta(betas)
       dmrse_row( bn, idmr ) 
      
@@ -525,9 +432,6 @@ setMethod(
    f= "dmrse_row",
    signature(betas="RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bn     <- getBeta(betas)
       dmrse_row( bn, idmr ) 
      
@@ -540,9 +444,6 @@ setMethod(
    f= "dmrse_col",
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bn     <- getBeta(betas)
       dmrse_col( bn, idmr ) 
      
@@ -553,9 +454,6 @@ setMethod(
    f= "dmrse_col",
    signature(betas="RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bn     <- getBeta(betas)
       dmrse_col( bn, idmr ) 
      
@@ -567,9 +465,6 @@ setMethod(
    f= "seabi",
    signature(bn="MethylSet"),
    definition=function( bn, stop=1, sex, X ){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       betas    <- getBeta(bn)
       seabi( betas, stop, sex, X ) 
      
@@ -580,9 +475,6 @@ setMethod(
    f= "seabi",
    signature(bn="RGChannelSet"),
    definition=function( bn, stop=1, sex, X ){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       betas    <- getBeta(bn)
       seabi( betas, stop, sex, X ) 
      
@@ -600,9 +492,6 @@ setMethod(
       perCount =NULL, pnthresh=NULL, perc=NULL, 
       pthresh=NULL
    ){
-      if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object   <- mn
       object2  <- preprocessRaw(object)
 #      mn       <- getMeth(object2)
@@ -646,9 +535,6 @@ setMethod(
       pri=FALSE       
 		       
 		       ){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       object <- beta.v
       d <- as.numeric(factor(got(object)))
       ibetas <- getBeta(object) 
@@ -682,9 +568,6 @@ setMethod(
    f= "bscon",
    signature(x="RGChannelSet"),
    definition=function( x ){
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-      }
       bscon_minfi(x)
    }
 )

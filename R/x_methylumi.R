@@ -10,9 +10,6 @@ setMethod(
    f= "betaqn",
    signature(bn="MethyLumiSet"),
    definition=function(bn){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())
       object <- bn
       betas(object) <- betaqn (
@@ -37,9 +34,6 @@ setMethod(
    f= "naten",
    signature(mn="MethyLumiSet"),
    definition=function(mn, fudge=100){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
          object <- mn
          norm <- naten (
@@ -70,9 +64,6 @@ setMethod(
    f= "nanet",
    signature(mn="MethyLumiSet"),
    definition=function(mn, fudge=100){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
          object <- mn
          norm <- nanet (
@@ -113,9 +104,6 @@ setMethod(
    f= "nanes",
    signature(mns="MethyLumiSet"),
    definition=function(mns, fudge=100){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
@@ -147,9 +135,6 @@ setMethod(
    f= "danes",
    signature(mn="MethyLumiSet"),
    definition=function(mn, fudge=100, ...){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
          object <- mn
          mn <- methylated(object)
@@ -182,9 +167,6 @@ setMethod(
    f= "danet",
    signature(mn="MethyLumiSet"),
    definition=function(mn, fudge=100, ...){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
       object <- mn
       ds <- fot(mn)
@@ -217,9 +199,6 @@ setMethod(
    f= "daten1",
    signature(mn="MethyLumiSet"),
    definition=function(mn, fudge=100, ...){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
    history.submitted <- as.character(Sys.time())   
          object <- mn
          ds     <- fot(mn)
@@ -252,9 +231,6 @@ setMethod(
    f= "daten2",
    signature(mn="MethyLumiSet"),
    definition=function(mn, fudge=100, ...){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
       object <- mn
       ds <- fot(mn)
@@ -287,9 +263,6 @@ setMethod(
    f= "nasen",
    signature(mns="MethyLumiSet"),
    definition=function(mns, fudge=100){
-         if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-            stop('can\'t load methylumi package')
-         }
          history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
@@ -321,9 +294,6 @@ setMethod(
    f= "dasen",
    signature(mns="MethyLumiSet"),
    definition=function(mns, fudge=100, roco=NULL){
-         if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-            stop('can\'t load methylumi package')
-         }
          history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
@@ -355,9 +325,6 @@ setMethod(
    f= "danen",
    signature(mns="MethyLumiSet"),
    definition=function(mns, fudge=100, ...){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
    history.submitted <- as.character(Sys.time())   
          object <- mns
          ds <- fot(mns)
@@ -389,9 +356,6 @@ setMethod(
    f= "tost",
    signature(mn="MethyLumiSet"),
    definition=function(mn){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
          object <- mn
          mn <- methylated(object) 
@@ -423,9 +387,6 @@ setMethod(
    f= "fuks",
    signature(data="MethyLumiSet"),
    definition=function(data){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
    history.submitted <- as.character(Sys.time())   
          object <- data
          betas(object) <- fuks (
@@ -453,9 +414,6 @@ setMethod(
    f= "swan",
    signature(mn="MethyLumiSet"),
    definition=function(mn, da=NULL){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       history.submitted <- as.character(Sys.time())   
       object <- mn
       mn <- methylated(object)
@@ -500,9 +458,6 @@ setMethod(
    f= "genki",
    signature(bn="MethyLumiSet"),
    definition=function(bn, se=TRUE){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       object <- bn
       bn     <- betas(object)
       g      <- getsnp(rownames(bn))
@@ -516,9 +471,6 @@ setMethod(
    f= "dmrse",
    signature(betas="MethyLumiSet"),
    definition=function(betas, idmr=iDMR()){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       object    <- betas
       betas     <- betas(object)
       dmrse( betas, idmr ) 
@@ -531,9 +483,6 @@ setMethod(
    f= "dmrse_row",
    signature(betas="MethyLumiSet"),
    definition=function(betas, idmr=iDMR()){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       object    <- betas
       betas     <- betas(object)
       dmrse_row( betas, idmr ) 
@@ -546,9 +495,6 @@ setMethod(
    f= "dmrse_col",
    signature(betas="MethyLumiSet"),
    definition=function(betas, idmr=iDMR()){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       object    <- betas
       betas     <- betas(object)
       dmrse_col( betas, idmr ) 
@@ -561,9 +507,6 @@ setMethod(
    f= "seabi",
    signature(bn="MethyLumiSet"),
    definition=function( bn, stop=1, sex, X ){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       object    <- bn
       bn     <- betas(object)
       seabi( bn, stop, sex, X ) 
@@ -579,9 +522,6 @@ setMethod(
    definition=function( mn,
  perCount = NULL, pnthresh = NULL, perc = NULL, pthresh = NULL ){
       
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       object <- mn
       bn     <- betas(object)
 #      bc     <- betas(object)
@@ -617,9 +557,6 @@ setMethod(
       niter=5, tol=0.001, plots=FALSE, 
       pri=FALSE 
    ){
-         if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-            stop('can\'t load methylumi package')
-         }
          history.submitted <- as.character(Sys.time())
          object <- beta.v
          ds <- fot(object)
@@ -672,9 +609,6 @@ setMethod(
    f= "bscon",
    signature(x="MethyLumiSet"),
    definition=function( x ){
-      if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load methylumi package')
-      }
       bscon_methy(x)
    }
 )

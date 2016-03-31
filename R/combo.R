@@ -41,9 +41,6 @@
 #' 
 #' @export combo
 combo <- function (...){
-   if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-      stop('can\'t load methylumi package')
-   }
    history.submitted <- as.character(Sys.time())   
    vict  <- list(...)
    asda  <- lapply( vict, assayData )

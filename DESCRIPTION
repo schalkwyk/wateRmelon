@@ -32,5 +32,5 @@ Collate:as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R oxyscale.R
         robustQuantileNorm_Illumina450K.probeCategories.R
         robustQuantileNorm_Illumina450K.R seabird.R sextest.R summits.R
         swan2.R uniqueAnnotationCategory.R qual.R AllGenerics.R x_methylumi.R
-        y_minfi.R z_IMA.R
+        y_minfi.R 
 

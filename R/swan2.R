@@ -6,12 +6,9 @@ swan <- function (mn, un, qc, da=NULL, return.MethylSet=FALSE ) {
 #LS#  make a MethylSet containing the data and an RGChannelSet just for the annotation
 #    if (is.null(mSet)) 
 #        mSet <- preprocessRaw(rgSet)
-   if(!library(minfi, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load minfi package')
-    }
-   if(!library(IlluminaHumanMethylation450kmanifest, logical.return=TRUE, quietly=TRUE)){
-         stop('can\'t load IlluminaHumanMethylation450kmanifest package')
-    }
+#   if(!library(IlluminaHumanMethylation450kmanifest, logical.return=TRUE, quietly=TRUE)){
+#         stop('can\'t load IlluminaHumanMethylation450kmanifest package')
+#    }
 
     mSet   <-  new("MethylSet", Meth = mn, Unmeth = un)  
     rgSet  <- new('RGChannelSet', annotation="IlluminaHumanMethylation450k")

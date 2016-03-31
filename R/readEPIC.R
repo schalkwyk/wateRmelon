@@ -584,7 +584,7 @@ methylumIDATepic <- function  (barcodes=NULL,pdat=NULL,parallel=F,
   stopifnot(all(files.present)) # }}}
 
   mats <- IDATsToMatrices2(barcodes, parallel=parallel, idatPath=idatPath) 
-  dats <- DataToNChannelSet2(mats, IDAT=T, parallel=parallel)
+  dats <- methylumi::DataToNChannelSet2(mats, IDAT=T, parallel=parallel)
   mlumi <- NChannelSetToMethyLumiSet2(dats, parallel=parallel, oob=oob, n=n)
 
   if(is.null(pdat)) { # {{{
