@@ -577,7 +577,7 @@ methylumIDATepic <- function  (barcodes=NULL,pdat=NULL,parallel=F,
   } # }}}
   files.present = rep(TRUE, length(barcodes)) # {{{
   idats = sapply(barcodes, function(b) paste(b,c('_Red','_Grn'),'.idat',sep=''))
-  for(i in colnames(idats)) for(j in idats[,i]) if(!j %in% list.files(idatPath, rec=T))  {
+  for(i in colnames(idats)) for(j in idats[,i]) if(!j %in% list.files(idatPath, recursive=T))  {
     message(paste('Error: file', j, 'is missing for sample', i))
     files.present = FALSE
   }
@@ -625,7 +625,7 @@ readEPIC <- function(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F, ..
 
 bfp <- function(path){
  # Barcodes from path, incase one wishes to use MethylumIDATepic manually. 
-  bar <- dir(path, rec=T)[grepl("R0[12345678]C0[12]_(Red|Grn).idat", dir(path, rec=T))]
+  bar <- dir(path, recursive=T)[grepl("R0[12345678]C0[12]_(Red|Grn).idat", dir(path, recursive=T))]
   bar <- gsub("_(Red|Grn).idat","",bar,ignore.case=TRUE)
   bar <- bar[duplicated(bar)] 
   return(bar)
