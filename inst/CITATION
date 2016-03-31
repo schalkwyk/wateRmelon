@@ -1,7 +1,6 @@
 citEntry(entry="article",
 	author = "Pidsley, Ruth and Y Wong, Chloe C and Volta, Manuela and Lunnon, Katie and Mill, Jonathan and Schalkwyk, Leonard C",
 	doi = "10.1186/1471-2164-14-293",
-/bin/bash: indent: command not found
 	journal-Full = "BMC Genomics",
 	pages = "293",
 	pmc = "Pmc3769145",

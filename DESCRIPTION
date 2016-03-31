@@ -10,7 +10,7 @@ Description: 15 flavours of betas and three performance metrics, with methods fo
 License: GPL-3
 Depends: R (>= 2.10), limma, methods, matrixStats, methylumi, 
         lumi, ROC, IlluminaHumanMethylation450kanno.ilmn12.hg19, illuminaio
-Enhances: minfi, methylumi
+Enhances: minfi
 Suggests: RPMM 
 LazyLoad: yes
 biocViews: DNAMethylation, Microarray, TwoChannel, Preprocessing,
