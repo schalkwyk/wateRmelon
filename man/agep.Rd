@@ -15,7 +15,7 @@ agep(betas, coeff=NULL, verbose=FALSE)
 Matrix of betas 
 }
   \item{coeff}{
-If NULL, will default to Horvath's coefficients. Otherwise can be supplied with 
+If NULL, will default to Horvath's coefficients (supplied as a . Otherwise can be supplied with 
 vector of own coefficients with an intercept as first element.
 }
   \item{verbose}{
@@ -32,14 +32,12 @@ Horvath S: DNA methylation age of human tissues and cell types. Genome Biology 2
 \author{
 Original Functions: Steve Horvath
 
-wateRmelon Implementation: Leo Schalkwyk
+wateRmelon Implementation: Leo Schalkwyk, Louis El Khoury
 }
 \note{
 Is extremely sensitive to NAs and will return NA if any probes (listed in coefficients) have NA values.
 }
 \examples{
-library(wateRmelon)
 data(melon)
-beta <- betas(melon)
-agep(beta, coeff=NULL, verbose=FALSE)
+agep(betas(melon))
 }

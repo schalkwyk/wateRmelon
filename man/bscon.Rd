@@ -1,14 +1,14 @@
 \name{bscon}
 \alias{bscon}
 \alias{bscon,MethyLumiSet-method}
-\alias{bscon,RGSet-method}
+\alias{bscon,RGChannelSet-method}
 \title{ Calculate bisulphite conversion
 }
 \description{
 Uses control data from Infinium HumanMethylation450 BeadChip to calculate bisulfite conversion for each array
 }
 \usage{
-bscon(x, ...)  # S4 methods exist for RGset and MethyLumiset objects
+bscon(x, ...)  # S4 methods exist for RGChannelSet and MethyLumiset objects
 }
 \arguments{
   \item{x}{ IDAT or report files containing 450k data 

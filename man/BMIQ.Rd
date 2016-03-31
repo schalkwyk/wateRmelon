@@ -2,7 +2,7 @@
 \alias{BMIQ}
 \alias{CheckBMIQ}
 \alias{BMIQ,MethyLumiSet-method}
-\alias{BMIQ,MethySet-method}
+\alias{BMIQ,MethylSet-method}
 \alias{BMIQ-methods}
 \alias{BMIQ,ANY-method}
 \title{

@@ -11,12 +11,11 @@ db1 is used for quantile normalizing methylated together with unmethylated (dye 
 \usage{
 db1(mn, un)
 dfsfit(mn, onetwo, roco=unlist(data.frame(strsplit(colnames(mn), "_"),
-                 stringsAsFactors = FALSE)[2, ])i, ... )
+                 stringsAsFactors = FALSE)[2, ]), ... )
 
 dfs2(x, onetwo)
 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 
   \item{mn, x}{
@@ -43,13 +42,15 @@ data column names by default.  roco=NULL disables model fitting
 (and speeds up processing), otherwise roco can be supplied as a 
 character vector of strings like 'R01C01' (3rd and 6th characters used).
    }
+
+  \item{...}{ no additional arguments currently used 
+  }
 }
 \details{
 db1    - quantile normalizes methylated against unmethylated (basic function for
 dyebuy* dye bias methods).
 dfsfit - corrects the difference in backgrounds between type I and type II assays and fits a linear model to Sentrix rows and columns if these are available to improve precision where there is a background gradient.
 dfs2   - finds the difference between type I and type II assay backgrounds for one or more samples.
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
 db1    - a list of 2 matrices of intensities, methylated and unmethylated
