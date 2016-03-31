@@ -15,11 +15,11 @@ agep(betas, coeff=NULL, verbose=FALSE)
 Matrix of betas 
 }
   \item{coeff}{
-If NULL, will default to Horvath's coefficients (supplied as a . Otherwise can be supplied with 
+If NULL, will default to Horvath's coefficients. Otherwise can be supplied with 
 vector of own coefficients with an intercept as first element.
 }
   \item{verbose}{
-If TRUE, agep will additionally print out names of probes that are missing from within supplied beta matrix.
+If TRUE, agep will additionally print out names of probes that are missing from coefficient list within supplied beta matrix.
 }
 }
 %\details{}
