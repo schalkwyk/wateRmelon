@@ -19,6 +19,14 @@ version of \code{methylumIDAT} to parse all idats present in the specified direc
 If NULL, function will search supplied argument in "idatPath" for all idats within directory. 
 If given a vector of barcodes, readEPIC will search for those specific barcodes within the idatPath supplied. 
 }
+  \item{parallel}{If TRUE, an attempt will be made to process using multiple
+          cores on a multicore machine.
+}
+  \item{pdat}{A data.frame describing the samples.  A special column named
+          "barcodes" can be used to specify the barcodes to be read when using \code{methylumIDATepic}. See \code{methylumIDAT for usage}
+}
+  \item{n}{If TRUE, beadcounts from .idats will be included in final object}
+  \item{oob}{If TRUE, out-of-band (OOB) or opposite-channel signals will be kept}
   \item{...}{
 Additional arguments passed to \code{methylumIDAT}
 }
@@ -51,6 +59,6 @@ version \code{methylumIDAT}, which has similar usage.
 \examples{
 #Ficticious file pathway 
 # path <- "Data/Experiment/Idatlocation"
-# data <- readEPIC(path, pdat=NULL, oob=F, n=T)
+# data <- readEPIC(path, barcodes = NULL oob=F, n=T)
 }
 
