@@ -26,5 +26,4 @@ setGeneric ( name= "bscon"          )
 #setGeneric ( name= "as.methylumi"   )
 setGeneric ( name= "outlyx"         )
 setGeneric ( name= "pwod"           )
-setGeneric ( name= "agep"           )
 
