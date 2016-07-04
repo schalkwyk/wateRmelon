@@ -627,7 +627,30 @@ setMethod(
    f= "pwod",
    signature(object="MethyLumiSet"),
    definition=function(object, mul){
-   object <- betas(object)
-   pwod(object, mul)
+     history.submitted <- as.character(Sys.time())
+     object <- betas(object)
+     newbetas <- pwod(object, mul)
+     betas(object) <- newbetas
+     history.finished <- as.character(Sys.time())
+     history.command <- "Betas processed with pwod"
+     object@history <- rbind(
+       object@history,
+       data.frame(
+         submitted = history.submitted,
+         finished = history.finished,
+         command = history.command
+         )
+       )
+   object
    }
 )
+
+setMethod(
+  f= "agep",
+  signature(betas="MethyLumiSet"),
+  definition=function(betas, coeff = NULL, verbose = FALSE){
+    object <- betas(betas)
+    agep(betas=object, coeff, verbose)
+  }
+)
+   

@@ -307,21 +307,36 @@ designItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{{
   names(channels) <- channels
 
     getIntCh <- function(NChannelSet, ch, al) { # {{{
-      a = assayDataElement(NChannelSet,ch)[as.character(probes[[ch]][[al]]),,drop=FALSE]
-      rownames(a) = as.character(probes[[ch]][['Probe_ID']])
+      newprobes <- lapply(probes, function(y){
+        lapply(y, function(x){
+          x[probes[[ch]][[al]]%in%rownames(assayDataElement(NChannelSet,ch))]
+        })
+      })
+      a = assayDataElement(NChannelSet,ch)[as.character(newprobes[[ch]][[al]]),,drop=FALSE]
+      rownames(a) = as.character(newprobes[[ch]][['Probe_ID']])
       return(a)
     } # }}}
 
     getOOBCh <- function(NChannelSet, ch, al) { # {{{
       ch.oob <- ifelse(ch == 'R', 'G', 'R')
-      a = assayDataElement(NChannelSet,ch.oob)[as.character(probes[[ch]][[al]]),,drop=FALSE]
-      rownames(a) = as.character(probes[[ch]][['Probe_ID']])
+      newprobes <- lapply(probes, function(y){
+        lapply(y, function(x){
+          x[probes[[ch]][[al]]%in%rownames(assayDataElement(NChannelSet,ch))]
+        })
+      })
+      a = assayDataElement(NChannelSet,ch.oob)[as.character(newprobes[[ch]][[al]]),,drop=FALSE]
+      rownames(a) = as.character(newprobes[[ch]][['Probe_ID']])
       return(a)
     } # }}}
 
     getNbeadCh <- function(NChannelSet, ch, al) { # {{{ #tgs
-      n = assayDataElement(NChannelSet,'N')[as.character(probes[[ch]][[al]]),,drop=FALSE]
-      rownames(n) = as.character(probes[[ch]][['Probe_ID']])
+      newprobes <- lapply(probes, function(y){
+        lapply(y, function(x){
+          x[probes[[ch]][[al]]%in%rownames(assayDataElement(NChannelSet,ch))]
+        })
+      })
+      n = assayDataElement(NChannelSet,'N')[as.character(newprobes[[ch]][[al]]),,drop=FALSE]
+      rownames(n) = as.character(newprobes[[ch]][['Probe_ID']])
       return(n)
     } # }}}
   
@@ -352,9 +367,6 @@ designItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{{
     retval[['m.beadcount']] = rbind(signal$M$BC$R, signal$M$BC$G)
     retval[['u.beadcount']] = rbind(signal$U$BC$R, signal$U$BC$G)
     # NBeads takes the lowest bead count for each type I probe. 
-    rep <- retval[['m.beadcount']]
-    ulow <- retval[['u.beadcount']] < retval[['m.beadcount']]
-    rep[ulow] <- retval[['u.beadcount']][ulow]
     retval[['NBeads']] = pmin(retval[['m.beadcount']],retval[['u.beadcount']])
   }
   if(oob) {
@@ -373,15 +385,21 @@ designIItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{
 
     getIntCh <- function(NChannelSet, ch=NULL, al) { # {{{
       ch <- ifelse(al=='M', 'G', 'R')
-      a <- assayDataElement(NChannelSet,ch)[as.character(probes2[[al]]), , drop=F]
-      rownames(a) <- as.character(probes2[['Probe_ID']])
+      newprobes <- lapply(probes2, function(x){
+        x[probes2[[al]]%in%rownames(assayDataElement(NChannelSet,ch))]
+      })
+      a <- assayDataElement(NChannelSet,ch)[as.character(newprobes[[al]]), , drop=F]
+      rownames(a) <- as.character(newprobes[['Probe_ID']])
       return(a)
     } # }}}
 
     getNbeadCh <- function(NChannelSet, ch=NULL, al) { # {{{ tgs
       ch <- ifelse(al=='M', 'G', 'R')
-      n <- assayDataElement(NChannelSet,'N')[as.character(probes2[[al]]),]
-      rownames(n) <- as.character(probes2[['Probe_ID']])
+      newprobes <- lapply(probes2, function(x){
+        x[probes2[[al]]%in%rownames(assayDataElement(NChannelSet,ch))]
+      })
+      n <- assayDataElement(NChannelSet,'N')[as.character(newprobes[[al]]),,drop=F]
+      rownames(n) <- as.character(newprobes[['Probe_ID']])
       return(n)
     } # }}}
   
@@ -450,39 +468,39 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
 # The next part is somewhat messy, I will think of an better way to do this
   if(oob && n) {
     aDat <- with(results,
-              assayDataNew(methylated=as.matrix(methylated), 
-                           unmethylated=as.matrix(unmethylated),
+              assayDataNew(methylated=methylated, 
+                           unmethylated=unmethylated,
                            methylated.N=m.beadcount,
                            unmethylated.N=u.beadcount,
-                           methylated.OOB=as.matrix(methylated.OOB),
-                           unmethylated.OOB=as.matrix(unmethylated.OOB),
-                           betas=as.matrix(methylated/(methylated+unmethylated)),
-                           pvals=as.matrix(methylated/(methylated+unmethylated)),
+                           methylated.OOB=methylated.OOB,
+                           unmethylated.OOB=unmethylated.OOB,
+                           betas=methylated/(methylated+unmethylated),
+                           pvals=methylated/(methylated+unmethylated),
                            NBeads=NBeads))
   } else if(oob) {
     aDat <- with(results,
-              assayDataNew(methylated=as.matrix(methylated), 
-                           unmethylated=as.matrix(unmethylated),
-                           methylated.OOB=as.matrix(methylated.OOB),
-                           unmethylated.OOB=as.matrix(unmethylated.OOB),
-                           betas=as.matrix(methylated/(methylated+unmethylated)),
-                           pvals=as.matrix(methylated/(methylated+unmethylated))))
+              assayDataNew(methylated=methylated, 
+                           unmethylated=unmethylated,
+                           methylated.OOB=methylated.OOB,
+                           unmethylated.OOB=unmethylated.OOB,
+                           betas=methylated/(methylated+unmethylated),
+                           pvals=methylated/(methylated+unmethylated)))
   } else if(n) {
     aDat <- with(results,
-              assayDataNew(methylated=as.matrix(methylated), 
-                           unmethylated=as.matrix(unmethylated),
+              assayDataNew(methylated=methylated, 
+                           unmethylated=unmethylated,
                            methylated.N=m.beadcount,
                            unmethylated.N=u.beadcount,
-                           betas=as.matrix(methylated/(methylated+unmethylated)),
-                           pvals=as.matrix(methylated/(methylated+unmethylated)),
+                           betas=methylated/(methylated+unmethylated),
+                           pvals=methylated/(methylated+unmethylated),
                            NBeads=NBeads))
 
   } else {
     aDat <- with(results,
-              assayDataNew(methylated=as.matrix(methylated), 
-                           unmethylated=as.matrix(unmethylated),
-                           betas=as.matrix(methylated/(methylated+unmethylated)),
-                           pvals=as.matrix(methylated/(methylated+unmethylated))))
+              assayDataNew(methylated=methylated, 
+                           unmethylated=unmethylated,
+                           betas=methylated/(methylated+unmethylated),
+                           pvals=methylated/(methylated+unmethylated)))
   }
   rm(results)
   gc()

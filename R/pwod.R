@@ -24,7 +24,7 @@ pwod <- function(object, mul=4){
  tot <- sum(is.na(filter)) - sum(is.na(object))
  cat(tot,"probes detected.", "\n") 
  # Output
- return(filter)
+ filter
 }
 
 
