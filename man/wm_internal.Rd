@@ -34,7 +34,7 @@ Internal functions for readEPIC and other wateRmelon functions introduced in v 1
 few if any functions of interest to users
 }
 \usage{
-DataToNChannelSet2(mats, chans = c(Cy3 = "GRN", Cy5 = "RED"), parallel = F, protocol.data = F, IDAT = TRUE)
+DataToNChannelSet2(mats, chans = c(Cy3 = "GRN", Cy5 = "RED"), parallel = F, protocol.data = F, IDAT = TRUE, force=F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -52,6 +52,9 @@ DataToNChannelSet2(mats, chans = c(Cy3 = "GRN", Cy5 = "RED"), parallel = F, prot
 }
   \item{IDAT}{
 %%     ~~Describe \code{IDAT} here~~
+}
+  \item{force}{
+%%     ~~Describe \code{force} here~~
 }
 }
 %\details{}

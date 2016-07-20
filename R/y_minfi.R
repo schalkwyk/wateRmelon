@@ -508,18 +508,19 @@ setMethod(
       )
 #     object3 <- object[l$probes,] 
       object3 <- object2[,l$samples] 
-
+      object3 <- object3[l$probes,]
 #      output <-list("RGobject" = object3,
 #                    "Filter" = l$probes)
 
-    fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"), 
-                        Unmeth = assayDataElement(object3,"Unmeth"),
-                        Filter=matrix(rep(l$probes, length(l$sample)), nrow=length(l$probes), ncol=length(l$sample))
-                       )
-    newObject <- new("MethylSet", assayData=fil)
-    newObject@annotation <- annotation(object3)
-    newObject@phenoData <- phenoData(object3)
-    return(newObject)
+ #   fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"), 
+ #                       Unmeth = assayDataElement(object3,"Unmeth"),
+ #                       Filter=matrix(rep(l$probes, length(l$sample)), nrow=length(l$probes), ncol=length(l$sample))
+ #                      )
+ #   newObject <- new("MethylSet", assayData=fil)
+ #   newObject@annotation <- annotation(object3)
+ #   newObject@phenoData <- phenoData(object3)
+ #   return(newObject)
+     return(object3)
     }
 )
 
@@ -607,6 +608,15 @@ setMethod(
    object <- getBeta(object)
    pwod(object, mul)
    }
+)
+
+setMethod(
+  f= "agep",
+  signature(betas="MethylSet"),
+  definition=function(betas, coeff, verbose){
+    object <- getBeta(betas)
+    agep(betas=object, coeff, verbose)
+  }
 )
 
 

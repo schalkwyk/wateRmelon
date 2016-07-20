@@ -107,8 +107,7 @@ da : feature data
 
 or
 
-a MethylSet object containing a Logical Matrix named "Filter" within the assayData,
-which then can be used for down-stream subsetting.
+a filtered MethylSet object.
 }
 \references{
 [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: 

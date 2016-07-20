@@ -41,7 +41,7 @@ Additional arguments passed to \code{pcout}
 }
 %\details{}
 \value{
-Returns a dataframe of TRUE/FALSE per sample. Where TRUE is outlying.
+Returns a dataframe of TRUE/FALSE per sample where TRUE is outlying.
 }
 %\references{}
 \author{

@@ -9,7 +9,7 @@ readEPIC
 Reads Epic arrays from raw idats into \code{MethyLumiSet} objects from directory.
  }
 \usage{
-readEPIC(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F, ...) 
+readEPIC(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F,force=F, ...) 
 }
 \arguments{
   \item{idatPath}{
@@ -29,6 +29,7 @@ If given a vector of barcodes, readEPIC will search for those specific barcodes 
 }
   \item{n}{If TRUE, beadcounts from .idats will be included in final object}
   \item{oob}{If TRUE, out-of-band (OOB) or opposite-channel signals will be kept}
+  \item{force}{If TRUE, will combine EPIC IDATs read with differing dmaps}
   \item{...}{
 Additional arguments passed to \code{methylumIDAT}
 }

@@ -1,10 +1,10 @@
 Package: wateRmelon
 Type: Package
 Title: Illumina 450 methylation array normalization and metrics
-Version: 1.16.0
+Version: 1.17.0
 Tue Mar 22 11:36:58 GMT 2016
 Date: 2016-03-22
-Author: Leonard C Schalkwyk, Ruth Pidsley, Chloe CY Wong, with functions contributed by Nizar Touleimat, Matthieu Defrance, Andrew Teschendorff, Jovana Maksimovic, Tyler Gorrie-Stone, Louis El Khouri
+Author: Leonard C Schalkwyk, Ruth Pidsley, Chloe CY Wong, with functions contributed by Nizar Touleimat, Matthieu Defrance, Andrew Teschendorff, Jovana Maksimovic, Tyler Gorrie-Stone, Louis El Khoury
 Maintainer: Leo <lschal@essex.ac.uk>
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi and minfi packages.
 License: GPL-3

@@ -22,8 +22,8 @@ For the type I chemistry the beta values are calculated by dividing the first th
 
 The beta values from type II chemistry are calculated by dividing the methylated (red) channels by the sum of methylated (red) and unmethylated (green) channels.
 
-
 }
+
 \value{A vector of percentage values referring to the bisulfite conversion levels of each array.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
@@ -34,10 +34,11 @@ The beta values from type II chemistry are calculated by dividing the methylated
 %\references{}
 \author{Louis El Khoury (louis.el-khoury@essex.ac.uk), Eilis Hannon, Leonard Schalkwyk (lschal@essex.ac.uk)
 }
+
 \note{
 Updates to HumanMethylationEPIC manifest has seen the removal of control probes C6 and U6. 
-This does not appear to grossly affect how function performs however we will consider additional
-approaches to account for this.
+This does not appear to grossly affect how function performs however we are 
+considering alternative approaches to account for this.
 }
 
 
