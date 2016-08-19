@@ -1,5 +1,5 @@
 nasen <-
-function ( mns, uns, onetwo, ret2=FALSE, fudge=100) {
+function ( mns, uns, onetwo, ret2=FALSE, fudge=100,...) {
 
    mns[onetwo=='I' ,] <- normalizeQuantiles(mns[onetwo=='I', ])
    mns[onetwo=='II',] <- normalizeQuantiles(mns[onetwo=='II',])

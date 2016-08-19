@@ -222,7 +222,7 @@ DataToNChannelSet2 <- function(mats, chans=c(Cy3='GRN',Cy5='RED'), parallel=F, p
   hm27 = sum(grepl('BeadChip 12x1', qw)) 
   message(paste(hm27, 'HumanMethylation27 samples found'))
   if(hm27>0 && hm450>0|hm27>0 && epic>0|hm450>0 && epic >0) {
-    stop('Cannot process both platforms simultaneously; please run separately.')}
+    stop('Cannot process multiple platforms simultaneously; please run separately.')}
 
   stopifnot(is(mats, 'list'))
   assayNames = paste0(names(chans), c('.Mean'))
