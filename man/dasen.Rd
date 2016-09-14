@@ -28,11 +28,11 @@ RGSet and exprmethy450 objects.
 
 \usage{
 dasen ( mns, uns, onetwo, fudge = 100, ret2=FALSE, ... )
-nasen ( mns, uns, onetwo, ret2=FALSE, fudge = 100 )
+nasen ( mns, uns, onetwo, ret2=FALSE, fudge = 100, ... )
 betaqn( bn ) 
-naten ( mn,  un, fudge = 100, ret2=FALSE )
-naten ( mn,  un, fudge = 100, ret2=FALSE )
-nanet ( mn,  un, fudge = 100, ret2=FALSE )
+naten ( mn,  un, fudge = 100, ret2=FALSE, ... )
+naten ( mn,  un, fudge = 100, ret2=FALSE, ... )
+nanet ( mn,  un, fudge = 100, ret2=FALSE, ... )
 nanes ( mns, uns, onetwo, fudge = 100, ret2=FALSE, ... )
 danes ( mn,  un,  onetwo, fudge = 100, ret2=FALSE, ... ) 
 danet ( mn,  un,  onetwo, fudge = 100, ret2=FALSE, ... )
