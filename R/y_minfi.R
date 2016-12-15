@@ -38,11 +38,17 @@ setMethod(
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
       object <- mn
-      naten (
+      out <- naten (
          mn = getMeth(object), 
          un = getUnmeth(object),
-         fudge
+         fudge, ret2=T
       ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'naten (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -61,11 +67,17 @@ setMethod(
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
       object <- mn
-      nanet (
+      out <- nanet (
          mn = getMeth(object), 
          un = getUnmeth(object),
          fudge
       ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'nanet (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -99,9 +111,19 @@ setMethod(
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted)
 #' @export got
+
+# 'Borrow Internal, unexported, function from minfi'
+.getManifestString <- function(annotation) {
+    if(length(annotation) == 1)
+        return(paste0(annotation, "manifest"))
+    if("array" %in% names(annotation))
+        return(paste0(annotation["array"], "manifest"))
+    stop("unable to get the manifest string for this object")
+}
+
 got <- function(obj){
    I  <- getProbeInfo(obj)$Name
-   rn <- rownames( obj@featureData@data )
+   rn <- rownames(obj) # FeatureData is removed from MethylSet
    ot <- rn %in% I 
    ot[ot] <- 'I'
    ot[ot=='FALSE'] <- 'II'
@@ -114,12 +136,19 @@ setMethod(
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100){
          object <- mns
-         nanes (
+         out <- nanes (
             mns    = getMeth(object), 
             uns    = getUnmeth(object),
             onetwo = got(object),
-            fudge
-       ) 
+            fudge,
+            ret2   = TRUE
+       )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mns),
+                     annotation = annotation(mns), metadata = metadata(mns))
+   out2@preprocessMethod <- c(rg.norm = 'nanes (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mns@annotation))))
+   return(out2)
    }
 )
 
@@ -139,12 +168,18 @@ setMethod(
    definition=function(mn, fudge=100){
          object <- mn
          mn <- getMeth(object)
-         danes (
+         out <- danes (
             mn     , 
             un     = getUnmeth(object),
             onetwo = got(object),
-            fudge
+            fudge, ret2=T
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'danes (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -164,12 +199,18 @@ setMethod(
    definition=function(mn, fudge=100){
          object <- mn
          mn <- getMeth(object) 
-         danet (
+         out <- danet (
             mn , 
             un = getUnmeth(object),
             onetwo = got(object),
-            fudge
+            fudge, ret2=T
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'danet (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -190,12 +231,18 @@ setMethod(
    definition=function(mn, fudge=100, ...){
          object <- mn
          mn <- getMeth(object) 
-         daten1 (
+         out <- daten1 (
             mn , 
             un = getUnmeth(object),
             onetwo = got(object),
-            fudge, ...
+            fudge, ret2=T, ...
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'daten1 (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -215,12 +262,18 @@ setMethod(
    definition=function(mn, fudge=100, ...){
          object <- mn
          mn <- getMeth(object) 
-         daten2 (
+         out <- daten2 (
             mn , 
             un = getUnmeth(object),
             onetwo = got(object),
-            fudge, ...
+            fudge, ret2=T, ...
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'daten2 (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -240,12 +293,18 @@ setMethod(
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100){
          object <- mns
-         nasen (
+         out <- nasen (
             mns = getMeth(object), 
             uns = getUnmeth(object),
             onetwo = got(object),
-            fudge
+            fudge, ret2=T
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mns),
+                     annotation = annotation(mns), metadata = metadata(mns))
+   out2@preprocessMethod <- c(rg.norm = 'nasen (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mns@annotation))))
+   return(out2)
    }
 )
 
@@ -265,12 +324,18 @@ setMethod(
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100){
       object <- mns
-      dasen (
+      out <- dasen (
          mns = getMeth(object), 
          uns = getUnmeth(object),
          onetwo=got(object),
-         fudge
+         fudge, ret2=T
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mns),
+                     annotation = annotation(mns), metadata = metadata(mns))
+   out2@preprocessMethod <- c(rg.norm = 'dasen (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mns@annotation))))
+   return(out2)
    }
 )
 
@@ -290,12 +355,18 @@ setMethod(
    signature(mns="MethylSet"),
    definition=function(mns, fudge=100, ...){
          object <- mns
-         danen (
+         out <- danen (
          mns = getMeth(object), 
          uns = getUnmeth(object),
          onetwo=got(object),
-         fudge, ...
+         fudge, ret2=T,...
        ) 
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
+                     annotation = annotation(mn), metadata = metadata(mn))
+   out2@preprocessMethod <- c(rg.norm = 'danen (wateRmelon)',
+                              minfi = as.character(packageVersion('minfi')),
+                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+   return(out2)
    }
 )
 
@@ -509,8 +580,6 @@ setMethod(
 #     object3 <- object[l$probes,] 
       object3 <- object2[,l$samples] 
       object3 <- object3[l$probes,]
-#      output <-list("RGobject" = object3,
-#                    "Filter" = l$probes)
 
  #   fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"), 
  #                       Unmeth = assayDataElement(object3,"Unmeth"),

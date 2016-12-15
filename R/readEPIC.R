@@ -8,25 +8,6 @@
  # place due to the implausibility of determining sample based on name
  # As differing between the three chips requires reading in .idats.
  #
- ### Changes:
- #
- # readEPIC          : Passdown function which takes the input of a FILE PATH
- #                     where the idats are stored in. This then deconstructs
- #                     files names to produce a vector of barcodes. This is
- #                     passed automatically to methylumIDAT.        
- #                          
- # designI|IItoMandU : Slightly modified subsetting of NChannelSet to the 
- #                     probe addresses as they now all have a "00" at the 
- #                     beginning of each of them. This is avoided by converting
- #                     the address into integer and then matching from there.
- #                     Original methods still exist.  
- # 
- # Beadcount Switch  : Re-implemented Beadcount switch that existed in previous
- #                     version of methylumIDAT (n). Adds the arrays methylated.N,
- #                     unmethylated.N, and NBeads. 
- #
-###
- #
 ### 
  # Usage:
  # readEPIC    : Instead of inputting the barcodes, it is possible to input filepath
@@ -34,10 +15,8 @@
  #               This constructs a vector of the barcodes which is
  #               passed to methylumIDAT.
  #
- # methylumIDATepic: Usage remains the same as before. Although might be slightly changed
+ # methylumIDATepic: Usage remains the same as methylumIDAT. Although might be slightly changed
  #               due to the introduction of recursive=T argument in the list.files()
-###
-
 ###
  # Leaving 27k and 450k array functionality in function for the purpose of convenience
  # however may be removed in the future when such arrays are not used anymore.
