@@ -2,16 +2,16 @@
  # Author: Tyler Gorrie-Stone
  # Last Modified: 19-01-2016
  # Creation Date: 20-11-2015
- # Based heavily on 'methylumIDAT' and modified to read Epic arrays. 
+ # Based heavily on 'methylumIDAT' and modified to read Epic arrays.
  # Functionality for 450k and 27k arrays remains (relatively) unchanged.
  # Although certain stops have been removed/moved to a different
  # place due to the implausibility of determining sample based on name
  # As differing between the three chips requires reading in .idats.
  #
-### 
+###
  # Usage:
  # readEPIC    : Instead of inputting the barcodes, it is possible to input filepath
- #               of a folder (containing idats or folders containing idats). 
+ #               of a folder (containing idats or folders containing idats).
  #               This constructs a vector of the barcodes which is
  #               passed to methylumIDAT.
  #
@@ -28,7 +28,7 @@
 ## for epic, probes are either "design I" or "design II" as noted in manifest
 ## IDATs from GoldenGate methylation arrays are not supported at this time.
 #cy3 <- function(object) { # {{{
-#  if(is.element('Color_Channel', fvarLabels(object)) && 
+#  if(is.element('Color_Channel', fvarLabels(object)) &&
 #     !is.element('COLOR_CHANNEL', fvarLabels(object))) {
 #    fvarLabels(object)<-gsub('Color_Channel','COLOR_CHANNEL',fvarLabels(object))
 #  }
@@ -41,7 +41,7 @@
 
 
 #cy5 <- function(object) { # {{{
-#  if(is.element('Color_Channel', fvarLabels(object)) && 
+#  if(is.element('Color_Channel', fvarLabels(object)) &&
 #     !is.element('COLOR_CHANNEL', fvarLabels(object))) {
 #    fvarLabels(object)<-gsub('Color_Channel','COLOR_CHANNEL',fvarLabels(object))
 #  }
@@ -81,7 +81,7 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
                               r <- split(hm27.ordering[,what],
                                          hm27.ordering$col)
                               if (is.null(color)) return(r)
-                              else return(r[[substr(color,1,1)]]) 
+                              else return(r[[substr(color,1,1)]])
                             },
                       '450k'=function(design=NULL, color=NULL, ...) {
                                data(hm450.ordering)
@@ -93,27 +93,27 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
                                if (is.null(design)) {
                                  return(r)
                                } else if (design == 'I' && !is.null(color)) {
-                                 return(r[[design]][[substr(color,1,1)]]) 
-                               } else { 
+                                 return(r[[design]][[substr(color,1,1)]])
+                               } else {
                                  return(r[[design]])
                                }
                              },
                       'Epic'=function(design=NULL, color=NULL, ...) {
                                data(epic.ordering)
                                what <- c('Probe_ID','M','U')
-                               r <- split(epic.ordering[,c(what,'col')], 
+                               r <- split(epic.ordering[,c(what,'col')],
                                           epic.ordering$DESIGN)
-                               r$I <- split(r$I[,what], r$I$col) 
+                               r$I <- split(r$I[,what], r$I$col)
                                r$II <- r$II[,what]
                                if (is.null(design)) {
                                 r<- return(r)
                                } else if (design == 'I' && !is.null(color)) {
                                  r<- return(r[[design]][[substr(color,1,1)]])
-                               } else { 
+                               } else {
                                  r<- return(r[[design]])
                                }
                              }
-                     )  
+                     )
 
   getControls <- switch(chipType,
                         '27k'=function() {
@@ -147,7 +147,7 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
   return(mapper)
 } # }}}
 
-## process a single IDAT (just the mean intensities) 
+## process a single IDAT (just the mean intensities)
 IDATtoMatrix2 <- function(x,fileExts=list(Cy3="Grn",Cy5="Red"),idatPath='.'){#{{{
   chs = names(fileExts)
   names(chs) = fileExts
@@ -156,13 +156,13 @@ IDATtoMatrix2 <- function(x,fileExts=list(Cy3="Grn",Cy5="Red"),idatPath='.'){#{{
     dat = readIDAT(file.path(idatPath, paste(x, ext, sep='_')))
     Quants = data.matrix(dat$Quants)
     colnames(Quants) = paste(chs[ch], colnames(Quants), sep='.')
-    return(list(Quants=Quants, 
+    return(list(Quants=Quants,
                 RunInfo=dat$RunInfo,
                 ChipType=dat$ChipType))
   })
   probe.data = do.call(cbind, lapply(processed, function(x) x[['Quants']]))
   probe.data <- probe.data[ , c('Cy3.Mean','Cy5.Mean','Cy3.NBeads','Cy5.NBeads')]
-  # Nbeads for beadcount switch TGS, at this point add something that takes the 
+  # Nbeads for beadcount switch TGS, at this point add something that takes the
   # beadcount with the lower number of beads.
   attr(probe.data, 'RunInfo') = processed[[1]][['RunInfo']]
   attr(probe.data, 'ChipType') = processed[[1]][['ChipType']]
@@ -198,25 +198,25 @@ DataToNChannelSet2 <- function(mats, chans=c(Cy3='GRN',Cy5='RED'), parallel=F, p
   message(paste(epic, 'HumanMethylationEpic samples found'))
   hm450 = sum(grepl('BeadChip 12x8', qw))
   message(paste(hm450, 'HumanMethylation450 samples found'))
-  hm27 = sum(grepl('BeadChip 12x1', qw)) 
+  hm27 = sum(grepl('BeadChip 12x1', qw))
   message(paste(hm27, 'HumanMethylation27 samples found'))
   if(hm27>0 && hm450>0|hm27>0 && epic>0|hm450>0 && epic >0) {
     stop('Cannot process multiple platforms simultaneously; please run separately.')}
 
   stopifnot(is(mats, 'list'))
   assayNames = paste0(names(chans), c('.Mean'))
-  assayNames = c(assayNames, paste0(names(chans), c('.NBeads'))) 
+  assayNames = c(assayNames, paste0(names(chans), c('.NBeads')))
   names(assayNames) = assayNames
   assaylengths <- sapply(mats, nrow)
   names(assaylengths) <- names(mats)
   # Minfi Method for handling early version epic IDATS. from read.meth.R by Kaspar Hansen.
   if(length(unique(assaylengths))>1){
     commonAddresses <- as.character(Reduce("intersect",
-                                           lapply(mats, function(x) rownames(x)))) 
+                                           lapply(mats, function(x) rownames(x))))
     if(!force){
-      if(!all(assaylengths == length(commonAddresses))){ 
+      if(!all(assaylengths == length(commonAddresses))){
         print(as.matrix(assaylengths))
-        stop("Cannot combine IDATs of differing lengths")
+        stop("Cannot combine IDATs of differing lengths, try force = T")
       }
     }
     fnames <- commonAddresses
@@ -224,7 +224,7 @@ DataToNChannelSet2 <- function(mats, chans=c(Cy3='GRN',Cy5='RED'), parallel=F, p
     fnames <- rownames(mats[[1]])
   }
 
-  extract <- function(assay) extractAssayDataFromList2(assay, mats, fnames)  
+  extract <- function(assay) extractAssayDataFromList2(assay, mats, fnames)
   assays = lapply( assayNames, extract)
   nb <- pmin(assays[['Cy3.NBeads']], assays[['Cy5.NBeads']])
   obj = new("NChannelSet",
@@ -287,10 +287,10 @@ getControlProbes2 <- function(NChannelSet) { # {{{
   beadcount <- assayDataElement(NChannelSet,'N')[ctls,,drop=FALSE] ## Testing TGS
   rownames(beadcount) <- rownames(methylated) <- rownames(unmethylated) <- ctlnames
 
-  aDat <- assayDataNew(methylated=methylated, 
+  aDat <- assayDataNew(methylated=methylated,
                        unmethylated=unmethylated,
                        beadcount=beadcount) #TGS
-  new("MethyLumiQC", assayData=aDat, featureData=fDat, 
+  new("MethyLumiQC", assayData=aDat, featureData=fDat,
                      annotation=annotation(NChannelSet))
 } # }}}
 
@@ -334,7 +334,7 @@ designItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{{
       rownames(n) = as.character(newprobes[[ch]][['Probe_ID']])
       return(n)
     } # }}}
-  
+
   getAllele <- function(NChannelSet, al, parallel=F, n=n, n.sd=T, oob=T) { # {{{
     fluor = lapply(channels, function(ch) getIntCh(NChannelSet, ch, al))
     fluor.oob = lapply(channels, function(ch) getOOBCh(NChannelSet, ch, al))
@@ -361,7 +361,7 @@ designItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{{
   if(n) { #tgs
     retval[['m.beadcount']] = rbind(signal$M$BC$R, signal$M$BC$G)
     retval[['u.beadcount']] = rbind(signal$U$BC$R, signal$U$BC$G)
-    # NBeads takes the lowest bead count for each type I probe. 
+    # NBeads takes the lowest bead count for each type I probe.
     retval[['NBeads']] = pmin(retval[['m.beadcount']],retval[['u.beadcount']])
   }
   if(oob) {
@@ -397,7 +397,7 @@ designIItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{
       rownames(n) <- as.character(newprobes[['Probe_ID']])
       return(n)
     } # }}}
-  
+
   getAllele <- function(NChannelSet, al, n=F, n.sd=F, oob=F) { # {{{
     ch <- ifelse(al=='M', 'G', 'R')
     res <- list()
@@ -405,15 +405,15 @@ designIItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{
     if(n) res[['BC']] <- getNbeadCh(NChannelSet,ch,al)
     if(oob) {
       res[['OOB']] <- res[['I']]
-      is.na(res[['OOB']]) <- TRUE 
-      }  
+      is.na(res[['OOB']]) <- TRUE
+      }
     return(res)
   } # }}}
-  
+
   ## M == Grn/Cy3 and U == Red/Cy5, same address
   alleles = c(M='M',U='U')
   signal = lapply(alleles, function(a) getAllele(NChannelSet,a,n,n.sd,oob))
-  
+
   retval = list( methylated=signal$M$I, unmethylated=signal$U$I )
   if(n) { #tgs
     retval[['m.beadcount']] = signal$M$BC
@@ -429,7 +429,7 @@ designIItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{
 } # }}}
 
 ## 12/12/14: this code is hideous, what sort of clown wrote it?  Oh yeah, I did
-# TGS: possible to do this better? 
+# TGS: possible to do this better?
 mergeProbeDesigns2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T){ #{{{
   if(annotation(NChannelSet) == 'IlluminaHumanMethylationEpic') {
     design1=designItoMandU2(NChannelSet,parallel=parallel,n=n,n.sd=n.sd,oob=oob)
@@ -463,7 +463,7 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
 # The next part is somewhat messy, I will think of an better way to do this
   if(oob && n) {
     aDat <- with(results,
-              assayDataNew(methylated=methylated, 
+              assayDataNew(methylated=methylated,
                            unmethylated=unmethylated,
                            methylated.N=m.beadcount,
                            unmethylated.N=u.beadcount,
@@ -474,7 +474,7 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
                            NBeads=NBeads))
   } else if(oob) {
     aDat <- with(results,
-              assayDataNew(methylated=methylated, 
+              assayDataNew(methylated=methylated,
                            unmethylated=unmethylated,
                            methylated.OOB=methylated.OOB,
                            unmethylated.OOB=unmethylated.OOB,
@@ -482,7 +482,7 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
                            pvals=methylated/(methylated+unmethylated)))
   } else if(n) {
     aDat <- with(results,
-              assayDataNew(methylated=methylated, 
+              assayDataNew(methylated=methylated,
                            unmethylated=unmethylated,
                            methylated.N=m.beadcount,
                            unmethylated.N=u.beadcount,
@@ -492,7 +492,7 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
 
   } else {
     aDat <- with(results,
-              assayDataNew(methylated=methylated, 
+              assayDataNew(methylated=methylated,
                            unmethylated=unmethylated,
                            betas=methylated/(methylated+unmethylated),
                            pvals=methylated/(methylated+unmethylated)))
@@ -508,7 +508,7 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
   x.lumi@QC@annotation <- annotation(NChannelSet)
   pdat <- data.frame(barcode=sampleNames(NChannelSet))
   rownames(pdat) <- sampleNames(NChannelSet)
-  pData(x.lumi) <- pdat 
+  pData(x.lumi) <- pdat
   varLabels(x.lumi) <- c('barcode')
   varMetadata(x.lumi)[,1] <- c('Illumina BeadChip barcode')
   mapper <- getMethylationBeadMappers2(annotation(NChannelSet))
@@ -520,9 +520,9 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
   ## Regression tests: fail noisily if there is an ordering issue
   stopifnot(identical(rownames(methylated(x.lumi)),
                       rownames(unmethylated(x.lumi))))
-  stopifnot(identical(rownames(betas(x.lumi)), 
+  stopifnot(identical(rownames(betas(x.lumi)),
                       rownames(unmethylated(x.lumi))))
-  stopifnot(identical(rownames(fdat), 
+  stopifnot(identical(rownames(fdat),
                       rownames(betas(x.lumi))))
 # The only way to feasibly clean up this section would be to outsource
 # the possible metadatas to another script.
@@ -550,16 +550,16 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel=F, pval=0.05, n=F, 
   pval.detect(x.lumi) <- pval # default value
   history.finished <- as.character(Sys.time())
   history.command <- deparse(match.call())
-  x.lumi@history <- rbind(x.lumi@history, 
-                          data.frame(submitted = history.submitted, 
-                                     finished = history.finished, 
+  x.lumi@history <- rbind(x.lumi@history,
+                          data.frame(submitted = history.submitted,
+                                     finished = history.finished,
                                      command = history.command))
 #  if(normalize) x.lumi = normalizeMethyLumiSet(x.lumi)
   return(x.lumi)
 } # }}}
 
 methylumIDATepic <- function  (barcodes=NULL,pdat=NULL,parallel=F,
-                               n=F,n.sd=F,oob=T,idatPath=getwd(), force=F, ...) { # {{{ 
+                               n=F,n.sd=F,oob=T,idatPath=getwd(), force=F, ...) { # {{{
   if(is(barcodes, 'data.frame')) pdat = barcodes
   if((is.null(barcodes))&(is.null(pdat) | (!('barcode' %in% names(pdat))))){#{{{
     stop('"barcodes" or "pdat" (with pdat$barcode defined) must be supplied.')
@@ -567,41 +567,41 @@ methylumIDATepic <- function  (barcodes=NULL,pdat=NULL,parallel=F,
   if(!is.null(pdat) && 'barcode' %in% tolower(names(pdat))) { # {{{
     names(pdat)[ which(tolower(names(pdat))=='barcode') ] = 'barcode'
     barcodes = pdat$barcode
-    if(any(grepl('idat',ignore.case=T,barcodes))) { 
-      message('Warning: filtering out raw filenames') 
-      barcodes = gsub('_(Red|Grn)','', barcodes, ignore.case=TRUE)
-      barcodes = gsub('.idat', '', barcodes, ignore.case=TRUE)
+    if(any(grepl('idat', ignore.case = TRUE, barcodes))) {
+      message('Warning: filtering out raw filenames')
+      barcodes = gsub('_(Red|Grn)', '', barcodes, ignore.case = TRUE)
+      barcodes = gsub('.idat', '', barcodes, ignore.case = TRUE)
     }
-    if(any(duplicated(barcodes))) {  
-      message('Warning: filtering out duplicates') 
-      pdat = pdat[ -which(duplicated(barcodes)), ] 
+    if(any(duplicated(barcodes))) {
+      message('Warning: filtering out duplicates')
+      pdat = pdat[ -which(duplicated(barcodes)), ]
       barcodes = pdat$barcode
     } # }}}
   } else { # {{{
-    if(any(grepl('idat',ignore.case=T,barcodes))) { 
-      message('Warning: filtering out raw filenames') 
-      barcodes = unique(gsub('_(Red|Grn)','', barcodes, ignore.case=TRUE))
-      barcodes = unique(gsub('.idat','', barcodes, ignore.case=TRUE))
+    if(any(grepl('idat', ignore.case = TRUE, barcodes))) {
+      message('Warning: filtering out raw filenames')
+      barcodes = unique(gsub('_(Red|Grn)', '', barcodes, ignore.case = TRUE))
+      barcodes = unique(gsub('.idat', '', barcodes, ignore.case = TRUE))
     }
-    if(any(duplicated(barcodes))) { 
+    if(any(duplicated(barcodes))) {
       message('Warning: filtering out duplicate barcodes')
-      barcodes = barcodes[ which(!duplicated(barcodes)) ] 
-    } 
+      barcodes = barcodes[ which(!duplicated(barcodes)) ]
+    }
   } # }}}
   files.present = rep(TRUE, length(barcodes)) # {{{
-  idats = sapply(barcodes, function(b) paste(b,c('_Red','_Grn'),'.idat',sep=''))
-  for(i in colnames(idats)) for(j in idats[,i]) if(!j %in% list.files(idatPath, recursive=T))  {
+  idats = sapply(barcodes, function(b) paste(b, c('_Red', '_Grn'), '.idat', sep = ''))
+  for(i in colnames(idats)) for(j in idats[, i]) if(!j %in% list.files(idatPath, recursive = TRUE))  {
     message(paste('Error: file', j, 'is missing for sample', i))
     files.present = FALSE
   }
   stopifnot(all(files.present)) # }}}
 
-  mats <- IDATsToMatrices2(barcodes, parallel=parallel, idatPath=idatPath) 
-  dats <- DataToNChannelSet2(mats, IDAT=T, parallel=parallel,force=force)
-  mlumi <- NChannelSetToMethyLumiSet2(dats, parallel=parallel, oob=oob, n=n)
+  mats <- IDATsToMatrices2(barcodes, parallel = parallel, idatPath = idatPath)
+  dats <- DataToNChannelSet2(mats, IDAT = T, parallel = parallel, force = force)
+  mlumi <- NChannelSetToMethyLumiSet2(dats, parallel = parallel, oob = oob, n = n)
 
   if(is.null(pdat)) { # {{{
-    pdat = data.frame(barcode=as.character(barcodes))
+    pdat = data.frame(barcode = as.character(barcodes))
     rownames(pdat) = pdat$barcode
     pData(mlumi) = pdat # }}}
   } else { # {{{
@@ -612,34 +612,35 @@ methylumIDATepic <- function  (barcodes=NULL,pdat=NULL,parallel=F,
   } # }}}
 
   # finally
-  return(mlumi[ sort(featureNames(mlumi)), ]) 
+  return(mlumi[ sort(featureNames(mlumi)), ])
 } # }}}
 
-#lumIDAT <- function(barcodes, pdat=NULL, parallel=F, n=T, idatPath=getwd(), ...){ # {{{ 
+#lumIDAT <- function(barcodes, pdat=NULL, parallel=F, n=T, idatPath=getwd(), ...){ # {{{
 #  as(methylumIDAT(barcodes=barcodes,pdat=pdat,parallel=parallel,n=n,oob=F,idatPath=idatPath),
 #     'MethyLumiM')
 #} # }}}
 
 readEPIC <- function(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F,force=F, ...){ # {{{
- # path: file path to folder containing idat files, if working directory is 
+ # path: file path to folder containing idat files, if working directory is
  #       folder containing idats, use path <- "./"
- #       the gsub will catch all types of arrays as it is technically 
+ #       the gsub will catch all types of arrays as it is technically
  #       impossible to distinguish chiptype through barcode.
   if(is.null(barcodes)){
     barcodes <- idatPath
-    methylumIDATepic(bfp(barcodes),pdat=pdat,parallel=parallel,
-                     n=n,n.sd=n.sd,oob=oob,idatPath=idatPath,force=force,...)
+    methylumIDATepic(bfp(barcodes),pdat = pdat, parallel = parallel, n = n,
+                     n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
   } else {
-    methylumIDATepic(barcodes, pdat=pdat,parallel=parallel,
-                     n=n,n.sd=n.sd,oob=oob,idatPath=idatPath,force=force,...)
+    methylumIDATepic(barcodes, pdat = pdat, parallel = parallel, n = n,
+                     n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
   }
-  
+
 } # }}}
 
 bfp <- function(path){
- # Barcodes from path, incase one wishes to use MethylumIDATepic manually. 
-  bar <- dir(path, recursive=T)[grepl("R0[12345678]C0[12]_(Red|Grn).idat", dir(path, recursive=T))]
-  bar <- gsub("_(Red|Grn).idat","",bar,ignore.case=TRUE)
-  bar <- bar[duplicated(bar)] 
+  # Barcodes from path, incase one wishes to use MethylumIDATepic manually.
+  #bar <- dir(path, recursive=T)[grepl("R0[12345678]C0[12]_(Red|Grn).idat", dir(path, recursive=T))]
+  bar <- dir(path, recursive = TRUE)[grepl("_(Red|Grn).idat", dir(path, recursive = TRUE))]
+  bar <- gsub("_(Red|Grn).idat", "", bar, ignore.case = TRUE)
+  bar <- bar[duplicated(bar)]
   return(bar)
 }

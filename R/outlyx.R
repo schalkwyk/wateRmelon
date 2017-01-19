@@ -2,7 +2,7 @@
 # Revision Date: 01-02-2016
 
 outlyx <- function(x, iqr=TRUE, iqrP=2, pc=1,
-                   mv=TRUE, mvP=0.15, plot=FALSE, ...) { # {{{
+                   mv=TRUE, mvP=0.15, plot=TRUE, ...) { # {{{
 ### Computes outliers within methylomic datasets
  # Arguments: 
  # x    : Methylumi/Minfi object or raw betas.
@@ -60,7 +60,7 @@ outlyx <- function(x, iqr=TRUE, iqrP=2, pc=1,
          out2[[2]],
          xlim=c(low, upp),
          xlab="Transformed Betas",
-         ylab="Final Weight")
+         ylab="Final Weight", ...)
     abline(v=c(out1[["low"]],out1[["hi"]]),
            h=mvP,
            lty=2)
