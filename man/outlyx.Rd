@@ -9,7 +9,7 @@ Seeks to identify outliers based on multiple (currently 2) outlier detection met
 }
 \usage{
 outlyx(x, iqr=TRUE, iqrP=2, pc=1,
-       mv=TRUE, mvP=0.15, plot=FALSE, ...) 
+       mv=TRUE, mvP=0.15, plot=TRUE, ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
