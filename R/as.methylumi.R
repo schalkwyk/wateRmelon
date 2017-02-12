@@ -1,6 +1,3 @@
-# generic takes naked data. gets annotation from IlluminaHumanMethylation450k.db
-# takes retains whatever data available (does not recalculate betas)
-# methylumiset method would be useful to complete annotation
 
 as.methylumi <- function( 
    mn=NULL, 
@@ -8,58 +5,37 @@ as.methylumi <- function(
    bn=NULL, 
    pv=NULL, 
    qc=NULL, 
-   da=NULL,
-   fd=c('CHR','DESIGN'),
-   ad=NULL  
+   da=NULL, ...
 ) {
-   dt <-  list ( mn, un, bn, pv, da )
+   dt <-  list ( mn, un, bn, pv, qc, da )
    data <- ! sapply ( dt, is.null )
    if (! any (data) ) {
-      stop('no data!')}
-   rn <- rownames(dt[[ which(data)[1] ]])
-   cn <- colnames(dt[[ which(data)[1] ]])
-   if(!library(methylumi, logical.return=TRUE, quietly=TRUE)){
-      stop('can\'t load methylumi package')}
-   history.submitted <- as.character(Sys.time())   
-   x <- new("MethyLumiSet")
-   if(!is.null(mn))methylated(x)      <- mn
-   if(!is.null(pv))pvals(x)           <- pv
-   if(!is.null(bn))betas(x)           <- bn
-   if(!is.null(un))unmethylated(x)    <- un
-   if(!is.null(qc))QCdata(x)          <- qc
-   if (is.null(da))da <- data.frame(pop(fd, rn))
-   fData(x) <- da
-   if (is.null(ad))ad <- AnnotatedDataFrame(
-      data=data.frame(row.names=cn)
+      stop('no data!')
+   }
+   history.submitted <- as.character(Sys.time())
+   y <- assayDataNew( 'environment',
+     betas = bn
    )
-   assayData(x) <- ad
-      history.finished <- as.character(Sys.time())
-      history.command <- "created with as.methylumi (wateRmelon)"
-      x@history <- rbind(
-         x@history, 
-         data.frame(
-            submitted = history.submitted, 
-            finished = history.finished, 
-            command = history.command
-         )
-      )
+   if(!is.null(mn))y$methylated      <- mn
+   if(!is.null(un))y$unmethylated    <- un
+   if(!is.null(pv))y$pvals           <- pv
+   if(!is.null(qc))y$QCdata          <- qc
+   x <- new("MethyLumiSet", assayData=y, fData=da)
+   fData(x) <- da
+   history.finished <- as.character(Sys.time())
+   history.command <- "created with as.methylumi (wateRmelon)"
+   x@history <- rbind(
+     x@history, 
+     data.frame(
+       submitted = history.submitted, 
+       finished  = history.finished, 
+       command   = history.command
+     )
+   )
+#browser()
    x  
 }
 
-#pop <- function (fd, rn){
-#   o <- data.frame(row.names=rn)
-#   for (col in fd){
-#      thing  <- paste("IlluminaHumanMethylation450k", col, sep='')
-#      stuff <- get(thing)
-#      log  <- rn %in% keys(stuff)
-#      data <- toTable(stuff[rn[log]])
-#      #for (item in colnames(data)[-1]){
-#      #   o[log,item] <- data[,item]
-#      #}
-#      o[data[,1],colnames(data)[-1]] <- data[,-1]
-#   }
-#   o
-#}
 
 setMethod(
    f= "as.methylumi",
@@ -70,8 +46,7 @@ setMethod(
       bn=NULL, 
       pv=NULL, 
       qc=NULL, 
-      da=NULL,
-      fd=c('CHR','DESIGN')  
+      da=NULL
    ) {
   object <- mn
   as.methylumi(
@@ -80,8 +55,7 @@ setMethod(
       bn=betas(object), 
       pv=pvals(object), 
       qc=QCdata(object), 
-      da=NULL,
-      fd=c('CHR','DESIGN')  
+      da=NULL
    )   
    }
 )
@@ -96,44 +70,25 @@ setMethod(
       bn=NULL, 
       pv=NULL, 
       qc=NULL, 
-      da=NULL,
-      fd=c('CHR','DESIGN')  
+      da=NULL
    ) {
   object <- mn
-  mn <- getMeth(object)
-  un <- getUnmeth(object) 
-  bn <- getBeta(object) 
+  mn  <- getMeth(object)
+  un  <- getUnmeth(object) 
+  bn  <- getBeta(object) 
+  ann <-data.frame(getAnnotation(object), stringsAsFactors=F)
+  ann$DESIGN <- ann$Type
   as.methylumi(
       mn,
       un, 
       bn, 
-      pv=NULL,   # need RGSet for this 
-      qc=NULL,   # probly need RGSet for this
-      da=NULL,
-      fd=c('CHR','DESIGN')  
+      pv=NULL,
+      qc=NULL,
+      da=ann
    )
-}   
+#   browser()
+  }   
 )
-
-
-#getColumns <- function(){
-#   gsub(
-#      'IlluminaHumanMethylation450k', 
-#      '', 
-#      ls("package:IlluminaHumanMethylation450k.db")
-#   )
-#}
-
-
-
-#   if (!is.null(pv)) {
-#      if (!all.equal(rownames(pv), rownames(methylated)) {
-#        stop (pv not in the same order as mn)
-#      }
-#   } 
-
-
-
 
 
 
