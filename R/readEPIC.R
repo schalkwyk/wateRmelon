@@ -641,6 +641,7 @@ bfp <- function(path){
   #bar <- dir(path, recursive=T)[grepl("R0[12345678]C0[12]_(Red|Grn).idat", dir(path, recursive=T))]
   bar <- dir(path, recursive = TRUE)[grepl("_(Red|Grn).idat", dir(path, recursive = TRUE))]
   bar <- gsub("_(Red|Grn).idat", "", bar, ignore.case = TRUE)
-  bar <- bar[duplicated(bar)]
+  # Automatically sift out duplicated filenames!
+  bar <- bar[!duplicated(basename(bar))]
   return(bar)
 }

@@ -1,21 +1,20 @@
-# Author: Tyler Gorrie-Stone, tgorri@essex.ac.uk
 # Revision Date: 01-02-2016
 
 outlyx <- function(x, iqr=TRUE, iqrP=2, pc=1,
                    mv=TRUE, mvP=0.15, plot=TRUE, ...) { # {{{
 ### Computes outliers within methylomic datasets
- # Arguments: 
+ # Arguments:
  # x    : Methylumi/Minfi object or raw betas.
  #
  # pc   : The desired principal component for outlier identification
  #
- # iqr  : Logical, to indicate whether to determine outliers by 
+ # iqr  : Logical, to indicate whether to determine outliers by
  #        interquartile ranges.
  #
  # iqrP : The number of interquartile ranges one wishes to
- #        discriminate from the upper and lower quartiles. 
+ #        discriminate from the upper and lower quartiles.
  #        Default = 2, Tukey's rule suggests 1.5
- # 
+ #
  # mv   : Logical, to indicate whether to determine outliers
  #        using distance measures using a modified version of pcout
  #        from mvoutlier.
@@ -24,25 +23,20 @@ outlyx <- function(x, iqr=TRUE, iqrP=2, pc=1,
  #        data based on the final weight output from
  #        the pcout function
  #        Value between 0 and 1. Default is 0.15
- # plot : Logical, to indicate if a graphical device to display 
+ # plot : Logical, to indicate if a graphical device to display
  #        sample outlyingness.
  #
- # Returns:   "outlyx.class" object
- #             TRUE values equal outliers.
 ###
-
   # Initialising objects to be used:
   df <- list() # Converted into dataframe later on.
-  n <- 0 # counter for number of outlier tests 
   # Removing probes with NA values.
-  x <- na.omit(x) 
+  x <- na.omit(x)
 
   if(iqr){ # {{{
     pccompbetx <- prcomp(x, retx=FALSE)
     out1 <- iqrFun(pccompbetx$rot, pc=pc, iqrP=iqrP)
     v1 <- colnames(x) %in% out1[[1]]==TRUE
     df[["iqr"]] <- v1
-    n <- n + 1
     low <- min(c(min(pccompbetx$rot[,pc]),out1[["low"]]))-out1[[2]] # Used if Plot=T
     upp <- max(c(max(pccompbetx$rot[,pc]),out1[["hi"]]))+out1[[2]]  # Used if Plot=T
   } # }}}
@@ -52,7 +46,6 @@ outlyx <- function(x, iqr=TRUE, iqrP=2, pc=1,
     out2 <- mvFun(tbetx, mvP=mvP)
     v2 <- colnames(x) %in% out2[[1]]==TRUE
     df[["mv"]] <- v2
-    n <- n + 1
   } # }}}
 
   if(plot&mv&iqr){
@@ -128,17 +121,17 @@ pcouted <- function(x,explvar=0.99,crit.M1=1/3,crit.c1=2.5,
   x.svd <- svd(scale(x.sc,TRUE,FALSE))
   a <- x.svd$d^2/(n-1)
   p1 <- (1:p)[(cumsum(a)/sum(a)>explvar)][1]
- 
+
   x.pc <- x.sc%*%x.svd$v[,1:p1]
   xpc.sc <- scale(x.pc,apply(x.pc,2,median),apply(x.pc,2,mad))
-  
+
   # Step 3: compute robust kurtosis weights, transform to distances:
   wp <- abs(apply(xpc.sc^4,2,mean)-3)
- 
+
   xpcw.sc <- xpc.sc%*%diag(wp/sum(wp))
   xpc.norm <- sqrt(apply(xpcw.sc^2,1,sum))
   x.dist1 <- xpc.norm*sqrt(qchisq(0.5,p1))/median(xpc.norm)
- 
+
   # Step 4: determine weights according to translated biweight:
   M1 <- quantile(x.dist1,crit.M1)
   const1 <- median(x.dist1)+crit.c1*mad(x.dist1)
@@ -150,7 +143,7 @@ pcouted <- function(x,explvar=0.99,crit.M1=1/3,crit.c1=2.5,
   # PHASE 2:
   # Step 5: compute Euclidean norms of PCs and their distances:
   xpc.norm <- sqrt(apply(xpc.sc^2,1,sum))
-  x.dist2 <- xpc.norm*sqrt(qchisq(0.5,p1))/median(xpc.norm) 
+  x.dist2 <- xpc.norm*sqrt(qchisq(0.5,p1))/median(xpc.norm)
 
   # Step 6: determine weight according to translated biweight:
   M2 <- sqrt(qchisq(crit.M2,p1))
@@ -164,5 +157,3 @@ pcouted <- function(x,explvar=0.99,crit.M1=1/3,crit.c1=2.5,
   wfinal <- (w1+cs)*(w2+cs)/((1+cs)^2)
   return(wfinal)
 } # }}}
-               
-                 
