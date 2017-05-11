@@ -9,15 +9,15 @@
 # description = "character"))
 
 
-# betaqn <- function (bn){ 
+# betaqn <- function (bn){
 setMethod(
    f= "betaqn",
    signature(bn="MethylSet"),
    definition=function(bn){
       object <- bn
       betaqn (
-         bn = getBeta(object) 
-      ) 
+         bn = getBeta(object)
+      )
    }
 )
 
@@ -27,8 +27,8 @@ setMethod(
    definition=function(bn){
       object <- bn
       betaqn (
-      bn = getBeta(object) 
-      ) 
+      bn = getBeta(object)
+      )
    }
 )
 
@@ -39,10 +39,10 @@ setMethod(
    definition=function(mn, fudge=100){
       object <- mn
       out <- naten (
-         mn = getMeth(object), 
+         mn = getMeth(object),
          un = getUnmeth(object),
          fudge, ret2=T
-      ) 
+      )
    out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
                      annotation = annotation(mn), metadata = metadata(mn))
    out2@preprocessMethod <- c(rg.norm = 'naten (wateRmelon)',
@@ -56,8 +56,8 @@ setMethod(
    f= "naten",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-      mn  <- preprocessRaw(mn)    
-      naten ( mn ) 
+      mn  <- preprocessRaw(mn)
+      naten ( mn )
    }
 )
 
@@ -68,15 +68,15 @@ setMethod(
    definition=function(mn, fudge=100){
       object <- mn
       out <- nanet (
-         mn = getMeth(object), 
+         mn = getMeth(object),
          un = getUnmeth(object),
-         fudge
-      ) 
-   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
-                     annotation = annotation(mn), metadata = metadata(mn))
+         fudge, ret2=T
+      )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(object),
+                     annotation = annotation(object), metadata = metadata(object))
    out2@preprocessMethod <- c(rg.norm = 'nanet (wateRmelon)',
                               minfi = as.character(packageVersion('minfi')),
-                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+                              manifest = as.character(packageVersion(.getManifestString(object@annotation))))
    return(out2)
    }
 )
@@ -85,22 +85,22 @@ setMethod(
    f= "nanet",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-      mn  <- preprocessRaw(mn)    
-      nanet ( mn ) 
+      mn  <- preprocessRaw(mn)
+      nanet ( mn )
    }
 )
 
 
 
 #' Internal functions for Illumina i450 normalization functions
-#' 
+#'
 #' got and fot find the annotation column differentiating type I and type II
 #' assays in MethylSet (got) or MethyLumiSet (fot) objects. pop extracts
 #' columns from IlluminaHumanMethylation450k.db
-#' 
+#'
 #' \code{got} returns a character vector of 'I' and 'II', \code{fot} returns
 #' the index of the relevant column. \code{pop} returns a data frame
-#' 
+#'
 #' @aliases got fot pop
 #' @param x a MethyLumiSet
 #' @param obj a MethylSet
@@ -124,7 +124,7 @@ setMethod(
 got <- function(obj){
    I  <- getProbeInfo(obj)$Name
    rn <- rownames(obj) # FeatureData is removed from MethylSet
-   ot <- rn %in% I 
+   ot <- rn %in% I
    ot[ot] <- 'I'
    ot[ot=='FALSE'] <- 'II'
    ot
@@ -137,7 +137,7 @@ setMethod(
    definition=function(mns, fudge=100){
          object <- mns
          out <- nanes (
-            mns    = getMeth(object), 
+            mns    = getMeth(object),
             uns    = getUnmeth(object),
             onetwo = got(object),
             fudge,
@@ -156,12 +156,12 @@ setMethod(
    f= "nanes",
    signature(mn="RGChannelSet"),
    definition=function(mns, fudge=100){
-      mns  <- preprocessRaw(mns)    
-      nanes ( mns ) 
+      mns  <- preprocessRaw(mns)
+      nanes ( mns )
    }
 )
 
-#danes <- function(mn, un, onetwo, fudge=100, ...){ 
+#danes <- function(mn, un, onetwo, fudge=100, ...){
 setMethod(
    f= "danes",
    signature(mn="MethylSet"),
@@ -169,16 +169,16 @@ setMethod(
          object <- mn
          mn <- getMeth(object)
          out <- danes (
-            mn     , 
+            mn     ,
             un     = getUnmeth(object),
             onetwo = got(object),
             fudge, ret2=T
-       ) 
-   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
-                     annotation = annotation(mn), metadata = metadata(mn))
+       )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(object),
+                     annotation = annotation(object), metadata = metadata(object))
    out2@preprocessMethod <- c(rg.norm = 'danes (wateRmelon)',
                               minfi = as.character(packageVersion('minfi')),
-                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+                              manifest = as.character(packageVersion(.getManifestString(object@annotation))))
    return(out2)
    }
 )
@@ -187,8 +187,8 @@ setMethod(
    f= "danes",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-      mn  <- preprocessRaw(mn)    
-      danes ( mn ) 
+      mn  <- preprocessRaw(mn)
+      danes ( mn )
    }
 )
 
@@ -198,18 +198,18 @@ setMethod(
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100){
          object <- mn
-         mn <- getMeth(object) 
+         mn <- getMeth(object)
          out <- danet (
-            mn , 
+            mn ,
             un = getUnmeth(object),
             onetwo = got(object),
             fudge, ret2=T
-       ) 
-   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
-                     annotation = annotation(mn), metadata = metadata(mn))
+       )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(object),
+                     annotation = annotation(object), metadata = metadata(object))
    out2@preprocessMethod <- c(rg.norm = 'danet (wateRmelon)',
                               minfi = as.character(packageVersion('minfi')),
-                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+                              manifest = as.character(packageVersion(.getManifestString(object@annotation))))
    return(out2)
    }
 )
@@ -218,8 +218,8 @@ setMethod(
    f= "danet",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-      mn  <- preprocessRaw(mn)    
-      danet ( mn ) 
+      mn  <- preprocessRaw(mn)
+      danet ( mn )
    }
 )
 
@@ -230,18 +230,18 @@ setMethod(
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100, ...){
          object <- mn
-         mn <- getMeth(object) 
+         mn <- getMeth(object)
          out <- daten1 (
-            mn , 
+            mn ,
             un = getUnmeth(object),
             onetwo = got(object),
             fudge, ret2=T, ...
-       ) 
-   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
-                     annotation = annotation(mn), metadata = metadata(mn))
+       )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(object),
+                     annotation = annotation(object), metadata = metadata(object))
    out2@preprocessMethod <- c(rg.norm = 'daten1 (wateRmelon)',
                               minfi = as.character(packageVersion('minfi')),
-                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+                              manifest = as.character(packageVersion(.getManifestString(object@annotation))))
    return(out2)
    }
 )
@@ -250,8 +250,8 @@ setMethod(
    f= "daten1",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100, ...){
-      mn  <- preprocessRaw(mn)    
-      daten1 ( mn, ... ) 
+      mn  <- preprocessRaw(mn)
+      daten1 ( mn, ... )
    }
 )
 
@@ -261,18 +261,18 @@ setMethod(
    signature(mn="MethylSet"),
    definition=function(mn, fudge=100, ...){
          object <- mn
-         mn <- getMeth(object) 
+         mn <- getMeth(object)
          out <- daten2 (
-            mn , 
+            mn ,
             un = getUnmeth(object),
             onetwo = got(object),
             fudge, ret2=T, ...
-       ) 
-   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
-                     annotation = annotation(mn), metadata = metadata(mn))
+       )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(object),
+                     annotation = annotation(object), metadata = metadata(object))
    out2@preprocessMethod <- c(rg.norm = 'daten2 (wateRmelon)',
                               minfi = as.character(packageVersion('minfi')),
-                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+                              manifest = as.character(packageVersion(.getManifestString(object@annotation))))
    return(out2)
    }
 )
@@ -281,8 +281,8 @@ setMethod(
    f= "daten2",
    signature(mn="RGChannelSet"),
    definition=function(mn, fudge=100){
-      mn  <- preprocessRaw(mn)    
-      daten2 ( mn ) 
+      mn  <- preprocessRaw(mn)
+      daten2 ( mn )
    }
 )
 
@@ -294,11 +294,11 @@ setMethod(
    definition=function(mns, fudge=100){
          object <- mns
          out <- nasen (
-            mns = getMeth(object), 
+            mns = getMeth(object),
             uns = getUnmeth(object),
             onetwo = got(object),
             fudge, ret2=T
-       ) 
+       )
    out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mns),
                      annotation = annotation(mns), metadata = metadata(mns))
    out2@preprocessMethod <- c(rg.norm = 'nasen (wateRmelon)',
@@ -312,8 +312,8 @@ setMethod(
    f= "nasen",
    signature(mns="RGChannelSet"),
    definition=function(mns, fudge=100){
-      mns  <- preprocessRaw(mns)    
-      nasen ( mns ) 
+      mns  <- preprocessRaw(mns)
+      nasen ( mns )
    }
 )
 
@@ -325,11 +325,11 @@ setMethod(
    definition=function(mns, fudge=100){
       object <- mns
       out <- dasen (
-         mns = getMeth(object), 
+         mns = getMeth(object),
          uns = getUnmeth(object),
          onetwo=got(object),
          fudge, ret2=T
-       ) 
+       )
    out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mns),
                      annotation = annotation(mns), metadata = metadata(mns))
    out2@preprocessMethod <- c(rg.norm = 'dasen (wateRmelon)',
@@ -344,8 +344,8 @@ setMethod(
    f= "dasen",
    signature(mns="RGChannelSet"),
    definition=function(mns, fudge=100){
-      mns  <- preprocessRaw(mns)    
-      dasen ( mns ) 
+      mns  <- preprocessRaw(mns)
+      dasen ( mns )
    }
 )
 
@@ -356,16 +356,16 @@ setMethod(
    definition=function(mns, fudge=100, ...){
          object <- mns
          out <- danen (
-         mns = getMeth(object), 
+         mns = getMeth(object),
          uns = getUnmeth(object),
          onetwo=got(object),
          fudge, ret2=T,...
-       ) 
-   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(mn),
-                     annotation = annotation(mn), metadata = metadata(mn))
+       )
+   out2 <- MethylSet(Meth=out[[1]], Unmeth = out[[2]], colData = colData(object),
+                     annotation = annotation(object), metadata = metadata(object))
    out2@preprocessMethod <- c(rg.norm = 'danen (wateRmelon)',
                               minfi = as.character(packageVersion('minfi')),
-                              manifest = as.character(packageVersion(.getManifestString(mn@annotation))))
+                              manifest = as.character(packageVersion(.getManifestString(object@annotation))))
    return(out2)
    }
 )
@@ -374,8 +374,8 @@ setMethod(
    f= "danen",
    signature(mns="RGChannelSet"),
    definition=function(mns, fudge=100, ...){
-      mns  <- preprocessRaw(mns)    
-      danen ( mns, ... ) 
+      mns  <- preprocessRaw(mns)
+      danen ( mns, ... )
    }
 )
 
@@ -387,14 +387,14 @@ setMethod(
    definition=function(mn){
       pn <- detectionP(mn)
       object <- preprocessRaw(mn)
-      mn <- getMeth(object) 
+      mn <- getMeth(object)
       tost (
-         mn, 
+         mn,
          un = getUnmeth(object),
  #        da = object@featureData@data,  # prob need more columns
 	 da = dfort(featureNames(object)),
          pn
-      ) 
+      )
    }
 )
 
@@ -405,9 +405,9 @@ setMethod(
    definition=function(data){
       object <- data
       fuks (
-         data = getBeta(object), 
+         data = getBeta(object),
          anno = data.frame(DESIGN=got(object))
-      ) 
+      )
    }
 )
 
@@ -417,9 +417,9 @@ setMethod(
    definition=function(data){
       object <- preprocessRaw(data)
       fuks (
-         data = getBeta(object), 
+         data = getBeta(object),
          anno = data.frame(DESIGN=got(object))
-      ) 
+      )
    }
 )
 
@@ -443,7 +443,7 @@ setMethod(
       object <- bn
       bn     <- getBeta(object)
       g      <- getsnp(rownames(bn))
-      genki( bn, g, se ) 
+      genki( bn, g, se )
 
    }
 )
@@ -455,12 +455,12 @@ setMethod(
 #     object <- bn
 #     bn     <- getBeta(object)
 #     g      <- getsnp(rownames(bn))
-#     genki( bn, g, se ) 
-     
+#     genki( bn, g, se )
+
       object <- bn
       bn     <- getSnpBeta(object)
       g      <- getsnp(rownames(bn))
-      genki( bn, g, se ) 
+      genki( bn, g, se )
    }
 )
 
@@ -471,8 +471,8 @@ setMethod(
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
-      dmrse( bn, idmr ) 
-     
+      dmrse( bn, idmr )
+
    }
 )
 
@@ -481,8 +481,8 @@ setMethod(
    signature(betas= "RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
-      dmrse( bn, idmr ) 
-     
+      dmrse( bn, idmr )
+
    }
 )
 
@@ -494,8 +494,8 @@ setMethod(
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
-      dmrse_row( bn, idmr ) 
-     
+      dmrse_row( bn, idmr )
+
    }
 )
 
@@ -504,8 +504,8 @@ setMethod(
    signature(betas="RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
-      dmrse_row( bn, idmr ) 
-     
+      dmrse_row( bn, idmr )
+
    }
 )
 
@@ -516,8 +516,8 @@ setMethod(
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
-      dmrse_col( bn, idmr ) 
-     
+      dmrse_col( bn, idmr )
+
    }
 )
 
@@ -526,8 +526,8 @@ setMethod(
    signature(betas="RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
-      dmrse_col( bn, idmr ) 
-     
+      dmrse_col( bn, idmr )
+
    }
 )
 
@@ -537,8 +537,8 @@ setMethod(
    signature(bn="MethylSet"),
    definition=function( bn, stop=1, sex, X ){
       betas    <- getBeta(bn)
-      seabi( betas, stop, sex, X ) 
-     
+      seabi( betas, stop, sex, X )
+
    }
 )
 
@@ -547,20 +547,20 @@ setMethod(
    signature(bn="RGChannelSet"),
    definition=function( bn, stop=1, sex, X ){
       betas    <- getBeta(bn)
-      seabi( betas, stop, sex, X ) 
-     
+      seabi( betas, stop, sex, X )
+
    }
 )
 
-#pfilter<-function(mn, un, bn, da, onetwo, pn, bc, perCount, pnthresh, perc, pthresh){    
+#pfilter<-function(mn, un, bn, da, onetwo, pn, bc, perCount, pnthresh, perc, pthresh){
 # filter function by Ruth Pidsley
 
 setMethod(
    f= "pfilter",
    signature(mn="RGChannelSetExtended"),
    definition=function(
-      mn=RGChannelSetExtended, 
-      perCount =NULL, pnthresh=NULL, perc=NULL, 
+      mn=RGChannelSetExtended,
+      perCount =NULL, pnthresh=NULL, perc=NULL,
       pthresh=NULL
    ){
       object   <- mn
@@ -568,20 +568,34 @@ setMethod(
 #      mn       <- getMeth(object2)
 #      un       <- getUnmeth(object2)
       pn       <- detectionP(object)
-      bc       <- beadcount(object)
+      bc       <- getNBeads(object)
+      ### Insert Fix - pn and bc are different dimensions...
+       # Probably very slow.
+            # Take smallest beadcount:
+      ti <- getProbeInfo(object, type = 'I')
+      bc1 <- bc[ti[,2],]
+      bc2 <- bc[ti[,3],]
+      rownames(bc1) <- rownames(bc2) <- ti[,1]
+      bci <- pmin(bc1, bc2)
+      tii <- getProbeInfo(object, type = 'II')
+      bcii <- bc[tii[,2],]
+      rownames(bcii) <- tii[,1]
+      # Combine beacount matrice
+      bc <- rbind(bci, bcii)
+      bc[bc<3] <- NA
       l        <- pfilter (
-         mn=NULL, un=NULL, bn=NULL, 
-         da=NULL, 
+         mn=NULL, un=NULL, bn=NULL,
+         da=NULL,
          pn=pn, bc=bc,
-         perCount, 
+         perCount,
 	 pnthresh,perc,pthresh,
          logical.return= TRUE
       )
-#     object3 <- object[l$probes,] 
-      object3 <- object2[,l$samples] 
+#     object3 <- object[l$probes,]
+      object3 <- object2[,l$samples]
       object3 <- object3[l$probes,]
 
- #   fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"), 
+ #   fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"),
  #                       Unmeth = assayDataElement(object3,"Unmeth"),
  #                       Filter=matrix(rep(l$probes, length(l$sample)), nrow=length(l$probes), ncol=length(l$sample))
  #                      )
@@ -600,25 +614,25 @@ setMethod(
    definition=function(
 		 beta.v,
       nL=3, doH=TRUE, nfit=5000,
-      th1.v=c(0.2,0.75), th2.v=NULL, 
-      niter=5, tol=0.001, plots=FALSE, 
-      pri=FALSE       
-		       
+      th1.v=c(0.2,0.75), th2.v=NULL,
+      niter=5, tol=0.001, plots=FALSE,
+      pri=FALSE
+
 		       ){
       object <- beta.v
       d <- as.numeric(factor(got(object)))
-      ibetas <- getBeta(object) 
-      betas <- sapply ( 
-         colnames(ibetas), 
+      ibetas <- getBeta(object)
+      betas <- sapply (
+         colnames(ibetas),
          function(name){
             ou <- try(
                BMIQ(
                   ibetas[,name],
-                  design.v=d, nL, doH, 
-                  nfit, th1.v, th2.v, 
-                  niter, tol, plots, 
-                  sampleID=name, 
-                  pri=FALSE 
+                  design.v=d, nL, doH,
+                  nfit, th1.v, th2.v,
+                  niter, tol, plots,
+                  sampleID=name,
+                  pri=FALSE
                )
             )
             if(inherits(ou, 'try-error')){
@@ -642,7 +656,7 @@ setMethod(
    }
 )
 
-# outlyx <- function(x, y, dist1, dist2) 
+# outlyx <- function(x, y, dist1, dist2)
 setMethod(
    f= "outlyx",
    signature(x="RGChannelSet"),
@@ -663,7 +677,7 @@ setMethod(
 
 setMethod(
    f= "pwod",
-   signature(object="RGChannelSet"), 
+   signature(object="RGChannelSet"),
    definition=function(object, mul){
    object <- getBeta(object)
    pwod(object, mul)
@@ -672,7 +686,7 @@ setMethod(
 
 setMethod(
    f= "pwod",
-   signature(object="MethylSet"), 
+   signature(object="MethylSet"),
    definition=function(object, mul){
    object <- getBeta(object)
    pwod(object, mul)
@@ -687,6 +701,3 @@ setMethod(
     agep(betas=object, coeff, verbose)
   }
 )
-
-
-
