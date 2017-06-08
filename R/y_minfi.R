@@ -568,21 +568,7 @@ setMethod(
 #      mn       <- getMeth(object2)
 #      un       <- getUnmeth(object2)
       pn       <- detectionP(object)
-      bc       <- getNBeads(object)
-      ### Insert Fix - pn and bc are different dimensions...
-       # Probably very slow.
-            # Take smallest beadcount:
-      ti <- getProbeInfo(object, type = 'I')
-      bc1 <- bc[ti[,2],]
-      bc2 <- bc[ti[,3],]
-      rownames(bc1) <- rownames(bc2) <- ti[,1]
-      bci <- pmin(bc1, bc2)
-      tii <- getProbeInfo(object, type = 'II')
-      bcii <- bc[tii[,2],]
-      rownames(bcii) <- tii[,1]
-      # Combine beacount matrice
-      bc <- rbind(bci, bcii)
-      bc[bc<3] <- NA
+      bc       <- beadcount(object)
       l        <- pfilter (
          mn=NULL, un=NULL, bn=NULL,
          da=NULL,

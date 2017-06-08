@@ -20,8 +20,7 @@
 #' @export beadcount
 beadcount<-function(x){
 	#select out bead count dataframe
-	assayDataElement(x, "NBeads")->nb
-
+    getNBeads(x) -> nb
 	#match rownames of beadcount dataframe to addresses
 	getProbeInfo(x,type="I")->typeIadd
 	match(typeIadd$AddressA,rownames(nb))->typeImatchA
@@ -38,7 +37,7 @@ beadcount<-function(x){
         dimnames = list(locusNames, sampleNames(x)))
     
     	TypeII.Name <- getProbeInfo(x, type = "II")$Name
-    	bc_temp[TypeII.Name, ] <- nbcg[getProbeInfo(x, type = "II")$Address,]
+    	bc_temp[TypeII.Name, ] <- nbcg[getProbeInfo(x, type = "II")$AddressA,]
        
 	TypeI <- getProbeInfo(x, type = "I")
 
