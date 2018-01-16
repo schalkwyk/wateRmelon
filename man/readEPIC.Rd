@@ -35,7 +35,7 @@ Additional arguments passed to \code{methylumIDAT}
 }
 }
 \details{
-Read a set of .idat files within a file directory and return a \code{MethylumiSet} object
+Read a set of .idat files within a file directory and return a \code{MethylumiSet} object. 
 }
 
 \value{
@@ -57,6 +57,8 @@ for EPIC arrays. \code{readEPIC} can also handle 450k and 27k arrays as
 
 Alternatively it is possible to invoke \code{methylumIDATepic} to use the modified
 version \code{methylumIDAT}, which has similar usage.
+
+EPIC manifest has since been updated to B4 version, which has notably fewer probes than previous manifests. It is entirely possible that we will migrate to the manifest packages available on BioConductor and allow for versioning control.
 }
 
 \examples{
