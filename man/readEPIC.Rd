@@ -1,7 +1,6 @@
 \name{readEPIC}
 \alias{readEPIC}
 \alias{epic.controls}
-\alias{epic.ordering}
 \title{
 readEPIC
 }

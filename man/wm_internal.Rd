@@ -27,6 +27,7 @@
 \alias{oxyscale}
 \alias{pcouted}
 \alias{trafo}
+\alias{generateManifest}
 \title{
 Internal functions for readEPIC and other wateRmelon functions introduced in v 1.13.1
 }

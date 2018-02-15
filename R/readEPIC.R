@@ -99,7 +99,8 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
                                }
                              },
                       'Epic'=function(design=NULL, color=NULL, ...) {
-                               data(epic.ordering)
+                               #data(epic.ordering)
+                               epic.ordering <<- generateManifest('EPIC')
                                what <- c('Probe_ID','M','U')
                                r <- split(epic.ordering[,c(what,'col')],
                                           epic.ordering$DESIGN)
@@ -645,3 +646,43 @@ bfp <- function(path){
   bar <- bar[!duplicated(basename(bar))]
   return(bar)
 }
+
+generateManifest <- function(anno=c('450k', 'EPIC')){
+  anno <- match.arg(anno)
+  anno <- switch(anno, # Possible to add more manifests here!
+                 '450k' = "IlluminaHumanMethylation450kanno.ilmn12.hg19",
+                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b2.hg19" # The one minfi uses...
+                 )
+  man <- getAnnotationObject(anno)
+  x <- getAnnotation(man)[,c('Name','AddressB','AddressA', 'Type', 'Color')]
+  # Name     = Name
+  # AddressB = M
+  # AddressA = U
+  # Type     = DESIGN
+  # Color    = COLOR_CHANNEL 
+  # Generate manifest.
+  snpI <- getProbeInfo(man, type='SnpI')[,c(1,2,3,4)]
+  snpII <- getProbeInfo(man, type='SnpII')[,c(1,2)]
+  snpI <- cbind(snpI[,c('Name', 'AddressB', 'AddressA')],
+                rep('I', nrow(snpI)), 
+                snpI[,'Color']) 
+  snpII <- cbind(snpII[,'Name'], 
+                 rep('', nrow(snpII)), 
+                 snpII[,'AddressA'], 
+                 rep('II', nrow(snpII)), 
+                 rep('', nrow(snpII)))
+  colnames(snpI) <- colnames(snpII) <- colnames(x)
+  x1 <- rbind(data.frame(x, stringsAsFactors=F), 
+              data.frame(snpI, stringsAsFactors=F), 
+              data.frame(snpII, stringsAsFactors=F))
+  x1$col <- x1$Color
+  x1$Color[x1$Color==''] <- 'Both'
+  x1$col[x1$Color=='Red'] <- 'R'
+  x1$col[x1$Color=='Grn'] <- 'G'
+  is.na(x1$col) <- x1$Color=='Both'
+  colnames(x1) <- c('Probe_ID', 'M', 'U', 'DESIGN', 'COLOR_CHANNEL', 'col')
+  x1$COLOR_CHANNEL <- factor(x1$COLOR_CHANNEL)
+  x1$col <- factor(x1$col)
+  return(x1)
+}
+

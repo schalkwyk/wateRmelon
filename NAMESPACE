@@ -1,6 +1,11 @@
 exportPattern("^[[:alpha:]]+")
 exportMethods( naten, betaqn, nanet, nanes, danes, danet, daten1, daten2, nasen, dasen, danen, tost, fuks, swan, colnames, seabi, dmrse, dmrse_row, dmrse_col, genki, pfilter,  bscon)
-import(Biobase)
+import(Biobase, ROC, illuminaio, limma, lumi, methods,
+       IlluminaHumanMethylation450kanno.ilmn12.hg19)
+importFrom("stats", "kmeans", "lm", "mad", "median", "na.exclude",
+           "qchisq", "quantile", "sd", "t.test")
+importFrom("utils", "data", "packageVersion", "read.csv", "read.table",
+           "write.csv", "write.table")
 #importClassesFrom(methylumi, MethyLumiSet)
 #importClassesFrom(minfi,  MethylSet, RGChannelSet, RGChannelSetExtended )
 #importClassesFrom(IMA, exprmethy450  )
