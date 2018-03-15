@@ -1,7 +1,7 @@
 Package: wateRmelon
 Type: Package
 Title: Illumina 450 methylation array normalization and metrics
-Version: 1.23.2
+Version: 1.23.3
 Tue Mar 22 11:36:58 GMT 2016
 Date: 2017-05-11
 Author: Leonard C Schalkwyk, Ruth Pidsley, Chloe CY Wong, with functions contributed by Nizar Touleimat, Matthieu Defrance, Andrew Teschendorff, Jovana Maksimovic, Tyler Gorrie-Stone, Louis El Khoury
@@ -23,7 +23,7 @@ Collate:as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R oxyscale.R
         concatenateMatrices.R coRankedMatrices.R correctI.R correctII.R
         dataDetectPval2NA.R db1.R detectionPval.filter.R dfs2.R
         dfsfit.R dmrse.R dmrse_col.R dmrse_row.R dyebuy1.R dyebuy2.R
-        dyebuy3.R dyebuy4.R filterXY.R findAnnotationProbes.R gcoms.R
+        dyebuy3.R dyebuy4.R estimateCellCounts.R filterXY.R findAnnotationProbes.R gcoms.R
         gcose.R genki.R genkme.R genkus.R genotype.R getMethylumiBeta.R
         getQuantiles.R getSamples.R getsnp.R horv.R loadMethylumi2.R
         lumiMethyR2.R M2Beta.R melon.R nbBeadsFilter.R
