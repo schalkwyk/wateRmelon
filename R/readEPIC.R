@@ -613,6 +613,7 @@ methylumIDATepic <- function  (barcodes=NULL,pdat=NULL,parallel=F,
   } # }}}
 
   # finally
+  colnames(mlumi) <- as.character(colnames(mlumi)) # Fixing _that_ one bug.
   return(mlumi[ sort(featureNames(mlumi)), ])
 } # }}}
 
