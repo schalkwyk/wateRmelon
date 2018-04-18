@@ -78,7 +78,7 @@ estimateCellCounts.wmln <- function(
     # Mostly a copy of minfi::estimateCellCounts with partial optimisation
     # to make use of some improvements that improve speed at a marginal cost of
     # accuracy. Particularly useful for big data where normalising biological
-    # and reference data is not needed.
+    # and reference data _together_ is as important.
 
     referencePlatform <- match.arg(referencePlatform)
     rgPlatform <- platform <- match.arg(platform)
@@ -111,15 +111,17 @@ estimateCellCounts.wmln <- function(
     if(is.null(bn)) bn <- betas(object)
     referencePd <- colData(referenceRGset)
     referenceMset <- preprocessRaw(referenceRGset)
-    if(platform == 'EPIC') message('No Reference Set of EPIC, converting array to 450k...')
-    M <- mn[rownames(referenceMset),]
-    U <- un[rownames(referenceMset),]
-    rownames(M) <- rownames(U) <- rownames(referenceMset)
-    ot <- getProbeType(referenceMset)
+    if(platform == 'EPIC') message('No Reference Set of EPIC, converting array to 450k...') # Nothing to change... yet...
+    lrn <- rownames(referenceMset)%in%rownames(mn)
+    mrn <- rownames(referenceMset)[lrn]
+    M <- mn[mrn,]
+    U <- un[mrn,]
+    # rownames(M) <- rownames(U) <- rownames(referenceMset)
+    ot <- getProbeType(referenceMset)[rownames(referenceMset)%in%rownames(mn)]
     colsel <- sample(seq_len(ncol(M)), max(2, min(ncol(M),round(ncol(M)*perc))), replace = FALSE) 
     sMI <- .normalizeQuantiles2(M[ot=='I', colsel])
     sMII <- .normalizeQuantiles2(M[ot=='II', colsel])
-    sUI <- .normalizeQuantiles2(U[ot=='I',], colsel)
+    sUI <- .normalizeQuantiles2(U[ot=='I', colsel])
     sUII <- .normalizeQuantiles2(U[ot=='II', colsel])
     mquan <- list(quantiles = rep(0, nrow(M)),
                     inter = rep(0, nrow(M)),
@@ -138,8 +140,8 @@ estimateCellCounts.wmln <- function(
     uquan[['inter']][ot == 'II'] <- sUII[[2]]
     mquan[['rn']] <- uquan[['rn']] <- rownames(M)
 
-    nmet <- .impose(getMeth(referenceMset), mquan)
-    nume <- .impose(getUnmeth(referenceMset), uquan)
+    nmet <- .impose(getMeth(referenceMset)[lrn,], mquan)
+    nume <- .impose(getUnmeth(referenceMset)[lrn,], uquan)
     rm(referenceRGset)
 
     # Everything else continues as normal.
