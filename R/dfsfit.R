@@ -2,18 +2,9 @@ dfsfit <-
 function(
    mn, 
    onetwo,
-   roco=unlist(
-      data.frame(
-         strsplit(
-            colnames(mn), 
-            '_'
-         ), 
-         stringsAsFactors=FALSE
-      )[2,] 
-   ),
+   roco = substring(colnames(mn), regexpr("R0[1-9]C0[1-9]", colnames(mn))), # Robust solution
    ...
 ){
-
    mdf<-apply(mn,2,dfs2,onetwo)
 
    if (! is.null(roco) ) {
