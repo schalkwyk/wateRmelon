@@ -648,9 +648,9 @@ setMethod(
 setMethod(
   f= "agep",
   signature(betas="MethyLumiSet"),
-  definition=function(betas, coeff = NULL, verbose = FALSE){
+  definition=function(betas, coeff = NULL, method='horvath'){
     object <- betas(betas)
-    agep(betas=object, coeff, verbose)
+    agep(betas=object, coeff=coeff, method=method)
   }
 )
    

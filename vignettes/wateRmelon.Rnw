@@ -232,7 +232,8 @@ We have recently updated the \Rpackage{wateRmelon} package to facilitate a varie
 \subsection{Age Prediction}
 To perform age prediction within wateRmelon we provide a simple function that will perform the linear function using Horvath's coefficients. These are supplied by default and can be supplied with a different set by manually specifying the \Rfunction{coef} argument.
 <<agep, keep.source=TRUE>>=
-agep(melon.dasen.pf)
+data(coef)
+agep(melon.dasen.pf, coeff= coef, method='horvath')
 @
 
 \subsection{Cell Type Proportion Estimation}

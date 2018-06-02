@@ -3,10 +3,10 @@ exportMethods( naten, betaqn, nanet, nanes, danes, danet, daten1, daten2, nasen,
 import(Biobase, ROC, illuminaio, limma, lumi, methods,
        IlluminaHumanMethylation450kanno.ilmn12.hg19)
 importFrom("stats", "kmeans", "lm", "mad", "median", "na.exclude",
-           "qchisq", "quantile", "sd", "t.test", "approx", "na.omit")
+           "qchisq", "quantile", "sd", "t.test", "approx", "na.omit", 'fivenum', 'prcomp')
 importFrom("utils", "data", "packageVersion", "read.csv", "read.table",
            "write.csv", "write.table")
-importFrom("graphics", "legend")
+importFrom("graphics", "legend", 'par')
 #importClassesFrom(methylumi, MethyLumiSet)
 #importClassesFrom(minfi,  MethylSet, RGChannelSet, RGChannelSetExtended )
 #importClassesFrom(IMA, exprmethy450  )

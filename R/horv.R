@@ -1,12 +1,12 @@
 # functions for Horvath epigenetic clock
 # initial version: 20 Oct 2015 Leo
 # Updated version: 18 Jul 2016 TGS 
-#    Now Handles missing probes based on single columns.
+# Updated once more June 2018 TGS 
 
 trafo <- function(x,adult.age=20) { x=(x+1)/(1+adult.age); y=ifelse(x<=1, log( x),x-1);y }
 anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+adult.age)*x+adult.age) }
 
-agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum')){
+agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum'),...){
   method <- match.arg(method)
   if(method == 'hannum' & is.null(coeff)) stop('Please supply coeffs for hannum\'s clock.')
   if(is.null(coeff)){
