@@ -1,5 +1,6 @@
-predictSex <- function(x, x.probes, pc = 2, plot=FALSE, irlba=TRUE, center=FALSE, scale. = FALSE){
-  x <- x[x.probes,]
+predictSex <- function(x, x.probes = NULL, pc = 2, plot = TRUE, irlba=TRUE, center=FALSE, scale. = FALSE){
+  if(!is.null(x.probes)) x <- x[x.probes,]
+  x <- na.omit(x)
   cm <- colMedians(x) # colMeans?
   message('Performing PCA')
   if(irlba & require('irlba')) pca <- prcomp_irlba(x, n = pc, center = center, retx = F, scale. = scale.)$rot 

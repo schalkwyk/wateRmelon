@@ -10,13 +10,13 @@ Predicts the sex of samples
 }
 
 \usage{
-predictSex(x, x.probes, pc = 2, plot=FALSE, irlba=TRUE, center=FALSE, scale. = FALSE)
+predictSex(x, x.probes, pc = 2, plot=TRUE, irlba=TRUE, center=FALSE, scale. = FALSE)
 }
 
 \arguments{
-\item{x}{A matrix containing values equivalent to betas.
+\item{x}{A matrix containing values equivalent to betas. Can be the full set of CpG features or pre-filtered for X-chromosomes.
 }
-\item{x.probes}{vector containing logical or numeric index of probes on the X-chromosome
+\item{x.probes}{Default NULL, assuming that x is a beta matrix consisting of only X-chromosome probes, otherwise supply with vector containing logical or numeric index of probes on the X-chromosome.
 }
 \item{pc}{The principal component to guess sex across (usually the 2nd one in most cases)
 }
@@ -31,7 +31,7 @@ Character Vector of predicted sex for each sample, samples that were not guess a
 }
 
 \details{
-Function attempts to predictSex based on the colMeans of the X chromsome and princpal components. Assumes that there are two sexes to predict and as a result will perform poorly on data-sets consisting of a single data-set.
+Function attempts to predictSex based on the colMeans of the X chromsome and princpal components. Assumes that there are two sexes to predict and as a result will perform poorly on data-sets consisting of a single sex.
 }
 
 \author{
