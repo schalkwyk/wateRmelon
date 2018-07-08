@@ -27,7 +27,6 @@ return(output)
 }
 
 .impose <- function(matrix, quan){
-    message('Test new fun')
     # Other half of normalizeQuantiles, assumes ties = TRUE
     # Used to fill in a given matrix, according to quantiles determined by quan
     # matrix = matrix such as those obtained by betas(object)
