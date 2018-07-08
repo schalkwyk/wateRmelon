@@ -27,6 +27,7 @@ return(output)
 }
 
 .impose <- function(matrix, quan){
+    message('Test new fun')
     # Other half of normalizeQuantiles, assumes ties = TRUE
     # Used to fill in a given matrix, according to quantiles determined by quan
     # matrix = matrix such as those obtained by betas(object)
@@ -38,7 +39,8 @@ return(output)
     inter <- quan[['inter']]
     blank <- matrix(NA, length(ot), ncol(matrix))
     rownames(blank) <- names(ot)
-    blank[rownames(matrix), ] <- matrix
+    share <- intersect(rownames(blank), rownames(matrix))
+    blank[share,] <- matrix[share, ]
     for(z in 1:ncol(matrix)){
         isna <- is.na(blank[,z])
         r <- rep(0, length(ot))
@@ -53,7 +55,7 @@ return(output)
             (r[ot=='II'&(!isna)] - 1)/(sum(ot == 'II')-1), ties = "ordered")$y
     }
     b2 <- na.omit(blank)
-    b2 <- b2[rownames(matrix),]
+    b2 <- b2[share,]
     return(b2)
 }
 
