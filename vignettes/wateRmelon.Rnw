@@ -34,8 +34,9 @@ you can install them by hand using the following commands:
 
 <<UnevaluatedCode, eval=FALSE>>=
 install.packages('ROCR', 'matrixStats')
-source("http://bioconductor.org/biocLite.R")
-biocLite( 'limma', 'minfi',
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install( 'limma', 'minfi',
    'IlluminaHumanMethylation450kmanifest',
    'methylumi', 'lumi')
 @
