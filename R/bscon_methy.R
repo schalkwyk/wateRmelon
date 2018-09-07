@@ -15,13 +15,13 @@ else
 rownames(green.Channel)-> green.rows
 rownames(red.Channel)-> red.rows
 #   Old Regex: "^B.*C.*I" #  find any rownames starting with B that contain a subsequent C and then an I
-bisulfite.green <- green.Channel[grep("BS.C[a-z]+.I[^I]", rownames(green.Channel)),] 
-bisulfite.red <- red.Channel[grep("BS.C[a-z]+.I[^I]", rownames(red.Channel)),]
+bisulfite.green <- green.Channel[grep("(^B.*C.*)\bI", rownames(green.Channel)),] 
+bisulfite.red <- red.Channel[grep("(^B.*C.*)\bI", rownames(red.Channel)),]
   
 bsI.green <- bisulfite.green #[1:12,]
 bsI.red <- bisulfite.red #[1:12,]
-bsII.green <- green.Channel[grep("^B.*C.*II.", rownames(green.Channel)),]    #  as above with II (subset of above)
-bsII.red <- red.Channel[grep("^B.*C.*II.", rownames(red.Channel)),]
+bsII.green <- green.Channel[grep("(^B.*C.*)\bII", rownames(green.Channel)),]    #  as above with II (subset of above)
+bsII.red <- red.Channel[grep("(^B.*C.*)\bII", rownames(red.Channel)),]
   
 # calculate BS conv type 1 betas as an example of using an index vector
 if(nrow(bsI.green) > 11){ # 450K
@@ -33,3 +33,5 @@ if(nrow(bsI.green) > 11){ # 450K
 BSII.betas <- bsII.red/(bsII.red + bsII.green)
 apply(rbind(BSI.betas, BSII.betas), 2, median)*100 ## this is the value you are interested in 
 }
+
+
