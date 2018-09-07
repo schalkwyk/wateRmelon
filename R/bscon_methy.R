@@ -31,6 +31,5 @@ if(nrow(bsI.green) > 11){ # 450K
 }
 #calculation of BS conv in Type II data
 BSII.betas <- bsII.red/(bsII.red + bsII.green)
-print(rbind(BSI.betas, BSII.betas))
 apply(rbind(BSI.betas, BSII.betas), 2, median)*100 ## this is the value you are interested in 
 }
