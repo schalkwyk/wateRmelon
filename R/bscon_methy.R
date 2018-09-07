@@ -14,21 +14,23 @@ else
 
 rownames(green.Channel)-> green.rows
 rownames(red.Channel)-> red.rows
+#   Old Regex: "^B.*C.*I" #  find any rownames starting with B that contain a subsequent C and then an I
+bisulfite.green <- green.Channel[grep("BS.C[a-z]+.I[^I]", rownames(green.Channel)),] 
+bisulfite.red <- red.Channel[grep("BS.C[a-z]+.I[^I]", rownames(red.Channel)),]
   
-bisulfite.green <- green.Channel[grep("^B.*C.*I", rownames(green.Channel)),] #  find any rownames starting with B that contain a subsequent C and then an I
-bisulfite.red <- red.Channel[grep("^B.*C.*I", rownames(red.Channel)),]
-  
-bsI.green <- bisulfite.green[1:12,]
-bsI.red <- bisulfite.red[1:12,]
-  
-bsII.green <- green.Channel[grep( '^B.*C.*II', rownames(green.Channel)),]    #  as above with II (subset of above)
-bsII.red <- red.Channel[grep( '^B.*C.*II', rownames(red.Channel)),]
+bsI.green <- bisulfite.green #[1:12,]
+bsI.red <- bisulfite.red #[1:12,]
+bsII.green <- green.Channel[grep("^B.*C.*II.", rownames(green.Channel)),]    #  as above with II (subset of above)
+bsII.red <- red.Channel[grep("^B.*C.*II.", rownames(red.Channel)),]
   
 # calculate BS conv type 1 betas as an example of using an index vector
-BSI.betas<-rbind(bsI.green[1:3,], bsI.red[7:9,])/((rbind(bsI.green[1:3,], bsI.red[7:9,])) + rbind(bsI.green[4:6,], bsI.red[10:12,]))
-  
+if(nrow(bsI.green) > 11){ # 450K
+  BSI.betas <- rbind(bsI.green[1:3,], bsI.red[7:9,])/((rbind(bsI.green[1:3,], bsI.red[7:9,])) + rbind(bsI.green[4:6,], bsI.red[10:12,]))
+} else { # EPIC (Skip the missing probe pair...)
+  BSI.betas <- rbind(bsI.green[1:2,], bsI.red[6:7,])/((rbind(bsI.green[1:2,], bsI.red[6:7,])) + rbind(bsI.green[3:4,], bsI.red[ 8:9 ,]))
+}
 #calculation of BS conv in Type II data
 BSII.betas <- bsII.red/(bsII.red + bsII.green)
-  
+print(rbind(BSI.betas, BSII.betas))
 apply(rbind(BSI.betas, BSII.betas), 2, median)*100 ## this is the value you are interested in 
 }

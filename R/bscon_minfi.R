@@ -39,13 +39,17 @@ red <- csp.red (RGsetEx)
 #selecting only the Bisulfite conversion I values from both green and red
 bsI.green <- green$`BISULFITE CONVERSION I`
 bsI.red <- red$`BISULFITE CONVERSION I`
-
+browser()
 #selecting only the Bisulfite conversion II values from both green and red
 bsII.green <- green$`BISULFITE CONVERSION II`
 bsII.red <- red$`BISULFITE CONVERSION II`
 
 # calculate BS conv type I betas as an example of using an index vector
-BSI.betas<-rbind(bsI.green[1:3,], bsI.red[7:9,])/((rbind(bsI.green[1:3,], bsI.red[7:9,])) + rbind(bsI.green[4:6,], bsI.red[10:12,]))
+if(nrow(bsI.green) > 11){ # 450K
+  BSI.betas <- rbind(bsI.green[1:3,], bsI.red[7:9,])/((rbind(bsI.green[1:3,], bsI.red[7:9,])) + rbind(bsI.green[4:6,], bsI.red[10:12,]))
+} else { # EPIC
+  BSI.betas <- rbind(bsI.green[1:2,], bsI.red[6:7,])/((rbind(bsI.green[1:2,], bsI.red[6:7,])) + rbind(bsI.green[3:4,], bsI.red[ 8:9 ,]))
+}
 
 #calculation of BS con in Type II data
 BSII.betas <- bsII.red/(bsII.red + bsII.green)
