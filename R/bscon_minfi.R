@@ -39,7 +39,6 @@ red <- csp.red (RGsetEx)
 #selecting only the Bisulfite conversion I values from both green and red
 bsI.green <- green$`BISULFITE CONVERSION I`
 bsI.red <- red$`BISULFITE CONVERSION I`
-browser()
 #selecting only the Bisulfite conversion II values from both green and red
 bsII.green <- green$`BISULFITE CONVERSION II`
 bsII.red <- red$`BISULFITE CONVERSION II`
