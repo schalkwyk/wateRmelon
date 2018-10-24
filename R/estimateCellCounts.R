@@ -38,7 +38,8 @@ return(output)
     inter <- quan[['inter']]
     blank <- matrix(NA, length(ot), ncol(matrix))
     rownames(blank) <- names(ot)
-    blank[rownames(matrix), ] <- matrix
+    share <- intersect(rownames(blank), rownames(matrix))
+    blank[share,] <- matrix[share, ]
     for(z in 1:ncol(matrix)){
         isna <- is.na(blank[,z])
         r <- rep(0, length(ot))
@@ -53,7 +54,7 @@ return(output)
             (r[ot=='II'&(!isna)] - 1)/(sum(ot == 'II')-1), ties = "ordered")$y
     }
     b2 <- na.omit(blank)
-    b2 <- b2[rownames(matrix),]
+    b2 <- b2[share,]
     return(b2)
 }
 

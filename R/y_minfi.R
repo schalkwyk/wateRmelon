@@ -682,8 +682,8 @@ setMethod(
 setMethod(
   f= "agep",
   signature(betas="MethylSet"),
-  definition=function(betas, coeff, verbose){
+  definition=function(betas, coeff, method='horvath'){
     object <- getBeta(betas)
-    agep(betas=object, coeff, verbose)
+    agep(betas=object, coeff, method=method)
   }
 )

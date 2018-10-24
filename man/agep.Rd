@@ -3,6 +3,7 @@
 \alias{agep,MethylSet-method}
 \alias{agep,MethyLumiSet-method}
 \alias{coef}
+\alias{hannumCoef}
 \title{
 Age Prediction from methylomic expression data
 }
@@ -10,7 +11,7 @@ Age Prediction from methylomic expression data
 Predict age of samples using Horvath's Coefficients
 }
 \usage{
-agep(betas, coeff=NULL, verbose=FALSE,...)
+agep(betas, coeff=NULL, method=c('horvath','hannum') ,...)
 }
 \arguments{
   \item{betas}{
@@ -20,8 +21,8 @@ Matrix of betas or MethyLumiSet or MethylSet object.
 If NULL, will default to Horvath's coefficients. Otherwise can be supplied with 
 vector of own coefficients with an intercept as first element.
 }
-  \item{verbose}{
-If TRUE, agep will additionally print out names of probes per sample that are missing from coefficient list within supplied beta matrix.
+  \item{method}{
+currently either 'horvath' or 'hannum'. If using 'hannum' remember to call data(hannumCoef) before analysis and supply coeff with the hannum coefficients, otherwise will default to horvath.
 }
   \item{...}{To pass to arguments to downstream functions to specify adult.age}
 }
