@@ -39,5 +39,3 @@ Tyler J. Gorrie-Stone
 Who to contact: <tgorri@essex.ac.uk>
 }
 
-%\examples{
-

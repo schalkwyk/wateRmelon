@@ -10,12 +10,12 @@ Calculate normalized betas from exprmethy450 of Illumina 450K methylation arrays
 Quantile normalize betas from exprmethy450 objects 
 }
 
-\section{methods}{
-\describe{
-betaqn( bn ) 
-fuks( bn ) 
-}
-}
+%\section{methods}{
+%\describe{
+%betaqn( bn ) 
+%fuks( bn ) 
+%}
+%}
 
 
 \arguments{

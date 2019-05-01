@@ -8,7 +8,7 @@
 Age Prediction from methylomic expression data
 }
 \description{
-Predict age of samples using Horvath's Coefficients
+Predict age of samples using Horvaths Coefficients
 }
 \usage{
 agep(betas, coeff=NULL, method=c('horvath','hannum') ,...)
@@ -18,11 +18,11 @@ agep(betas, coeff=NULL, method=c('horvath','hannum') ,...)
 Matrix of betas or MethyLumiSet or MethylSet object.
 }
   \item{coeff}{
-If NULL, will default to Horvath's coefficients. Otherwise can be supplied with 
+If NULL, will default to Horvaths coefficients. Otherwise can be supplied with 
 vector of own coefficients with an intercept as first element.
 }
   \item{method}{
-currently either 'horvath' or 'hannum'. If using 'hannum' remember to call data(hannumCoef) before analysis and supply coeff with the hannum coefficients, otherwise will default to horvath.
+currently either "horvath" or "hannum". If using "hannum" remember to call data(hannumCoef) before analysis and supply coeff with the hannum coefficients, otherwise will default to "horvath".
 }
   \item{...}{To pass to arguments to downstream functions to specify adult.age}
 }
@@ -42,7 +42,8 @@ wateRmelon Implementation: Leo Schalkwyk, Louis El Khoury
 
 \examples{
 data(melon)
-agep(melon,coeff=NULL)
+data(coef)
+agep(melon,coeff=coef)
 # or
-agep(betas(melon),coeff=NULL)
+agep(betas(melon),coeff=coef)
 }

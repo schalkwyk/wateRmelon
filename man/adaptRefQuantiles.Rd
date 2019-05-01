@@ -55,14 +55,15 @@ provided, see \code{\link{tost}}
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
-\value{
-see \code{\link{tost}}
+%\value{
+%see \code{\link{tost}}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
-}
+%%
+%}
 \references{
 Touleimat N, Tost J: Complete pipeline for Infinium R Human 
 Methylation 450K BeadChip data processing using subset quantile 
