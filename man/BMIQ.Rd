@@ -62,9 +62,9 @@ Andrew Teschendorff, MethyLumiSet method by Leo Schalkwyk Leonard.Schalkwyk@kcl.
 
 \examples{
 
-library(RPMM)
-data(melon)
-BMIQ(melon,nfit=100)
+# library(RPMM)
+# data(melon)
+# BMIQ(melon,nfit=100)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
