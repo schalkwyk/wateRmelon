@@ -577,19 +577,10 @@ setMethod(
 	 pnthresh,perc,pthresh,
          logical.return= TRUE
       )
-#     object3 <- object[l$probes,]
-      object3 <- object2[,l$samples]
-      object3 <- object3[l$probes,]
 
- #   fil <- assayDataNew(Meth = assayDataElement(object3,"Meth"),
- #                       Unmeth = assayDataElement(object3,"Unmeth"),
- #                       Filter=matrix(rep(l$probes, length(l$sample)), nrow=length(l$probes), ncol=length(l$sample))
- #                      )
- #   newObject <- new("MethylSet", assayData=fil)
- #   newObject@annotation <- annotation(object3)
- #   newObject@phenoData <- phenoData(object3)
- #   return(newObject)
-     return(object3)
+      include <- names(which(l$probes))
+      ret <- subsetByLoci(object, includeLoci = include)[,l$samples]
+      return(ret)
     }
 )
 
