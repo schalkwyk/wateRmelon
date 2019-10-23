@@ -3,11 +3,11 @@ predictSex <- function(x, x.probes = NULL, pc = 2, plot = TRUE, irlba=TRUE, cent
   x <- na.omit(x)
   cm <- colMedians(x) # colMeans?
   message('Performing PCA')
-  if(irlba & require('irlba')) pca <- prcomp_irlba(x, n = pc, center = center, retx = F, scale. = scale.)$rot 
+  if(requireNamespace(irlba)) pca <- irlba::prcomp_irlba(x, n = pc, center = center, retx = F, scale. = scale.)$rot 
   else pca <- prcomp(x, center = center, retx = F, scale. = scale.)$rot[,seq_len(pc)]
   if(any(table(cm >= .48) >= (ncol(x)*.95))){
     message('Data likely consists of single gender')
-  }   
+  }
   message('Generating Clusters')
   c1 <- kmeans(cm, centers=fivenum(cm)[c(2,4)])
   c2 <- kmeans(pca[,pc], centers=2)
@@ -17,7 +17,7 @@ predictSex <- function(x, x.probes = NULL, pc = 2, plot = TRUE, irlba=TRUE, cent
     n <- n + 1
     if(n > 10) stop('Cannot find meaningful clusters for data')
   }
-  is.na(s[s==3]) <- TRUE  
+  is.na(s[s==3]) <- TRUE
   o <- order(t <- tapply(cm, s, mean))
   s[s==names(t)[o[1]]] <- 'Male'
   s[s==names(t)[o[2]]] <- 'Female'
@@ -25,7 +25,7 @@ predictSex <- function(x, x.probes = NULL, pc = 2, plot = TRUE, irlba=TRUE, cent
   if(plot){
     par(mar=c(4.5,4.5,1,8))
     plot(x=pca[,1], y=pca[,pc], col=factor(s), xlab="PC 1", ylab=paste('PC', pc))
-    legend('right', legend=levels(factor(s)), col=1:3, pch=1,inset=c(-0.3,0),xpd=T) 
+    legend('right', legend=levels(factor(s)), col=1:3, pch=1,inset=c(-0.3,0),xpd=T)
   }
   return(s)
 }

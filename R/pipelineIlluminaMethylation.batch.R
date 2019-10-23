@@ -18,7 +18,7 @@ function(
 	####################################
 
 	subProjects <- dir(PATH_PROJECT_DATA)
-	
+
 	#for all subprojects
 	for(i in 1:length(subProjects)){
 		projectName <- subProjects[i]
@@ -35,7 +35,7 @@ function(
 		if(length(sampleTable) < 1){
 			warning <- "\tWARNING ! Sample table: no file matching with pattern 'TableSample' ! \n"
 			cat(warning)
-			return(warning)	
+			return(warning)
 		}
 		if(length(controlTable) > 1){
 			warning <- "\tWARNING ! Control table: too many files matching with pattern 'TableControl' ! \n"
@@ -45,7 +45,7 @@ function(
 		if(length(controlTable) < 1){
 			warning <- "\tWARNING ! Control table: no file matching with pattern 'TableControl' ! \n"
 			cat(warning)
-			return(warning)	
+			return(warning)
 		}
 
 		if(sampleSelection){
@@ -68,19 +68,19 @@ function(
 		#path2data <- paste(PATH_PROJECT_DATA, projectName, "/", sampleTable, sep="")
 		path2data <-  sampleTable
 		path2controlData <- paste(PATH_PROJECT_DATA, projectName, "/", controlTable, sep="")
-		
+
 		cat("\tSample table: ", path2data, "\n")
 		cat("\tControl table: ", path2controlData, "\n")
 		cat("\tSample list (for sample selection): ", path2sampleList, "\n")
-			
+
 		#############################
 		# starts data preprocessing #
 		#############################
 
 		methLumi_data <- preprocessIlluminaMethylation(
-			path2data = path2data,
-			path2controlData = path2controlData,
-			projectName = projectName,
+		# TGS	path2data = path2data,
+		# TGS	path2controlData = path2controlData,
+		# TGS	projectName = projectName,
 			nbBeads.threshold = nbBeads.threshold,
 			detectionPval.threshold = detectionPval.threshold,
 			detectionPval.perc.threshold = detectionPval.perc.threshold,
@@ -121,24 +121,24 @@ function(
 			cat("\t detection p-values ok (", dim(detectionPval)[1], "x", dim(detectionPval)[2], ").\n")
 		}
 	}
-	
+
 	############################################################################################
 	# Extraction of SNP probes ("rs" probes)
 	############################################################################################
-	
+
 	indexSNP <- grep(pattern="rs*", x=rownames(beta))
 	if(length(indexSNP)>0){
 		betaSNP <- beta[indexSNP,]
 		detectionPvalSNP <- detectionPval[indexSNP,]
-		
+
 		beta <- beta[-indexSNP,]
 		detectionPval <- detectionPval[-indexSNP,]
-		
+
 		write.csv(betaSNP, file=paste(PATH_RES, projectName, "_betaSNPprobes.csv", sep=""), quote=FALSE)
 		write.csv(detectionPvalSNP, file=paste(PATH_RES, projectName, "_detectionPvalueSNPprobes.csv", sep=""), quote=FALSE)
 	}
-	
-	############################################################################################								
+
+	############################################################################################
 	# start data normalization (subset quantile normalization per probe annotation categories) #
 	############################################################################################
 
