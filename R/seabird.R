@@ -37,8 +37,18 @@ function(pr, stop=1, X){ # sexdiff pvalue ROC AUC
 }
    
 
+# see https://www.r-bloggers.com/calculating-auc-the-area-under-a-roc-curve/
+auc_probability <- function(labels, scores, N=1e7){
+  pos <- sample(scores[labels], N, replace=TRUE)
+  neg <- sample(scores[!labels], N, replace=TRUE)
+  # sum( (1 + sign(pos - neg))/2)/N # does the same thing
+  (sum(pos > neg) + sum(pos == neg)/2) / N # give partial credit for ties
+}
 
-
+seabird2 <- 
+function(pr, N=length(pr), X){ # sexdiff pvalue ROC AUC
+   auc_probability(X, 1-pr,N)
+}
 
 
 #' Calculate a performance metric based on male-female differences for Illumina
@@ -90,4 +100,8 @@ function(pr, stop=1, X){ # sexdiff pvalue ROC AUC
 seabi <- 
 function (bn, stop=1, sex, X){
    1 - seabird( sextest(bn, sex), stop, X )
+}
+seabi2 <- 
+function (bn, N=nrow(bn), sex, X){
+   1 - seabird2( sextest(bn, sex), N, X )
 }
