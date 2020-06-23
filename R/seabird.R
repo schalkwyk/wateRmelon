@@ -35,7 +35,23 @@ function(pr, stop=1, X){ # sexdiff pvalue ROC AUC
    pAUC(rocdemo.sca(truth=X, data=1-pr), stop) 
 
 }
-   
+
+subbo <- function(data,X,percentage){
+   stopifnot (nrow(data) == length(X))
+   bad <- sum(is.na(X))
+   if (bad > 0){
+      message('eliminating ', bad, ' rows with no location')
+      data <- data[ !is.na(X), ]
+      X <- X[!is.na(X)]
+   }
+
+   whole <- sum(X)
+   n <- ceiling(whole * percentage/100)
+   partX<- sample( which(X), n, FALSE)
+   partR<- sample( which(!X), n, FALSE)
+   list(X= X[c(partX, partR)], data=data[c(partX,partR),])
+}
+
 
 # see https://www.r-bloggers.com/calculating-auc-the-area-under-a-roc-curve/
 auc_probability <- function(labels, scores, N=1e7){
@@ -102,6 +118,7 @@ function (bn, stop=1, sex, X){
    1 - seabird( sextest(bn, sex), stop, X )
 }
 seabi2 <- 
-function (bn, N=nrow(bn), sex, X){
-   1 - seabird2( sextest(bn, sex), N, X )
+function (bn, N=nrow(bn), sex, X, percentage=100){
+   xbn <- subbo(bn, X, percentage)
+   1 - seabird2( sextest(xbn[[2]], sex), N, xbn[[1]] )
 }
