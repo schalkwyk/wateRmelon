@@ -26,6 +26,11 @@ estimateSex <- function(betas, do_plot=FALSE){
   pred_XY <- list()
   for(chr in c('X', 'Y')){
     coefs <- sex_coef[sex_coef$pca == chr,]
+    miss_probes <- setdiff(coefs$IlmnID, colnames(z_beta))
+    if(length(miss_probes) > 0){
+      warning('Missing ', length(miss_probes), ' probes!\n', paste(c(miss_probes), collapse=", "))  
+      coefs <- coefs[!(coefs$IlmnID %in% miss_probes), ]
+    }
     chr_beta <- z_beta[, coefs$IlmnID]
     chr_beta[is.na(chr_beta)] <- 0
     pred_chr <- t(t(chr_beta) - coefs$mean) %*% coefs$coeff
