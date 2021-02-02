@@ -27,4 +27,5 @@ setGeneric ( name= "bscon"          )
 setGeneric ( name= "outlyx"         )
 setGeneric ( name= "pwod"           )
 setGeneric ( name= "agep"           )
+setGeneric ( name= "uSexQN"         )
 
