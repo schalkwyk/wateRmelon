@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
-exportMethods( naten, betaqn, nanet, nanes, danes, danet, daten1, daten2, nasen, dasen, danen, tost, fuks, swan, colnames, seabi, dmrse, dmrse_row, dmrse_col, genki, pfilter, bscon)
+exportMethods( naten, betaqn, nanet, nanes, danes, danet, daten1, daten2, nasen, dasen, danen, tost, fuks, swan, colnames, seabi, dmrse, dmrse_row, dmrse_col, genki, pfilter, bscon, uSexQN)
 import(Biobase, ROC, illuminaio, limma, lumi, methods)
 importFrom("stats", "kmeans", "lm", "mad", "median", "na.exclude",
            "qchisq", "quantile", "sd", "t.test", "approx", "na.omit", 'fivenum', 'prcomp')

@@ -34,6 +34,6 @@ Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
         robustQuantileNorm_Illumina450K.probeCategories.R
         robustQuantileNorm_Illumina450K.R seabird.R sextest.R summits.R
         swan2.R uniqueAnnotationCategory.R qual.R AllGenerics.R
-        x_methylumi.R y_minfi.R estimateSex.R
+        x_methylumi.R y_minfi.R estimateSex.R uSexQN.R
 RoxygenNote: 7.1.0
 NeedsCompilation: no

@@ -380,6 +380,49 @@ setMethod(
 )
 
 
+setMethod(
+   f= "uSexQN",
+   signature(mns="RGChannelSet"),
+   definition = function(mns, cores=1, fudge=100,...){
+      mns  <- preprocessRaw(mns)
+      return(uSexQN(mns, cores=cores, fudge=fudge, ...))
+   }
+)
+
+setMethod(
+   f= "uSexQN",
+   signature(mns="MethylSet"),
+   definition = function(mns, cores=1, fudge=100,...){
+      object <- mns
+      out <- uSexQN(
+         mns = getMeth(object),
+         uns = getUnmeth(object),
+         ot = got(object),
+         chr = getAnnotation(object)$chr,
+         cores=cores,
+         fudge=fudge,
+         ret2=TRUE
+      )
+      out2 <- MethylSet(
+         Meth = out$methylated,
+         Unmeth = out$unmethylated,
+         colData = colData(object),
+         annotation = annotation(object),
+         metadata = metadata(object)
+      )
+      out2@preprocessMethod <- c(rg.norm = 'uSexQN (wateRmelon)',
+                                 minfi = as.character(packageVersion('minfi')),
+                                 manifest = as.character(packageVersion(.getManifestString(object@annotation))))
+      return(out2)
+   }
+)
+
+
+
+
+
+
+
 #tost <- function( mn, un, da, pn ) {  no methylset method because needs detection P values
 setMethod(
    f= "tost",
