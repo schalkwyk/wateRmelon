@@ -1,9 +1,19 @@
 Package: wateRmelon
 Type: Package
-Title: Illumina 450 methylation array normalization and metrics
-Version: 1.35.1
-Author: Leonard C Schalkwyk, Ruth Pidsley, Chloe CY Wong, with functions contributed by Nizar Touleimat, Matthieu Defrance, Andrew Teschendorff, Jovana Maksimovic, Tyler Gorrie-Stone, Louis El Khoury
-Maintainer: Leo <lschal@essex.ac.uk>
+Title: Illumina 450 and EPIC methylation array normalization and metrics
+Version: 1.35.2
+Authors@R: c(person(c("Leo", "C"), "Schalkwyk", role = c("cre", "aut"),
+                    email = "lschal@essex.ac.uk"),
+             person(c("Ruth"), "Pidsley", role = "aut"),
+             person(c("Chloe", "CY"), "Wong", role = "aut"),
+             person(c("Tyler", "J"), "Gorrie-Stone", role = "aut"),
+             person(c("Nizar"), "Touleimat", role='ctb'),
+             person(c("Matthieu"), "Defrance", role='ctb'),
+             person(c("Andrew"), "Teschendorff", role='ctb'),
+             person(c("Jovana"), "Maksimovic", role='ctb'),
+             person(c("Louis", "Y"), "El Khoury", role='ctb'),
+             person(c("Yucheng"), "Wang", role='ctb')
+             )
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi and minfi packages.
 License: GPL-3
 Depends: R (>= 3.5.0), Biobase, limma, methods, matrixStats, methylumi,
@@ -33,7 +43,7 @@ Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
         referenceQuantiles.R
         robustQuantileNorm_Illumina450K.probeCategories.R
         robustQuantileNorm_Illumina450K.R seabird.R sextest.R summits.R
-        swan2.R uniqueAnnotationCategory.R qual.R AllGenerics.R
-        x_methylumi.R y_minfi.R estimateSex.R uSexQN.R
+        swan2.R uniqueAnnotationCategory.R qual.R uSexQN.R AllGenerics.R
+        x_methylumi.R y_minfi.R estimateSex.R 
 RoxygenNote: 7.1.0
 NeedsCompilation: no
