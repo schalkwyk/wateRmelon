@@ -661,14 +661,11 @@ setMethod(
          history.submitted <- as.character(Sys.time())
          object <- mns
          ds <- fot(mns)
-         if(is.null(chr)){
-            message('Finding CHR')
-         }
          norm <- uSexQN(
             mns = methylated(object),
             uns = unmethylated(object),
             ot = mns@featureData@data[,ds],
-            chr = chr,
+            chr = as.character(.createAnnotation(object)$chr),
             fudge = fudge,
             cores = cores,
             ret2 = TRUE
