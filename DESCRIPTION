@@ -28,7 +28,7 @@ biocViews: DNAMethylation, Microarray, TwoChannel, Preprocessing,
         QualityControl
 Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
         oxyscale.R adaptRefQuantiles.R beta1.R Beta2M.R betaqn.R bgeq.R
-        bgeqot.R bgeqq2.R bgeqqn.R BMIQ_1.1.R combo.R
+        bgeqot.R bgeqq2.R bgeqqn.R BMIQ_1.1.R combo.R createAnnotation.R
         concatenateMatrices.R coRankedMatrices.R correctI.R correctII.R
         dataDetectPval2NA.R db1.R detectionPval.filter.R dfs2.R
         dfsfit.R dmrse.R dmrse_col.R dmrse_row.R dyebuy1.R dyebuy2.R

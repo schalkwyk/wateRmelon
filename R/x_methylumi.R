@@ -657,15 +657,16 @@ setMethod(
 setMethod(
    f = "uSexQN",
    signature(mns="MethyLumiSet"),
-   definition = function(mns, cores=1, fudge=100,...){
+   definition = function(mns, chr = NULL, cores=1, fudge=100,...){
          history.submitted <- as.character(Sys.time())
          object <- mns
          ds <- fot(mns)
+         if(is.null(chr)) chr <- as.character(.createAnnotation(object)$chr)
          norm <- uSexQN(
             mns = methylated(object),
             uns = unmethylated(object),
             ot = mns@featureData@data[,ds],
-            chr = as.character(.createAnnotation(object)$chr),
+            chr = chr,
             fudge = fudge,
             cores = cores,
             ret2 = TRUE
