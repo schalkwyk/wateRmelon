@@ -154,6 +154,7 @@ IDATtoMatrix2 <- function(x,fileExts=list(Cy3="Grn",Cy5="Red"),idatPath='.'){#{{
   names(chs) = fileExts
   processed = lapply(fileExts, function(ch) {
     ext = paste(ch, 'idat', sep='.')
+    message(sprintf('Reading in: %s', paste(x, ext, sep='_')))
     dat = readIDAT(file.path(idatPath, paste(x, ext, sep='_')))
     Quants = data.matrix(dat$Quants)
     colnames(Quants) = paste(chs[ch], colnames(Quants), sep='.')
