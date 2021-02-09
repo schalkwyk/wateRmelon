@@ -652,7 +652,7 @@ generateManifest <- function(anno=c('450k', 'EPIC')){
   anno <- match.arg(anno)
   anno <- switch(anno, # Possible to add more manifests here!
                  '450k' = "IlluminaHumanMethylation450kanno.ilmn12.hg19",
-                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b2.hg19" # The one minfi uses...
+                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b4.hg19" # The one minfi uses...
                  )
   man <- getAnnotationObject(anno)
   x <- getAnnotation(man)[,c('Name','AddressB','AddressA', 'Type', 'Color')]
