@@ -398,7 +398,7 @@ setMethod(
          mns = getMeth(object),
          uns = getUnmeth(object),
          ot = got(object),
-         chr = getAnnotation(object)$chr,
+         chr = getAnnotation(object)[rownames(object),'chr'],
          cores=cores,
          fudge=fudge,
          ret2=TRUE
