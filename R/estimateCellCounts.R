@@ -157,6 +157,32 @@ estimateCellCounts.wmln <- function(
     coefdat <- bn[rownames(coefs),]
     rownames(coefdat) <- rownames(coefs)
     counts <- minfi:::projectCellType(coefdat, coefs)
+    
+    # calculate deconvolution error
+    getErrorPerSample = function(applyIndex,
+                                 predictedIN = counts,
+                                 coefDataIN = coefs,
+                                 betasBulkIN = coefdat){
+      
+      trueBulk = matrix(ncol = 1, nrow = nrow(coefDataIN), data = 0)
+      
+      RMSE = function(m, o){
+        sqrt(mean((m - o)^2))
+      }
+      
+      for (i in 1:ncol(coefDataIN)){
+        
+        trueBulk[,1] = trueBulk[,1] + coefDataIN[,i]*predictedIN[applyIndex,i]
+      }
+      
+      betasBulkIN = t(apply(betasBulkIN, 1, function(x){x[is.na(x)] = 0; return(x)}))
+      
+      error = RMSE(trueBulk, betasBulkIN[,applyIndex])
+      return(error)
+    }
+    CellTypePredictionError = sapply(1:nrow(counts), getErrorPerSample)
+    counts = cbind(counts, CellTypePredictionError)
+    
 
     if (meanPlot) {
         smeans <- compData$sampleMeans
