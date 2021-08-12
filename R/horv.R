@@ -2,33 +2,57 @@
 # initial version: 20 Oct 2015 Leo
 # Updated version: 18 Jul 2016 TGS 
 # Updated once more June 2018 TGS 
+# Updated again 12 August 2021 TGS
 
 trafo <- function(x,adult.age=20) { x=(x+1)/(1+adult.age); y=ifelse(x<=1, log( x),x-1);y }
+
 anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+adult.age)*x+adult.age) }
 
-agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum'),...){
+.split_intercept_from_coeff <- function(x){
+  intercept <- min(0, x['(Intercept)'], na.rm = TRUE) 
+  interceptless_coeff <- x[names(x) %in% '(Intercept)']
+  return(list(intercept=intercept, coeffs=interceptless_coeff))
+}
+
+.handle_missing <- function(cpgs, coef_list){
+  missing <- names(coef_list$coeffs) %in% names(na.omit(cpgs))
+  coef_list$coeffs <- coef_list$coeffs[missing]
+  return(coef_list)
+}
+
+.calculate_age <- function(x, coeff){
+  coef2 <- .split_intercept_from_coeff(coeff)
+  coef3 <- .handle_missing(cpgs=x, coef_list=coef2)
+  data <- x[names(coef3$coeffs)]
+  the_sum <- data %*% coef3$coeffs + coef3$intercept  #data %*% coef2 + coeff[1]
+  return(the_sum)
+}
+
+.compute_ages <- function(betas, coeff){
+  # Calculate on a per-sample basis
+  ages <- as.matrix(apply(betas, 2, FUN=.calculate_age, coeff=coeff))
+  return(ages)
+}
+
+agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum'), ...){
   method <- match.arg(method)
-  if(method == 'hannum' & is.null(coeff)) stop('Please supply coeffs for hannum\'s clock.')
-  if(is.null(coeff)){
-    message('No coefficients detected, using Horvaths clock')
-    data(coef)
-    coeff <- coef
-  }
-  if(method == 'horvath'){
-    ages <- as.matrix(apply(betas,2,function(x){
-      miss <- names(coeff)[-1]%in%names(na.omit(x))
-      coef2 <- coeff[-1][miss]
-      data <- x[names(coef2)]
-      pre <- data %*% coef2 + coeff[1]
-      anti.trafo(pre, adult.age=20) 
-    }))
-  } else if(method == 'hannum'){
-    ages <- as.matrix(apply(betas,2,function(x){
-      miss <- names(coeff)%in%names(na.omit(x))
-      coef2 <- coeff[miss]
-      data <- x[names(coef2)]
-      data %*% coef2 + 0 #?  
-    }))
+  if(!is.null(coeff)){
+    # If coeffs are provided just calculate ages according to provided coefficients
+    # Tool is smart enough to find the intercept else if missing will set to 0
+    ages <- .compute_ages(betas=betas, coeff=coeff)
+  } else {
+    ages <- switch(method,
+      'horvath' = {
+         data(coef) # call Horvath coef object something new...?
+         pre <- .compute_ages(betas=betas, coeff=coef)
+        # Horvath needs this fancy step
+         anti.trafo(pre, adult.age=20)
+      },
+      'hannum' = {
+        # Load hannum coeffs?
+        .compute_ages(betas=betas, coeff=NA)#???)
+      } #, ... Add ad nauseum
+    )
   }
   return(ages)
 }
