@@ -34,7 +34,7 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
   return(ages)
 }
 
-agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum'), ...){
+agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'all'), ...){
   method <- match.arg(method)
   if(!is.null(coeff)){
     # If coeffs are provided just calculate ages according to provided coefficients
@@ -51,7 +51,13 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum'), ...){
       'hannum' = {
         # Load hannum coeffs?
         .compute_ages(betas=betas, coeff=NA)#???)
-      } #, ... Add ad nauseum
+      },
+      'all' = {
+        clocks = c('horvath' = 'horvath', 'hannum' = 'hannum') # Add as many as cases
+        sapply(clocks, function(x, betas){
+          agep(betas = betas, coeff = NULL, method = x)
+        }, betas = betas) # Returns a DF nsample rows, n predictions columns. 
+      }#, ... Add ad nauseum
     )
   }
   return(ages)
