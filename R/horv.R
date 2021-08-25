@@ -33,8 +33,9 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
   ages <- as.matrix(apply(betas, 2, FUN=.calculate_age, coeff=coeff))
   return(ages)
 }
-
-agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'all'), ...){
+"Horvath"   "Hannum"    "Lin"       "SkinBlood" "PhenoAge" 
+agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage', 'skinblood', 'lin', 'all'), ...){
+  data(age_coefficients)
   method <- match.arg(method)
   if(!is.null(coeff)){
     # If coeffs are provided just calculate ages according to provided coefficients
@@ -43,21 +44,30 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'all'), ..
   } else {
     ages <- switch(method,
       'horvath' = {
-         data(coef) # call Horvath coef object something new...?
-         pre <- .compute_ages(betas=betas, coeff=coef)
+         pre <- .compute_ages(betas=betas, coeff=age_coefficients[['Horvath']])
         # Horvath needs this fancy step
          anti.trafo(pre, adult.age=20)
       },
       'hannum' = {
-        # Load hannum coeffs?
-        .compute_ages(betas=betas, coeff=NA)#???)
+        .compute_ages(betas=betas, coeff=age_coefficients[['Hannum']])
+      },
+      'lin' = {
+        .compute_ages(betas=betas, coeff=age_coefficients[['Lin']])
+      },
+      'skinblood' = {
+        .compute_ages(betas=betas, coeff=age_coefficients[['SkinBlood']])
+      },
+      'phenoage' = {
+        .compute_ages(betas=betas, coeff=age_coefficients[['PhenoAge']])
       },
       'all' = {
-        clocks = c('horvath' = 'horvath', 'hannum' = 'hannum') # Add as many as cases
-        sapply(clocks, function(x, betas){
-          agep(betas = betas, coeff = NULL, method = x)
-        }, betas = betas) # Returns a DF nsample rows, n predictions columns. 
-      }#, ... Add ad nauseum
+        clocks = c('horvath' = 'Horvath', 'hannum' = 'Hannum', 'phenoage' = 'PhenoAge', 'skinblood' = 'SkinBlood', 'lin' = 'Lin') # Add as many as cases
+        do.call('cbind', 
+          lapply(clocks, function(x, betas){
+            agep(betas = betas, coeff = NULL, method = x)
+          }, betas = betas)
+        ) # Returns a DF nsample rows, n predictions columns. 
+      }
     )
   }
   return(ages)
