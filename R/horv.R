@@ -10,13 +10,13 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
 
 .split_intercept_from_coeff <- function(x){
   intercept <- min(0, x['(Intercept)'], na.rm = TRUE) 
-  interceptless_coeff <- x[names(x) %in% '(Intercept)']
+  interceptless_coeff <- x[!names(x) %in% '(Intercept)']
   return(list(intercept=intercept, coeffs=interceptless_coeff))
 }
 
 .handle_missing <- function(cpgs, coef_list){
   missing <- names(coef_list$coeffs) %in% names(na.omit(cpgs))
-  coef_list$coeffs <- coef_list$coeffs[missing]
+  coef_list$coeffs <- coef_list$coeffs[!missing]
   return(coef_list)
 }
 
@@ -48,6 +48,7 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
         # Horvath needs this fancy step
          anti.trafo(pre, adult.age=20)
       },
+      # Prime the rest in switches incase we need to do more things to each individually...
       'hannum' = {
         .compute_ages(betas=betas, coeff=ageCoefs[['Hannum']])
       },
