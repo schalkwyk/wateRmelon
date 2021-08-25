@@ -61,7 +61,7 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
         .compute_ages(betas=betas, coeff=ageCoefs[['PhenoAge']])
       },
       'all' = {
-        clocks = c('horvath' = 'horvath', 'hannum' = 'hannum', 'phenoage' = 'phenoage', 'skinblood' = 'skinslood', 'lin' = 'lin') # Add as many as cases
+        clocks = c('horvath' = 'horvath', 'hannum' = 'hannum', 'phenoage' = 'phenoage', 'skinblood' = 'skinblood', 'lin' = 'lin') # Add as many as cases
         do.call('cbind', 
           lapply(clocks, function(x, betas){
             agep(betas = betas, coeff = NULL, method = x)
