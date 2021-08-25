@@ -44,21 +44,21 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
   } else {
     ages <- switch(method,
       'horvath' = {
-         pre <- .compute_ages(betas=betas, coeff=age_coefficients[['Horvath']])
+         pre <- .compute_ages(betas=betas, coeff=ageCoefs[['Horvath']])
         # Horvath needs this fancy step
          anti.trafo(pre, adult.age=20)
       },
       'hannum' = {
-        .compute_ages(betas=betas, coeff=age_coefficients[['Hannum']])
+        .compute_ages(betas=betas, coeff=ageCoefs[['Hannum']])
       },
       'lin' = {
-        .compute_ages(betas=betas, coeff=age_coefficients[['Lin']])
+        .compute_ages(betas=betas, coeff=ageCoefs[['Lin']])
       },
       'skinblood' = {
-        .compute_ages(betas=betas, coeff=age_coefficients[['SkinBlood']])
+        .compute_ages(betas=betas, coeff=ageCoefs[['SkinBlood']])
       },
       'phenoage' = {
-        .compute_ages(betas=betas, coeff=age_coefficients[['PhenoAge']])
+        .compute_ages(betas=betas, coeff=ageCoefs[['PhenoAge']])
       },
       'all' = {
         clocks = c('horvath' = 'Horvath', 'hannum' = 'Hannum', 'phenoage' = 'PhenoAge', 'skinblood' = 'SkinBlood', 'lin' = 'Lin') # Add as many as cases
