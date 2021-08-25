@@ -57,18 +57,21 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
         .compute_ages(betas=betas, coeff=ageCoefs[['Lin']])
       },
       'skinblood' = {
-        .compute_ages(betas=betas, coeff=ageCoefs[['SkinBlood']])
+        pre <- .compute_ages(betas=betas, coeff=ageCoefs[['SkinBlood']])
+        anti.trafo(pre, adult.age=20) # I think...
       },
       'phenoage' = {
         .compute_ages(betas=betas, coeff=ageCoefs[['PhenoAge']])
       },
       'all' = {
         clocks = c('horvath' = 'horvath', 'hannum' = 'hannum', 'phenoage' = 'phenoage', 'skinblood' = 'skinblood', 'lin' = 'lin') # Add as many as cases
-        do.call('cbind', 
+        out <- do.call('cbind', 
           lapply(clocks, function(x, betas){
             agep(betas = betas, coeff = NULL, method = x)
           }, betas = betas)
-        ) # Returns a DF nsample rows, n predictions columns. 
+        ) # Returns a DF nsample rows, n predictions columns.
+        colnames(out) <- names(clock)
+        out
       }
     )
   }
