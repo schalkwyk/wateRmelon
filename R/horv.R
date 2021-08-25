@@ -33,7 +33,7 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
   ages <- as.matrix(apply(betas, 2, FUN=.calculate_age, coeff=coeff))
   return(ages)
 }
-"Horvath"   "Hannum"    "Lin"       "SkinBlood" "PhenoAge" 
+
 agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage', 'skinblood', 'lin', 'all'), ...){
   data(age_coefficients)
   method <- match.arg(method)
