@@ -70,7 +70,7 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
             agep(betas = betas, coeff = NULL, method = x)
           }, betas = betas)
         ) # Returns a DF nsample rows, n predictions columns.
-        colnames(out) <- names(clock)
+        colnames(out) <- names(clocks)
         out
       }
     )
