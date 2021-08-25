@@ -35,7 +35,7 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
 }
 
 agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage', 'skinblood', 'lin', 'all'), ...){
-  data(age_coefficients)
+  data("age_coefficients")
   method <- match.arg(method)
   if(!is.null(coeff)){
     # If coeffs are provided just calculate ages according to provided coefficients
