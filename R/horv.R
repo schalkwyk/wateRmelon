@@ -9,14 +9,15 @@ trafo <- function(x,adult.age=20) { x=(x+1)/(1+adult.age); y=ifelse(x<=1, log( x
 anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+adult.age)*x+adult.age) }
 
 .split_intercept_from_coeff <- function(x){
-  intercept <- min(0, x['(Intercept)'], na.rm = TRUE) 
+  intercept <- x['(Intercept)']
+  if(is.na(intercept)) intercept <- 0
   interceptless_coeff <- x[!names(x) %in% '(Intercept)']
   return(list(intercept=intercept, coeffs=interceptless_coeff))
 }
 
 .handle_missing <- function(cpgs, coef_list){
   missing <- names(coef_list$coeffs) %in% names(na.omit(cpgs))
-  coef_list$coeffs <- coef_list$coeffs[!missing]
+  coef_list$coeffs <- coef_list$coeffs[missing]
   return(coef_list)
 }
 
