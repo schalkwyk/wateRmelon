@@ -689,7 +689,7 @@ setMethod(
 )
 
 setMethod(
-  f= "estimateCellCounts",
+  f= "estimateCellCounts.wmln",
   signature(object="MethyLumiSet"),
   definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
 		      perc = 1, compositeCellType = "Blood", probeSelect = "auto", cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
