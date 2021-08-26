@@ -124,7 +124,14 @@ estimateCellCounts.wmln <- function(
     referenceMset <- referenceMset[mrn,]
     M <- mn[mrn,]
     U <- un[mrn,]
-    ot <- getProbeType(referenceMset)
+    #ot <- getProbeType(referenceMset)
+    pri <- rbind(
+        cbind(getProbeInfo(referenceMset, type='I')[,1], type='I'),
+        cbind(getProbeInfo(referenceMset, type='II')[,1], type='II')
+    )
+    ot <- pri[,2]
+    names(ot) <- pri[,1]
+    ot <- ot[mrn]
     colsel <- sample(seq_len(ncol(M)), max(2, min(ncol(M),round(ncol(M)*perc))), replace = FALSE) 
     sMI <- .normalizeQuantiles2(M[ot=='I', colsel])
     sMII <- .normalizeQuantiles2(M[ot=='II', colsel])
