@@ -91,8 +91,20 @@ estimateCellCounts.wmln <- function(
         stop(sprintf("Could not find reference data package for compositeCellType '%s' and referencePlatform '%s' (inferred package name is '%s')",
                      compositeCellType, rgPlatform, referencePkg))
     }
-    data(list = referencePkg)
-    referenceRGset <- get(referencePkg)
+    if(platform == 'EPIC'){
+	# This is actually worse than the original grok...
+	if(require('ExperimentHub', character.only = TRUE)){ 
+	  hub <- ExperimentHub::ExperimentHub()  
+          query(hub, "FlowSorted.Blood.EPIC")
+	  referenceRGset <- hub[["EH1136"]]
+        } else {
+	  stop('Could not find ExperimentHub R package - please install')
+	}
+	cellTypes <- gsub('Gran', 'Neu', cellTypes)
+    } else {
+    	data(list = referencePkg)
+    	referenceRGset <- get(referencePkg)
+    }
     if(! "CellType" %in% names(colData(referenceRGset)))
         stop(sprintf("the reference sorted dataset (in this case '%s') needs to have a phenoData column called 'CellType'"),
              names(referencePkg))
@@ -110,13 +122,11 @@ estimateCellCounts.wmln <- function(
     if(is.null(bn)) bn <- betas(object)
     referencePd <- colData(referenceRGset)
     referenceMset <- preprocessRaw(referenceRGset)
-    if(platform == 'EPIC') message('No Reference Set of EPIC, converting array to 450k...') # Nothing to change... yet...
-    lrn <- rownames(referenceMset)%in%rownames(mn)
-    mrn <- rownames(referenceMset)[lrn]
+    mrn <- intersect(rownames(referenceMset), rownames(mn))
+    referenceMset <- referenceMset[mrn,]
     M <- mn[mrn,]
     U <- un[mrn,]
-    # rownames(M) <- rownames(U) <- rownames(referenceMset)
-    ot <- getProbeType(referenceMset)[rownames(referenceMset)%in%rownames(mn)]
+    ot <- getProbeType(referenceMset)
     colsel <- sample(seq_len(ncol(M)), max(2, min(ncol(M),round(ncol(M)*perc))), replace = FALSE) 
     sMI <- .normalizeQuantiles2(M[ot=='I', colsel])
     sMII <- .normalizeQuantiles2(M[ot=='II', colsel])
@@ -139,8 +149,8 @@ estimateCellCounts.wmln <- function(
     uquan[['inter']][ot == 'II'] <- sUII[[2]]
     mquan[['rn']] <- uquan[['rn']] <- rownames(M)
 
-    nmet <- .impose(getMeth(referenceMset)[lrn,], mquan)
-    nume <- .impose(getUnmeth(referenceMset)[lrn,], uquan)
+    nmet <- .impose(getMeth(referenceMset), mquan)
+    nume <- .impose(getUnmeth(referenceMset), uquan)
     rm(referenceRGset)
 
     # Everything else continues as normal.
