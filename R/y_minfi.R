@@ -731,6 +731,7 @@ setMethod(
     if(is.null(referencePlatform)){
 	referencePlatform <- getManifest(object)@annotation
     }
+    object <- preprocessRaw(object)
     estimateCellCounts.wmln(object=object, referencePlatform=referencePlatform, mn=getMeth(object), un=getUnmeth(object), bn=getBeta(object), 
 			    perc=perc, compositeCellType=compositeCellType,
 			    probeSelect=probeSelect, cellTypes=cellTypes, returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
