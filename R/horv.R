@@ -18,6 +18,8 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
 .handle_missing <- function(cpgs, coef_list){
   not_missing <- names(coef_list$coeffs) %in% names(na.omit(cpgs))
   coef_list$coeffs <- coef_list$coeffs[not_missing]
+  coef_list$missing_probes <- paste0(na.omit(names(coef_list$coeffs)[!not_missing]), collapse=';')
+  coef_list$n_missing <- length(na.omit(names(coef_list$coeffs)[!not_missing]))
   return(coef_list)
 }
 
@@ -26,55 +28,66 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
   coef3 <- .handle_missing(cpgs=x, coef_list=coef2)
   data <- x[names(coef3$coeffs)]
   the_sum <- data %*% coef3$coeffs + coef3$intercept  #data %*% coef2 + coeff[1]
-  return(the_sum)
+  return( data.frame(the_sum, coef3$n_missing, coef3$missing_probes, stringsAsFactors = FALSE) )
 }
 
 .compute_ages <- function(betas, coeff){
   # Calculate on a per-sample basis
-  ages <- as.matrix(apply(betas, 2, FUN=.calculate_age, coeff=coeff))
+  ages <- apply(betas, 2, FUN=.calculate_age, coeff=coeff)
+  ages <- do.call('rbind', ages)
   return(ages)
 }
 
-agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage', 'skinblood', 'lin', 'all'), ...){
+agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage', 'skinblood', 'lin', 'all'), n_missing = TRUE, missing_probes = FALSE, ...){
   data("age_coefficients")
   method <- match.arg(method)
   if(!is.null(coeff)){
     # If coeffs are provided just calculate ages according to provided coefficients
     # Tool is smart enough to find the intercept else if missing will set to 0
     ages <- .compute_ages(betas=betas, coeff=coeff)
+    colnames(ages) <- c('custom_age', 'n_missing', 'missing_probes')
   } else {
     ages <- switch(method,
       'horvath' = {
          pre <- .compute_ages(betas=betas, coeff=ageCoefs[['Horvath']])
-        # Horvath needs this fancy step
-         anti.trafo(pre, adult.age=20)
+         # Horvath needs this fancy step
+         pre[,1] <- anti.trafo(pre[,1], adult.age=20)
+         colnames(pre) <- c('horvath.age', 'horvath.n_missing', 'horvath.missing_probes')
+         pre
       },
       # Prime the rest in switches incase we need to do more things to each individually...
       'hannum' = {
-        .compute_ages(betas=betas, coeff=ageCoefs[['Hannum']])
+        pre <- .compute_ages(betas=betas, coeff=ageCoefs[['Hannum']])
+        colnames(pre) <- c('hannum.age', 'hannum.n_missing', 'hannum.missing_probes')
+        pre
       },
       'lin' = {
-        .compute_ages(betas=betas, coeff=ageCoefs[['Lin']])
+        pre <-.compute_ages(betas=betas, coeff=ageCoefs[['Lin']])
+        colnames(pre) <- c('lin.age', 'lin.n_missing', 'lin.missing_probes')
+        pre
       },
       'skinblood' = {
         pre <- .compute_ages(betas=betas, coeff=ageCoefs[['SkinBlood']])
-        anti.trafo(pre, adult.age=20) # I think...
+        pre[,1] <- anti.trafo(pre[,1], adult.age=20) # I think...
+        colnames(pre) <- c('skinblood.age', 'skinblood.n_missing', 'skinblood.missing_probes')
+        pre
       },
       'phenoage' = {
-        .compute_ages(betas=betas, coeff=ageCoefs[['PhenoAge']])
+        pre <- .compute_ages(betas=betas, coeff=ageCoefs[['PhenoAge']])
+        colnames(pre) <- c('phenoage.age', 'phenoage.n_missing', 'phenoage.missing_probes')
+        pre
       },
       'all' = {
         clocks = c('horvath' = 'horvath', 'hannum' = 'hannum', 'phenoage' = 'phenoage', 'skinblood' = 'skinblood', 'lin' = 'lin') # Add as many as cases
-        out <- do.call('cbind', 
+        out <-
           lapply(clocks, function(x, betas){
-            agep(betas = betas, coeff = NULL, method = x)
+            agep(betas = betas, coeff = NULL, method = x, n_missing=n_missing, missing_probes=missing_probes )
           }, betas = betas)
-        ) # Returns a DF nsample rows, n predictions columns.
-        colnames(out) <- names(clocks)
-        out
+        out <- do.call('cbind', out)
+        return(out)
       }
     )
   }
-  return(ages)
+  return(ages[,c(TRUE, n_missing, missing_probes)])
 }
 
