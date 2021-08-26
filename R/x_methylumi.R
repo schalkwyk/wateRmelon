@@ -703,19 +703,3 @@ setMethod(
 			    probeSelect=probeSelect, cellTypes=cellTypes, returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
   }
 )
-
-estimateCellCounts.wmln <- function(
-    object,
-    referencePlatform = c("IlluminaHumanMethylation450k", "IlluminaHumanMethylationEPIC", "IlluminaHumanMethylation27k"),
-    mn = NULL,
-    un = NULL,
-    bn = NULL,
-    perc = 1,
-    compositeCellType = "Blood",
-    probeSelect = "auto",
-    cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
-
-    returnAll = FALSE,
-    meanPlot = FALSE,
-    verbose = TRUE,
-    ...) {
