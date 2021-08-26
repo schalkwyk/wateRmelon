@@ -16,8 +16,8 @@ anti.trafo <- function(x,adult.age=20) { ifelse(x<0, (1+adult.age)*exp(x)-1, (1+
 }
 
 .handle_missing <- function(cpgs, coef_list){
-  missing <- names(coef_list$coeffs) %in% names(na.omit(cpgs))
-  coef_list$coeffs <- coef_list$coeffs[missing]
+  not_missing <- names(coef_list$coeffs) %in% names(na.omit(cpgs))
+  coef_list$coeffs <- coef_list$coeffs[not_missing]
   return(coef_list)
 }
 
