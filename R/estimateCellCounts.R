@@ -66,7 +66,6 @@ estimateCellCounts.wmln <- function(
     bn = NULL,
     perc = 1,
     compositeCellType = "Blood",
-#    processMethod = "auto",
     probeSelect = "auto",
     cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
     referencePlatform = c("IlluminaHumanMethylation450k",
@@ -80,14 +79,13 @@ estimateCellCounts.wmln <- function(
     # to make use of some improvements that improve speed at a marginal cost of
     # accuracy. Particularly useful for big data where normalising biological
     # and reference data _together_ is as important.
-
     referencePlatform <- match.arg(referencePlatform)
     rgPlatform <- platform <- match.arg(platform)
-    if(rgPlatform == 'EPIC') rgPlatform <- '450k' # Will change this eventually.
     # Sanity Checking from minfi...
     if((compositeCellType == "CordBlood") && (!"nRBC" %in% cellTypes)){
         message("[estimateCellCounts] Consider including 'nRBC' in argument 'cellTypes' for cord blood estimation.\n")
     }
+    #FlowSorted.Blood.EPIC
     referencePkg <- sprintf("FlowSorted.%s.%s", compositeCellType, rgPlatform)
     if(!require(referencePkg, character.only = TRUE)){
         stop(sprintf("Could not find reference data package for compositeCellType '%s' and referencePlatform '%s' (inferred package name is '%s')",
