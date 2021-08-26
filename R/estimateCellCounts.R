@@ -60,7 +60,7 @@ return(output)
 
 estimateCellCounts.wmln <- function(
     object,
-    platform = c("450k", "EPIC", "27k"),
+    referencePlatform = c("IlluminaHumanMethylation450k", "IlluminaHumanMethylationEPIC", "IlluminaHumanMethylation27k"),
     mn = NULL,
     un = NULL,
     bn = NULL,
@@ -68,9 +68,7 @@ estimateCellCounts.wmln <- function(
     compositeCellType = "Blood",
     probeSelect = "auto",
     cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
-    referencePlatform = c("IlluminaHumanMethylation450k",
-        "IlluminaHumanMethylationEPIC",
-        "IlluminaHumanMethylation27k"),
+
     returnAll = FALSE,
     meanPlot = FALSE,
     verbose = TRUE,
@@ -80,7 +78,7 @@ estimateCellCounts.wmln <- function(
     # accuracy. Particularly useful for big data where normalising biological
     # and reference data _together_ is as important.
     referencePlatform <- match.arg(referencePlatform)
-    rgPlatform <- platform <- match.arg(platform)
+    rgPlatform <- platform <- gsub('IlluminaHumanMethylation', '', referencePlatform)
     # Sanity Checking from minfi...
     if((compositeCellType == "CordBlood") && (!"nRBC" %in% cellTypes)){
         message("[estimateCellCounts] Consider including 'nRBC' in argument 'cellTypes' for cord blood estimation.\n")
