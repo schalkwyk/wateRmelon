@@ -40,7 +40,7 @@ Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
         normalizeIlluminaMethylation.R ot.R outlyx.R pasteque.R
         peak.correction.R pfilter.R pipelineIlluminaMethylation.batch.R
         pwod.R readEPIC.R preprocessIlluminaMethylation.R
-        referenceQuantiles.R
+        referenceQuantiles.R adjustedDasen.R adjustedFunnorm.R
         robustQuantileNorm_Illumina450K.probeCategories.R
         robustQuantileNorm_Illumina450K.R seabird.R sextest.R summits.R
         swan2.R uniqueAnnotationCategory.R qual.R uSexQN.R AllGenerics.R
