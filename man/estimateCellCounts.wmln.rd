@@ -1,15 +1,22 @@
 \name{estimateCellCounts}
 \alias{estimateCellCounts.wmln}
+\alias{estimateCellCounts.wateRmelon}
+\alias{estimateCellCounts.wateRmelon,MethylSet-method}
+\alias{estimateCellCounts.wateRmelon,MethylLumiSet-method}
+\alias{estimateCellCounts.wateRmelon,RGChannelSet-method}
 \title{
 Cell Proportion Estimation using wateRmelon
 }
 \description{
-Estimates relative proportion of pure cell types within a sample, mostly identical to \code{\link[minfi]{estimateCellCounts}}. Currently, only a reference data-set exists for 450k arrays. As a result, if performed on EPIC data, function will convert methylumi object to 450k array dimensions.
+Estimates relative proportion of pure cell types within a sample, mostly identical to \code{\link[minfi]{estimateCellCounts}}. 
+References for both 450k and EPIC array are available. However 450k reference can be used on EPIC data by specifying the reference platform. Additionally a measure of error is calculated as a means of quality control.
 }
 \usage{
     estimateCellCounts.wmln(
         object,
-        platform = c("450k", "EPIC", "27k"),
+        referencePlatform = c("IlluminaHumanMethylation450k",
+            "IlluminaHumanMethylationEPIC",
+            "IlluminaHumanMethylation27k"),
         mn = NULL,
         un = NULL,
         bn = NULL,
@@ -17,9 +24,6 @@ Estimates relative proportion of pure cell types within a sample, mostly identic
         compositeCellType = "Blood",
         probeSelect = "auto",
         cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
-        referencePlatform = c("IlluminaHumanMethylation450k",
-            "IlluminaHumanMethylationEPIC",
-            "IlluminaHumanMethylation27k"),
         returnAll = FALSE,
         meanPlot = FALSE,
         verbose=TRUE,

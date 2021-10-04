@@ -721,3 +721,34 @@ setMethod(
     agep(betas=object, coeff, method=method)
   }
 )
+
+setMethod(
+  f= "estimateCellCounts.wateRmelon",
+  signature(object="RGChannelSet"),
+  definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
+		      perc = 1, compositeCellType = "Blood", probeSelect = "auto", cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
+                      returnAll = FALSE, meanPlot = FALSE, verbose = TRUE, ...){
+    if(is.null(referencePlatform)){
+	referencePlatform <- getManifest(object)@annotation
+    }
+    object <- preprocessRaw(object)
+    estimateCellCounts.wmln(object=object, referencePlatform=referencePlatform, mn=getMeth(object), un=getUnmeth(object), bn=getBeta(object), 
+			    perc=perc, compositeCellType=compositeCellType,
+			    probeSelect=probeSelect, cellTypes=cellTypes, returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
+  }
+)
+
+setMethod(
+  f= "estimateCellCounts.wateRmelon",
+  signature(object="MethylSet"),
+  definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
+		      perc = 1, compositeCellType = "Blood", probeSelect = "auto", cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
+                      returnAll = FALSE, meanPlot = FALSE, verbose = TRUE, ...){
+    if(is.null(referencePlatform)){
+	referencePlatform <- getManifest(object)@annotation
+    }
+    estimateCellCounts.wmln(object=object, referencePlatform=referencePlatform, mn=getMeth(object), un=getUnmeth(object), bn=getBeta(object), 
+			    perc=perc, compositeCellType=compositeCellType, probeSelect=probeSelect, cellTypes=cellTypes, 
+			    returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
+  }
+)

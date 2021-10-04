@@ -60,18 +60,15 @@ return(output)
 
 estimateCellCounts.wmln <- function(
     object,
-    platform = c("450k", "EPIC", "27k"),
+    referencePlatform = c("IlluminaHumanMethylation450k", "IlluminaHumanMethylationEPIC", "IlluminaHumanMethylation27k"),
     mn = NULL,
     un = NULL,
     bn = NULL,
     perc = 1,
     compositeCellType = "Blood",
-#    processMethod = "auto",
     probeSelect = "auto",
     cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
-    referencePlatform = c("IlluminaHumanMethylation450k",
-        "IlluminaHumanMethylationEPIC",
-        "IlluminaHumanMethylation27k"),
+
     returnAll = FALSE,
     meanPlot = FALSE,
     verbose = TRUE,
@@ -80,21 +77,32 @@ estimateCellCounts.wmln <- function(
     # to make use of some improvements that improve speed at a marginal cost of
     # accuracy. Particularly useful for big data where normalising biological
     # and reference data _together_ is as important.
-
     referencePlatform <- match.arg(referencePlatform)
-    rgPlatform <- platform <- match.arg(platform)
-    if(rgPlatform == 'EPIC') rgPlatform <- '450k' # Will change this eventually.
+    rgPlatform <- platform <- gsub('IlluminaHumanMethylation', '', referencePlatform)
     # Sanity Checking from minfi...
     if((compositeCellType == "CordBlood") && (!"nRBC" %in% cellTypes)){
         message("[estimateCellCounts] Consider including 'nRBC' in argument 'cellTypes' for cord blood estimation.\n")
     }
+    #FlowSorted.Blood.EPIC
     referencePkg <- sprintf("FlowSorted.%s.%s", compositeCellType, rgPlatform)
     if(!require(referencePkg, character.only = TRUE)){
         stop(sprintf("Could not find reference data package for compositeCellType '%s' and referencePlatform '%s' (inferred package name is '%s')",
                      compositeCellType, rgPlatform, referencePkg))
     }
-    data(list = referencePkg)
-    referenceRGset <- get(referencePkg)
+    if(platform == 'EPIC'){
+	# This is actually worse than the original grok...
+	if(require('ExperimentHub', character.only = TRUE)){ 
+	  hub <- ExperimentHub::ExperimentHub()  
+          query(hub, "FlowSorted.Blood.EPIC")
+	  referenceRGset <- hub[["EH1136"]]
+        } else {
+	  stop('Could not find ExperimentHub R package - please install')
+	}
+	cellTypes <- gsub('Gran', 'Neu', cellTypes)
+    } else {
+    	data(list = referencePkg)
+    	referenceRGset <- get(referencePkg)
+    }
     if(! "CellType" %in% names(colData(referenceRGset)))
         stop(sprintf("the reference sorted dataset (in this case '%s') needs to have a phenoData column called 'CellType'"),
              names(referencePkg))
@@ -112,13 +120,18 @@ estimateCellCounts.wmln <- function(
     if(is.null(bn)) bn <- betas(object)
     referencePd <- colData(referenceRGset)
     referenceMset <- preprocessRaw(referenceRGset)
-    if(platform == 'EPIC') message('No Reference Set of EPIC, converting array to 450k...') # Nothing to change... yet...
-    lrn <- rownames(referenceMset)%in%rownames(mn)
-    mrn <- rownames(referenceMset)[lrn]
+    mrn <- intersect(rownames(referenceMset), rownames(mn))
+    referenceMset <- referenceMset[mrn,]
     M <- mn[mrn,]
     U <- un[mrn,]
-    # rownames(M) <- rownames(U) <- rownames(referenceMset)
-    ot <- getProbeType(referenceMset)[rownames(referenceMset)%in%rownames(mn)]
+    #ot <- getProbeType(referenceMset)
+    pri <- rbind(
+        cbind(getProbeInfo(referenceMset, type='I')[,1], type='I'),
+        cbind(getProbeInfo(referenceMset, type='II')[,1], type='II')
+    )
+    ot <- pri[,2]
+    names(ot) <- pri[,1]
+    ot <- ot[mrn]
     colsel <- sample(seq_len(ncol(M)), max(2, min(ncol(M),round(ncol(M)*perc))), replace = FALSE) 
     sMI <- .normalizeQuantiles2(M[ot=='I', colsel])
     sMII <- .normalizeQuantiles2(M[ot=='II', colsel])
@@ -141,8 +154,8 @@ estimateCellCounts.wmln <- function(
     uquan[['inter']][ot == 'II'] <- sUII[[2]]
     mquan[['rn']] <- uquan[['rn']] <- rownames(M)
 
-    nmet <- .impose(getMeth(referenceMset)[lrn,], mquan)
-    nume <- .impose(getUnmeth(referenceMset)[lrn,], uquan)
+    nmet <- .impose(getMeth(referenceMset), mquan)
+    nume <- .impose(getUnmeth(referenceMset), uquan)
     rm(referenceRGset)
 
     # Everything else continues as normal.
@@ -157,6 +170,32 @@ estimateCellCounts.wmln <- function(
     coefdat <- bn[rownames(coefs),]
     rownames(coefdat) <- rownames(coefs)
     counts <- minfi:::projectCellType(coefdat, coefs)
+    
+    # calculate deconvolution error
+    getErrorPerSample = function(applyIndex,
+                                 predictedIN = counts,
+                                 coefDataIN = coefs,
+                                 betasBulkIN = coefdat){
+      
+      trueBulk = matrix(ncol = 1, nrow = nrow(coefDataIN), data = 0)
+      
+      RMSE = function(m, o){
+        sqrt(mean((m - o)^2))
+      }
+      
+      for (i in 1:ncol(coefDataIN)){
+        
+        trueBulk[,1] = trueBulk[,1] + coefDataIN[,i]*predictedIN[applyIndex,i]
+      }
+      
+      betasBulkIN = t(apply(betasBulkIN, 1, function(x){x[is.na(x)] = 0; return(x)}))
+      
+      error = RMSE(trueBulk, betasBulkIN[,applyIndex])
+      return(error)
+    }
+    CellTypePredictionError = sapply(1:nrow(counts), getErrorPerSample)
+    counts = cbind(counts, CellTypePredictionError)
+    
 
     if (meanPlot) {
         smeans <- compData$sampleMeans

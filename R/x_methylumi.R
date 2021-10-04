@@ -688,3 +688,19 @@ setMethod(
    }
 )
 
+setGeneric("estimateCellCounts.wateRmelon", function(object, ...){standardGeneric("estimateCellCounts.wateRmelon")})
+setMethod(
+  f= "estimateCellCounts.wateRmelon",
+  signature(object="MethyLumiSet"),
+  definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
+		      perc = 1, compositeCellType = "Blood", probeSelect = "auto", cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
+                      returnAll = FALSE, meanPlot = FALSE, verbose = TRUE, ...){
+    if(is.null(referencePlatform)){
+	referencePlatform <- "IlluminaHumanMethylation450k"
+	if(length(rownames(object)) > 500000) referencePlatform <- 'IlluminaHumanMethylationEPIC'
+	if(length(rownames(object)) < 30000) referencePlatform <- 'IlluminHumanMethylation27k'
+    }
+    estimateCellCounts.wmln(object=object, referencePlatform=referencePlatform, mn=mn, un=un, bn=bn, perc=perc, compositeCellType=compositeCellType,
+			    probeSelect=probeSelect, cellTypes=cellTypes, returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
+  }
+)
