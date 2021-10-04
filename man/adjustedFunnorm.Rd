@@ -47,8 +47,9 @@ CpGs, and infers the sex chromosome linked CpGs by linear interpolation on
 corrected autosomal CpGs.
 }
 \examples{
+\dontrun{
 GRset <- adjustedFunnorm(RGSet)
-
+}
 }
 \references{
 Functional normalization of 450k methylation array data improves replication 

@@ -16,8 +16,7 @@
 #' @param offset_fit logical (default is TRUE). To use dasen, set it TRUE; to use
 #' nasen, set it FALSE.
 #' @param cores an integer(e.g. 8) defines the number of cores to parallel processing. 
-#' Only valid under Linux OS, default value is -1, means using the maximum 
-#' number of available cores.
+#' Default value is 1, set to -1 to use all available cores.
 #' @param ret2 logical (default is FALSE), if TRUE, returns a list of intensities 
 #' and betas instead of a naked matrix of betas.
 #' @param fudge default 100, a value added to total intensity to prevent denominators 
@@ -38,9 +37,10 @@
 #' interpolatedXY: a two-step strategy to normalise DNA methylation 
 #' microarray data avoiding sex bias, Wang et al., 2021.
 #' @examples
-#' normalised_betas <- adjustedDasen(mns, uns, onetwo, CHR, cores=10)
+#' data(melon)
+#' normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], CHR = fData(melon)$CHR, cores=1)
 #' 
-adjustedDasen <- function(mns, uns, onetwo, chr, offset_fit=TRUE, cores=-1, ret2=FALSE, fudge=100,...){
+adjustedDasen <- function(mns, uns, onetwo, chr, offset_fit=TRUE, cores=1, ret2=FALSE, fudge=100,...){
     stopifnot(nrow(mns) == length(chr))
     stopifnot(nrow(uns) == length(chr))
     stopifnot(nrow(mns) == length(onetwo))

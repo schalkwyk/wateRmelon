@@ -8,7 +8,8 @@
 #' @author Wang, Yucheng
 #'
 #' @examples
-#' pred_XY <- estimateSex(betas, do_plot=TRUE)
+#' data(melon)
+#' pred_XY <- estimateSex(betas(melon), do_plot=TRUE)
 estimateSex <- function(betas, do_plot=FALSE){
   # predict sex by two PCAs on X and Y chromosomes
   data("sexCoef")

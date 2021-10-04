@@ -28,6 +28,20 @@
 \alias{pcouted}
 \alias{trafo}
 \alias{generateManifest}
+\alias{auc_probability}
+\alias{p_dfsfit}
+\alias{plot_predicted_sex}
+\alias{seabi2}
+\alias{seabird2}
+\alias{sort_order}
+\alias{subbo}
+\alias{tie_norm}
+\alias{uSexQN}
+\alias{uSexQNengine}
+\alias{uSexQN,MethylSet-method}
+\alias{uSexQN,MethyLumiSet-method}
+\alias{uSexQN,RGChannelSet-method}
+
 \title{
 Internal functions for readEPIC and other wateRmelon functions introduced in v 1.13.1
 }

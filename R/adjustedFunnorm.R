@@ -41,7 +41,9 @@
 #' microarray data avoiding sex bias, Wang et al., 2021.
 #'
 #' @examples
+#' \dontrun{
 #' GRset <- adjustedFunnorm(RGSet)
+#' }
 #' 
 adjustedFunnorm <- function(rgSet, nPCs=2, sex = NULL, bgCorr = TRUE, dyeCorr = TRUE, keepCN = TRUE, ratioConvert = TRUE, verbose = TRUE) {
     

@@ -2,7 +2,7 @@
 \alias{estimateCellCounts.wmln}
 \alias{estimateCellCounts.wateRmelon}
 \alias{estimateCellCounts.wateRmelon,MethylSet-method}
-\alias{estimateCellCounts.wateRmelon,MethylLumiSet-method}
+\alias{estimateCellCounts.wateRmelon,MethyLumiSet-method}
 \alias{estimateCellCounts.wateRmelon,RGChannelSet-method}
 \title{
 Cell Proportion Estimation using wateRmelon
@@ -31,7 +31,6 @@ References for both 450k and EPIC array are available. However 450k reference ca
 }
 \arguments{
 \item{object}{An object of class methylumiset, which contains (un)normalised methylated and unmethylated intensities}
-\item{platform}{Which micro-array platform was used to analysed samples}
 \item{mn}{
 if NULL will call methylated(object), otherwise can be given matrix of identical dimensions to object. 
 }

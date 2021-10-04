@@ -22,7 +22,7 @@ Depends: R (>= 3.5.0), Biobase, limma, methods, matrixStats, methylumi,
 Imports: Biobase
 Enhances: minfi
 Suggests: RPMM, IlluminaHumanMethylationEPICanno.ilm10b2.hg19,
-        IlluminaHumanMethylationEPICmanifest, irlba, FlowSorted.Blood.EPIC, FlowSorted.Blood.450k
+        IlluminaHumanMethylationEPICmanifest, irlba, FlowSorted.Blood.EPIC, FlowSorted.Blood.450k, preprocessCore
 LazyLoad: yes
 biocViews: DNAMethylation, Microarray, TwoChannel, Preprocessing,
         QualityControl

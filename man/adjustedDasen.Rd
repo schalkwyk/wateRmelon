@@ -10,7 +10,7 @@ adjustedDasen(
   onetwo,
   chr,
   offset_fit = TRUE,
-  cores = -1,
+  cores = 1,
   ret2 = FALSE,
   fudge = 100,
   ...
@@ -33,8 +33,7 @@ chr <- c('1', 'X', '21', ..., 'Y').}
 nasen, set it FALSE.}
 
 \item{cores}{an integer(e.g. 8) defines the number of cores to parallel processing. 
-Only valid under Linux OS, default value is -1, means using the maximum 
-number of available cores.}
+Default value is 1, set to -1 to use all available cores.}
 
 \item{ret2}{logical (default is FALSE), if TRUE, returns a list of intensities 
 and betas instead of a naked matrix of betas.}
@@ -57,8 +56,8 @@ CpGs, and infers the sex chromosome linked CpGs by linear interpolation on
 corrected autosomal CpGs.
 }
 \examples{
-normalised_betas <- adjustedDasen(mns, uns, onetwo, CHR, cores=10)
-
+data(melon)
+normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], chr = fData(melon)$CHR, cores=1)
 }
 \references{
 A data-driven approach to preprocessing Illumina 450K methylation array data, 
