@@ -1,6 +1,7 @@
 \name{agep}
 \alias{agep}
 \alias{agep,MethylSet-method}
+\alias{agep,RGChannelSet-method}
 \alias{agep,MethyLumiSet-method}
 \alias{coef}
 \alias{hannumCoef}
