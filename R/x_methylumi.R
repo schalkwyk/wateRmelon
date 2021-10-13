@@ -704,3 +704,37 @@ setMethod(
 			    probeSelect=probeSelect, cellTypes=cellTypes, returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
   }
 )
+
+setMethod(
+  f= "adjustedDasen",
+  signature(mns="MethyLumiSet"),
+  definition = function(mns, uns, onetwo, chr, offset_fit=TRUE, cores=1, ret2=FALSE, fudge=100,...){
+      history.submitted <- as.character(Sys.time())
+      object = mns
+      chr <- as.character(.createAnnotation(object)$chr)
+      norm <- adjustedDasen(
+         mns=methylated(object),
+         uns = unmethylated(object),
+         onetwo = object@featureData@data[,ds],
+         chr = chr,
+         fudge=fudge,
+         cores=cores,
+         offset_fit=offset_fit,
+         ret2=TRUE
+      )
+      betas(object)        <- norm$betas
+      methylated(object)   <- norm$methylated
+      unmethylated(object) <- norm$unmethylated
+      history.finished <- as.character(Sys.time())
+      history.command <- sprintf("Normalized with %s adjusted_dasen method (wateRmelon)", ifelse(offset_fit, 'adjustedDasen', 'adjustedNasen'))
+      object@history <- rbind(
+         object@history,
+         data.frame(
+            submitted = history.submitted,
+            finished = history.finished,
+            command = history.command
+         )
+      )
+      return(object)
+  }
+)

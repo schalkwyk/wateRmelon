@@ -74,26 +74,36 @@ mlumi <- readEPIC('path/to/idats')
 ```
 
 # Quality Control
+Quality control is a vital part of performing an EWAS, it is important that we are able to easily identify samples that are outliers and could lead to false positive results.
+There are many ways to identify outliers. Our preferred method is to use the `outlyx` function which provides a robust and reproducible multivariate method that we feel works well for most data-types. 
+
 ## Outlier Detection
 ```{r outlyx}
 outliers <- outlyx(melon, plot=TRUE)
 print(outliers)
+# remove outliers with melon[,!outliers$out]
 ```
 
-
+Similarly it is important to check the quality control probes to measure how well the experiment performs. For this we provide `bscon` to quickly check the bisulfite conversion probes for each sample to estimate the percentage of DNA that has been successfully converted. Values above 90% are ideally but values above 80% are also acceptable.
 ```{r bscon}
 bsc <- bscon(melon)
-hist(bsc)
+hist(bsc, xlab = c(0, 100))
 ```
 
 ## Probe Filtering
-
+Poorly performing probes can be identified from the bead counts and detection p-values using the `pfilter` function
 ```{r pfilter}
 melon.pf <- pfilter(melon)
 ```
 
 # Phenotype Predition
+
+wateRmelon now provides functions for three popular methods for generate phenotypic variables. Whether these are needed for quality control or identifying sample mismatch. 
+Or could even been provided as a missing covariate for analyses
+
 ## Epigenetic Ages
+wateRmelon provides 5 epigenetic age predictors: Horvath, Horvath Skin & Blood, Hannum, PhenoAge and Lin! As an extra measure we provide the number of missing probes for each clock and this can be used to supply your own list of coefficients to calculate different linear age predictions.
+!!However!! any normalisation methods that the original age predictors use to predict ages so there will be slight differences compared to the original methods.
 ```{r horv}
 agep(melon, method='all')
 
@@ -101,25 +111,35 @@ agep(melon, method='horvath')
 ```
 
 ## Sex
+Sexes of samples can be determined like so:
 ```{r sex}
 estimateSex(betas(melon), do_plot=TRUE)
 ```
 ## Cell-type proportions
+wateRmelon is able to compute cell counts for bulk blood (currently only bulk blood).
 ```{r cct, eval=FALSE}
 estimateCellCounts.wateRmelon(melon, referencePlatform = "IlluminaHumanMethylation450k")
 estimateCellCounts.wateRmelon(melon, referencePlatform = "IlluminaHumanMethylationEPIC") # change reference
 ```
+
 # Normalization & Preprocessing
 Norm Method   | Short Description | Extra Details
 ------- | ----- | --------
 dasen | Best performing normalisation method according to Pidsley 2013 |
-nasen  | Simpler implemenation of dasen that does not correct for sentrix positions | Can be used in place on EPIC data without any consequences.
-adjusted_dasen | dasen with our interpolatedXY method | `option` allows to perform adjusted_nasen derivative
+nasen  | Simpler implemenation of dasen that does not correct for sentrix positions | Can be used on EPIC data without any consequences.
+adjusted_dasen | dasen with our interpolatedXY method | `offset_fit = FALSE` performs adjusted_nasen instead
 adjusted_funnorm |funnorm with our interpolatedXY method | Only Available to `RGChannelSet`
 SWAN | Popular method for normalisation|
 
+As such they can be used as such:
+```{r norm}
+dasen.melon <- dasen(melon) # Use whichever method you would like to use. 
+```
 
 ## Normalization Violence
+Normalization aims to align the data across samples to make it ready for analysis. 
+The degree of normalization across samples is variable, where samples undergo a more dramatic transformation to resemble the rest of the data. 
+This can be an indicator that a sample has addition-al noise or is an outlier. The qual function provides an estimate of vio-lence that has been introduced through preprocessing and normalization.
 ```{r qual}
 das <- dasen(melon)
 qu <- qual(betas(melon), betas(das))
@@ -127,7 +147,7 @@ plot(qu[,1], qu[,2])
 ```
 
 # Performance Metrics
-
+TODO...
 ## Genomic Imprinting
 ```{r, dmrse}
 dmrse_row(melon.pf)
@@ -151,6 +171,8 @@ Although we cannot predict what type of analysis you are expecting to perform we
 ```{r}
 bet <- betas(melon)
 pwod_bet <- pwod(bet)
+
+# Statistical Analysis using pwod_bet
 ```
 
 # Session info {.unnumbered}
