@@ -1,0 +1,160 @@
+---
+title: "The wateRmelon User's Guide"
+shorttitle: "wateRmelon guide"
+author:
+- name: Tyler Gorrie-Stone
+  affiliation: First Author's Affiliation
+- name: Leonard Schalkwyk
+  affiliation: Second Author's Affiliation
+  email: lschal@essex.ac.uk
+package: wateRmelon
+output:
+  BiocStyle::html_document
+abstract: |
+  The comprehensive guide to using the wateRmelon package analysing DNA methylation data.
+vignette: |
+  %\VignetteIndexEntry{wateRmelon User's Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Introduction
+The `r Biocpkg("wateRmelon")` provides a set of tools for importing, quality controlly and normalizing Illumina DNA methylation microarray data. All of the functions described in this vignette are fully compatible with the `r Biocpkg("minfi")` package, including any workflows or pipelines that involves it. Additionally wateRmelon extends the `r Biocpkg("methylumi")` package to allow for MethyLumiSet representations of EPIC array data.
+
+In addition to our own functions we provide implementations for a variety of age-prediction and cell-type estimations which work for both 450k and EPIC data.
+
+## Citing the wateRmelon R package
+- If you use wateRmelon please cite our new publication
+- If you use any of the old normalization methods e.g. dasen Please additionally cite Pidsley et al
+- If you use adjustedDasen or adjustedFunnorm please cite the interpolatedXY (currently a preprint) paper Wang et al. 20XX
+- If you use estimateSex please cite Wang et al. 2021
+
+# Installation
+wateRmelon is designed to extend the `r Biocpkg("methylumi")` and `r Biocpkg("minfi")` R packages so there is quite the number of dependencies which need to be installed. This can be handled by simply running:
+
+```{r, eval= FALSE, echo= TRUE}
+install.packages('BiocManager')
+BiocManager::install('wateRmelon')
+library(wateRmelon)
+```
+
+```{r, echo=FALSE, eval=TRUE, message=FALSE}
+library(wateRmelon)
+data(melon)
+```
+Alternatively, wateRmelon can be installed directly from our [github](https://github.com/schalkwyk/wateRmelon)
+
+```{r, eval= FALSE, echo= TRUE}
+install.packages('devtools')
+devtools::install_github('schalkwyk/wateRmelon')
+```
+
+# Quick Start
+The package contains a small subset of 450k array data that can be used to explore all the funtions quickly. The `melon` data set is a `MethyLumiSet` containing 12 samples (columns) and 3364 features (rows)
+
+```{r qs}
+data(melon)
+dim(melon)
+# Quality filter using default thresholds
+melon.pf <- pfilter(melon)
+
+# Normalize using one of the many available methods
+melon.dasen.pf <- dasen(melon.pf)
+
+# Extract Betas for downstream analysis
+norm_betas <- betas(melon.dasen.pf)
+```
+
+# Data Import
+The IDAT reading provided in `r Biocpkg("methylumi")` has been updated to handle EPIC arrays, this is provided within the `readEPIC` function. Ideally, you can then read in a phenotype information that correspond to the idat files you have loaded in.
+
+Alternatively you can read in data using `r Biocpkg("minfi")` and work from an `RGChannelSet` or `MethylSet` object, using the [`read_metharray` functions](https://www.bioconductor.org/packages/devel/bioc/vignettes/minfi/inst/doc/minfi.html#3_Reading_data).
+
+```{r read, eval=FALSE, echo=TRUE}
+mlumi <- readEPIC('path/to/idats')
+```
+
+# Quality Control
+## Outlier Detection
+```{r outlyx}
+outliers <- outlyx(melon, plot=TRUE)
+print(outliers)
+```
+
+
+```{r bscon}
+bsc <- bscon(melon)
+hist(bsc)
+```
+
+## Probe Filtering
+
+```{r pfilter}
+melon.pf <- pfilter(melon)
+```
+
+# Phenotype Predition
+## Epigenetic Ages
+```{r horv}
+agep(melon, method='all')
+
+agep(melon, method='horvath')
+```
+
+## Sex
+```{r sex}
+estimateSex(betas(melon), do_plot=TRUE)
+```
+## Cell-type proportions
+```{r cct, eval=FALSE}
+estimateCellCounts.wateRmelon(melon, referencePlatform = "IlluminaHumanMethylation450k")
+estimateCellCounts.wateRmelon(melon, referencePlatform = "IlluminaHumanMethylationEPIC") # change reference
+```
+# Normalization & Preprocessing
+Norm Method   | Short Description | Extra Details
+------- | ----- | --------
+dasen | Best performing normalisation method according to Pidsley 2013 |
+nasen  | Simpler implemenation of dasen that does not correct for sentrix positions | Can be used in place on EPIC data without any consequences.
+adjusted_dasen | dasen with our interpolatedXY method | `option` allows to perform adjusted_nasen derivative
+adjusted_funnorm |funnorm with our interpolatedXY method | Only Available to `RGChannelSet`
+SWAN | Popular method for normalisation|
+
+
+## Normalization Violence
+```{r qual}
+das <- dasen(melon)
+qu <- qual(betas(melon), betas(das))
+plot(qu[,1], qu[,2])
+```
+
+# Performance Metrics
+
+## Genomic Imprinting
+```{r, dmrse}
+dmrse_row(melon.pf)
+dmrse_row(melon.dasen.pf) # Slightly better standard errores
+```
+## SNP Genotypes
+Not available for minfi objects
+```{r, genki}
+genki(melon.pf)
+genki(melon.dasen.pf)
+```
+## XCI
+```{r, XCI}
+seabi(melon.pf, sex=pData(melon.pf)$sex, X=fData(melon.pf)$CHR=='X')
+seabi(melon.dasen.pf, sex=pData(melon.dasen.pf)$sex, X=fData(melon.dasen.pf)$CHR=='X')
+```
+
+# Statistical Analysis
+Although we cannot predict what type of analysis you are expecting to perform we have a couple of recommendations that should be considered before you perform statistical testing. Firstly we recommend a final sweep of the normalized data using `pwod`
+
+```{r}
+bet <- betas(melon)
+pwod_bet <- pwod(bet)
+```
+
+# Session info {.unnumbered}
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
