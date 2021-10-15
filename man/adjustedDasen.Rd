@@ -2,6 +2,9 @@
 % Please edit documentation in R/adjustedDasen.R
 \name{adjustedDasen}
 \alias{adjustedDasen}
+\alias{adjustedDasen,MethylSet-method}
+\alias{adjustedDasen,RGChannelSet-method}
+\alias{adjustedDasen,MethyLumiSet-method}
 \title{adjustedDasen}
 \usage{
 adjustedDasen(
