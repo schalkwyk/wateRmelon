@@ -11,6 +11,7 @@
 #' data(melon)
 #' pred_XY <- estimateSex(betas(melon), do_plot=TRUE)
 estimateSex <- function(betas, do_plot=FALSE){
+  betas <- as.matrix(betas)
   # predict sex by two PCAs on X and Y chromosomes
   data("sexCoef")
   # Z score normalization
