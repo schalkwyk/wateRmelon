@@ -2,13 +2,14 @@
 % Please edit documentation in R/estimateSex.R
 \name{estimateSex}
 \alias{estimateSex}
-\alias{sex_coef}
 \title{Predict sex by using robust sex-related CpG sites on ChrX and ChrY}
 \usage{
 estimateSex(betas, do_plot = FALSE)
 }
 \arguments{
-\item{betas}{raw beta values, ideally: beta = M / (M + U + 100).}
+\item{betas}{A matrix with sample IDs as column names, and probe names as row names, 
+ideally: beta = M / (M + U + 100). Take a look at an example betas with:
+"data(melon); print(betas(melon)[1:10, 1:3])".}
 
 \item{do_plot}{logical. Should plot the predicted results? Default: FALSE}
 }
@@ -23,5 +24,6 @@ data(melon)
 pred_XY <- estimateSex(betas(melon), do_plot=TRUE)
 }
 \author{
-Wang, Yucheng
+Wang, Yucheng, et al. "DNA methylation-based sex classifier to predict sex 
+and identify sex chromosome aneuploidy." BMC genomics 22.1 (2021): 1-11.
 }

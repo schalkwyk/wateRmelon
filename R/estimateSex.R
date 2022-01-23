@@ -1,11 +1,16 @@
 #' Predict sex by using robust sex-related CpG sites on ChrX and ChrY
 #'
-#' @param betas raw beta values, ideally: beta = M / (M + U + 100).
+#' @param betas 
+#' A matrix with sample IDs as column names, and probe names as row names, 
+#' ideally: beta = M / (M + U + 100). Take a look at an example betas with:
+#' "data(melon); print(betas(melon)[1:10, 1:3])".
 #' @param do_plot logical. Should plot the predicted results? Default: FALSE
 #'
 #' @return dataframe contains predicted sex information.
 #' @export
-#' @author Wang, Yucheng
+#' @author
+#' Wang, Yucheng, et al. "DNA methylation-based sex classifier to predict sex 
+#' and identify sex chromosome aneuploidy." BMC genomics 22.1 (2021): 1-11.
 #'
 #' @examples
 #' data(melon)
