@@ -17,6 +17,11 @@
 #' pred_XY <- estimateSex(betas(melon), do_plot=TRUE)
 estimateSex <- function(betas, do_plot=FALSE){
   betas <- as.matrix(betas)
+  single_sample <- FALSE
+  if(ncol(betas) == 1) {
+    betas <- cbind(betas, betas)
+    single_sample <- TRUE
+  }
   # predict sex by two PCAs on X and Y chromosomes
   data("sexCoef")
   # Z score normalization
@@ -49,6 +54,10 @@ estimateSex <- function(betas, do_plot=FALSE){
   pred_XY$'predicted_sex'[(pred_XY$X < 0) & (pred_XY$Y > 0)] <- 'Male'
   pred_XY$'predicted_sex'[(pred_XY$X > 0) & (pred_XY$Y > 0)] <- '47,XXY'
   pred_XY$'predicted_sex'[(pred_XY$X < 0) & (pred_XY$Y < 0)] <- '45,XO'
+  if(single_sample){
+    pred_XY <- pred_XY[1, ]
+  }
+  
   if(do_plot){
     plot_predicted_sex(pred_XY)
   }else{
