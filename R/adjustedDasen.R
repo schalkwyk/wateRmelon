@@ -38,7 +38,7 @@
 #' microarray data avoiding sex bias, Wang et al., 2021.
 #' @examples
 #' data(melon)
-#' normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], CHR = fData(melon)$CHR, cores=1)
+#' normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], chr = fData(melon)$CHR, cores=1)
 #' 
 adjustedDasen <- function(mns, uns, onetwo, chr, offset_fit=TRUE, cores=1, ret2=FALSE, fudge=100,...){
     stopifnot(nrow(mns) == length(chr))
@@ -89,10 +89,10 @@ sort_order <- function(d, tie=TRUE){
     }
     # deal with NA in input d
     nobsj <- length(Si$x)
-    #n_1 <- length(d)
+    n_1 <- length(d)
     isna <- is.na(d)
     if (sum(isna) > 0) {
-        #i <- (0:(n_1 - 1))/(n_1 - 1)
+        i <- (0:(n_1 - 1))/(n_1 - 1)
         Si$x <- approx((0:(nobsj - 1))/(nobsj - 1), Si$x, i, ties = list("ordered", mean))$y  # Si$x will not contain NAs any more.
         if (!tie) {
             O_i <- rep(NA, n_1)

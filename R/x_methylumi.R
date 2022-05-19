@@ -710,7 +710,8 @@ setMethod(
   signature(mns="MethyLumiSet"),
   definition = function(mns, uns, onetwo, chr, offset_fit=TRUE, cores=1, ret2=FALSE, fudge=100,...){
       history.submitted <- as.character(Sys.time())
-      object = mns
+      object <- mns
+      ds <- fot(mns)
       chr <- as.character(.createAnnotation(object)$chr)
       norm <- adjustedDasen(
          mns=methylated(object),
@@ -722,9 +723,9 @@ setMethod(
          offset_fit=offset_fit,
          ret2=TRUE
       )
-      betas(object)        <- norm$betas
-      methylated(object)   <- norm$methylated
-      unmethylated(object) <- norm$unmethylated
+      betas(object)        <- as.matrix(norm$betas)
+      methylated(object)   <- as.matrix(norm$methylated)
+      unmethylated(object) <- as.matrix(norm$unmethylated)
       history.finished <- as.character(Sys.time())
       history.command <- sprintf("Normalized with %s adjusted_dasen method (wateRmelon)", ifelse(offset_fit, 'adjustedDasen', 'adjustedNasen'))
       object@history <- rbind(

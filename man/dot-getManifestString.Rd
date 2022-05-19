@@ -2,21 +2,21 @@
 % Please edit documentation in R/y_minfi.R
 \name{.getManifestString}
 \alias{.getManifestString}
-%\alias{got}
-%\alias{fot}
+\alias{got}
+\alias{fot}
 \alias{pop}
 \title{Internal functions for Illumina i450 normalization functions}
 \usage{
 .getManifestString(annotation)
 }
 \arguments{
-\item{annotation}{an annotation?}
+\item{x}{a MethyLumiSet}
 
-%\item{obj}{a MethylSet}
+\item{obj}{a MethylSet}
 
-%\item{fd}{a character vector of the desired annotation columns}
+\item{fd}{a character vector of the desired annotation columns}
 
-%\item{rn}{a character vector of the desired features}
+\item{rn}{a character vector of the desired features}
 }
 \description{
 got and fot find the annotation column differentiating type I and type II

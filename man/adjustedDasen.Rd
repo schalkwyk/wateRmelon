@@ -2,9 +2,6 @@
 % Please edit documentation in R/adjustedDasen.R
 \name{adjustedDasen}
 \alias{adjustedDasen}
-\alias{adjustedDasen,MethylSet-method}
-\alias{adjustedDasen,RGChannelSet-method}
-\alias{adjustedDasen,MethyLumiSet-method}
 \title{adjustedDasen}
 \usage{
 adjustedDasen(
@@ -61,6 +58,7 @@ corrected autosomal CpGs.
 \examples{
 data(melon)
 normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], chr = fData(melon)$CHR, cores=1)
+
 }
 \references{
 A data-driven approach to preprocessing Illumina 450K methylation array data, 
