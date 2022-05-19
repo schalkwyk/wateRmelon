@@ -58,6 +58,8 @@ corrected autosomal CpGs.
 \examples{
 data(melon)
 normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], chr = fData(melon)$CHR, cores=1)
+## if input is an object of methylumiset or methylset
+normalised_betas <- adjustedDasen(melon)
 
 }
 \references{

@@ -39,6 +39,8 @@
 #' @examples
 #' data(melon)
 #' normalised_betas <- adjustedDasen(mns = methylated(melon), uns = unmethylated(melon), onetwo = fData(melon)[,fot(melon)], chr = fData(melon)$CHR, cores=1)
+#' ## if input is an object of methylumiset or methylset
+#' normalised_betas <- adjustedDasen(melon)
 #' 
 adjustedDasen <- function(mns, uns, onetwo, chr, offset_fit=TRUE, cores=1, ret2=FALSE, fudge=100,...){
     stopifnot(nrow(mns) == length(chr))
