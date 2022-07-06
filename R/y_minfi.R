@@ -723,6 +723,15 @@ setMethod(
 )
 
 setMethod(
+  f= "smokp",
+  signature(betas="MethylSet"),
+  definition=function(betas, method='SSt', sst=NULL){
+    object <- getBeta(betas)
+    smokp(betas=object, method=method, sst)
+  }
+)
+
+setMethod(
   f= "estimateCellCounts.wateRmelon",
   signature(object="RGChannelSet"),
   definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
