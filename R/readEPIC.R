@@ -1,4 +1,6 @@
 ### readEPIC
+
+ # add in support for epicv2
  # Author: Tyler Gorrie-Stone
  # Last Modified: 19-01-2016
  # Creation Date: 20-11-2015
@@ -60,8 +62,8 @@ columnMatrix <- function(x, row.names=NULL) { # {{{
 ## require()s the appropriate package for annotating a chip & sets up mappings
 # Potentially may temporarily require more indepth ordering file for 450k
 # arrays until the 450k is completely replaced by epic chips.
-getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
-                                       genome=c('hg19','hg18')) { # {{{
+getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic', 'Epicv2'),
+                                       genome=c('hg19','hg18', 'hg38')) { # {{{
   genome <- match.arg(genome) ## default to FDb.InfiniumMethylation.hg19
   pkg <- paste0('FDb.InfiniumMethylation.', genome)
   require(pkg, character.only=TRUE) ## and
@@ -113,7 +115,25 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
                                } else {
                                  r<- return(r[[design]])
                                }
+                             },
+                         
+			'Epicv2'=function(design=NULL, color=NULL, ...) {
+                               #data(epic.ordering)
+                               epicV2.ordering <<- generateManifest('EPICv2')
+                               what <- c('Probe_ID','M','U')
+                               r <- split(epicV2.ordering[,c(what,'col')],
+                                          epicV2.ordering$DESIGN)
+                               r$I <- split(r$I[,what], r$I$col)
+                               r$II <- r$II[,what]
+                               if (is.null(design)) {
+                                r<- return(r)
+                               } else if (design == 'I' && !is.null(color)) {
+                                 r<- return(r[[design]][[substr(color,1,1)]])
+                               } else {
+                                 r<- return(r[[design]])
+                               }
                              }
+
                      )
 
   getControls <- switch(chipType,
@@ -127,7 +147,11 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
                         },
                         'Epic'=function() {
                            data(epic.controls)
-                           return(epic.controls)}
+                           return(epic.controls)
+			},
+                        'Epicv2'=function() {
+                           data(epicV2.controls)
+                           return(epicV2.controls)}
                        )
 
   getOrdering <- switch(chipType,
@@ -139,7 +163,10 @@ getMethylationBeadMappers2 <- function(chipType=c('450k','27k','Epic'),
                         return(hm450.ordering[,ord])},
                         'Epic'=function(){
                  ord <- c('Probe_ID','DESIGN','COLOR_CHANNEL')
-                        return(epic.ordering[,ord])}
+                        return(epic.ordering[,ord])},
+                        'Epicv2'=function(){
+                 ord <- c('Probe_ID','DESIGN','COLOR_CHANNEL')
+                        return(epicV2.ordering[,ord])}
                        )
 
   mapper <- list(probes=getProbes,
@@ -193,6 +220,7 @@ extractAssayDataFromList2 <- function(assay, mats, fnames) { # {{{
 ## a faster rewrite of DFsToNChannelSet() so that I can decommission it...
 DataToNChannelSet2 <- function(mats, chans=c(Cy3='GRN',Cy5='RED'), parallel=F, protocol.data=F, IDAT=TRUE, force=F){ # {{{
   # Stop-check to ensure different platforms are read simulatenously.
+	## note EPIC and EPICv2 have the same chip type and there are several different EPIC manifests
   epic=hm27=hm450=0
   qw <- unlist(lapply(mats, function(x) attr(x, 'ChipType')))
   epic = sum(grepl('BeadChip 8x5', qw))
@@ -266,6 +294,12 @@ DataToNChannelSet2 <- function(mats, chans=c(Cy3='GRN',Cy5='RED'), parallel=F, p
       annotation(obj) = 'IlluminaHumanMethylation450k'
     } else if(ChipType == "BeadChip 8x5"){
       annotation(obj) = 'IlluminaHumanMethylationEpic'}
+    
+    if (ChipType == "BeadChip 8x5" && dim(obj)[1] > 1e6 ) {
+      annotation(obj) = 'IlluminaHumanMethylationEpicv2'}
+
+
+
   } # }}}
   return(obj)
 } # }}}
@@ -432,7 +466,18 @@ designIItoMandU2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T) { # {{
 ## 12/12/14: this code is hideous, what sort of clown wrote it?  Oh yeah, I did
 # TGS: possible to do this better?
 mergeProbeDesigns2 <- function(NChannelSet, parallel=F, n=F, n.sd=F, oob=T){ #{{{
-  if(annotation(NChannelSet) == 'IlluminaHumanMethylationEpic') {
+  
+    if(annotation(NChannelSet) == 'IlluminaHumanMethylationEpicv2') {
+    design1=designItoMandU2(NChannelSet,parallel=parallel,n=n,n.sd=n.sd,oob=oob)
+    ## this is the source of the problem currently:
+    design2=designIItoMandU2(NChannelSet,parallel=parallel,n=n,n.sd=n.sd,oob=oob)
+    res <- list()
+    for(i in names(design1)) {
+      res[[i]] <- rbind(design1[[i]], design2[[i]])
+      rownames(res[[i]]) <- c(rownames(design1[[i]]), rownames(design2[[i]]) )
+    }
+
+    }else if(annotation(NChannelSet) == 'IlluminaHumanMethylationEpic') {
     design1=designItoMandU2(NChannelSet,parallel=parallel,n=n,n.sd=n.sd,oob=oob)
     ## this is the source of the problem currently:
     design2=designIItoMandU2(NChannelSet,parallel=parallel,n=n,n.sd=n.sd,oob=oob)
@@ -648,11 +693,12 @@ bfp <- function(path){
   return(bar)
 }
 
-generateManifest <- function(anno=c('450k', 'EPIC')){
+generateManifest <- function(anno=c('450k', 'EPIC', 'EPICv2')){
   anno <- match.arg(anno)
   anno <- switch(anno, # Possible to add more manifests here!
                  '450k' = "IlluminaHumanMethylation450kanno.ilmn12.hg19",
-                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b2.hg19" # The one minfi uses...
+                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", # The one minfi uses...
+		 'EPICv2' = "IlluminaHumanMethylationEPICv2anno.20a1.hg38" 
                  )
   man <- getAnnotationObject(anno)
   x <- getAnnotation(man)[,c('Name','AddressB','AddressA', 'Type', 'Color')]
@@ -686,4 +732,24 @@ generateManifest <- function(anno=c('450k', 'EPIC')){
   x1$col <- factor(x1$col)
   return(x1)
 }
+
+
+# first step in revamping handling of manifest s and chip types:  no hard coded manifest or annotation packages 
+# LS work in progress aug 2023
+
+readEPIC2 <- function(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F,force=F, ...){ # {{{
+ # path: file path to folder containing idat files, if working directory is
+ #       folder containing idats, use path <- "./"
+ #       the gsub will catch all types of arrays as it is technically
+ #       impossible to distinguish chiptype through barcode.
+  if(is.null(barcodes)){
+    barcodes <- idatPath
+    methylumIDATepic(bfp(barcodes),pdat = pdat, parallel = parallel, n = n,
+                     n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
+  } else {
+    methylumIDATepic(barcodes, pdat = pdat, parallel = parallel, n = n,
+                     n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
+  }
+
+} # }}}
 
