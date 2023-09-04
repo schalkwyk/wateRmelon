@@ -380,6 +380,49 @@ setMethod(
 )
 
 
+setMethod(
+   f= "uSexQN",
+   signature(mns="RGChannelSet"),
+   definition = function(mns, cores=1, fudge=100,...){
+      mns  <- preprocessRaw(mns)
+      return(uSexQN(mns, cores=cores, fudge=fudge, ...))
+   }
+)
+
+setMethod(
+   f= "uSexQN",
+   signature(mns="MethylSet"),
+   definition = function(mns, cores=1, fudge=100,...){
+      object <- mns
+      out <- uSexQN(
+         mns = getMeth(object),
+         uns = getUnmeth(object),
+         ot = got(object),
+         chr = getAnnotation(object)[rownames(object),'chr'],
+         cores=cores,
+         fudge=fudge,
+         ret2=TRUE
+      )
+      out2 <- MethylSet(
+         Meth = out$methylated,
+         Unmeth = out$unmethylated,
+         colData = colData(object),
+         annotation = annotation(object),
+         metadata = metadata(object)
+      )
+      out2@preprocessMethod <- c(rg.norm = 'uSexQN (wateRmelon)',
+                                 minfi = as.character(packageVersion('minfi')),
+                                 manifest = as.character(packageVersion(.getManifestString(object@annotation))))
+      return(out2)
+   }
+)
+
+
+
+
+
+
+
 #tost <- function( mn, un, da, pn ) {  no methylset method because needs detection P values
 setMethod(
    f= "tost",
@@ -678,3 +721,76 @@ setMethod(
     agep(betas=object, coeff, method=method)
   }
 )
+
+setMethod(
+  f= "estimateCellCounts.wateRmelon",
+  signature(object="RGChannelSet"),
+  definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
+		      perc = 1, compositeCellType = "Blood", probeSelect = "auto", cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
+                      returnAll = FALSE, meanPlot = FALSE, verbose = TRUE, ...){
+    if(is.null(referencePlatform)){
+	referencePlatform <- getManifest(object)@annotation
+    }
+    object <- preprocessRaw(object)
+    estimateCellCounts.wmln(object=object, referencePlatform=referencePlatform, mn=getMeth(object), un=getUnmeth(object), bn=getBeta(object), 
+			    perc=perc, compositeCellType=compositeCellType,
+			    probeSelect=probeSelect, cellTypes=cellTypes, returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
+  }
+)
+
+setMethod(
+  f= "estimateCellCounts.wateRmelon",
+  signature(object="MethylSet"),
+  definition=function(object, referencePlatform = NULL, mn = NULL, un = NULL, bn = NULL, 
+		      perc = 1, compositeCellType = "Blood", probeSelect = "auto", cellTypes = c("CD8T","CD4T","NK","Bcell","Mono","Gran"),
+                      returnAll = FALSE, meanPlot = FALSE, verbose = TRUE, ...){
+    if(is.null(referencePlatform)){
+	referencePlatform <- getManifest(object)@annotation
+    }
+    estimateCellCounts.wmln(object=object, referencePlatform=referencePlatform, mn=getMeth(object), un=getUnmeth(object), bn=getBeta(object), 
+			    perc=perc, compositeCellType=compositeCellType, probeSelect=probeSelect, cellTypes=cellTypes, 
+			    returnAll=returnAll, meanPlot=meanPlot, verbose=verbose)
+  }
+)
+
+
+
+setMethod(
+  f= "adjustedDasen",
+  signature(mns="MethylSet"),
+  definition = function(mns, offset_fit=TRUE, cores=1, fudge=100, ...){
+      object <- mns
+      chr <- as.character(.createAnnotation(object)$chr)
+      out <- adjustedDasen(
+         mns=getMeth(object),
+         uns = getUnmeth(object),
+         onetwo = got(object),
+         chr = getAnnotation(object)[rownames(object),'chr'],
+         fudge=fudge,
+         cores=cores,
+         offset_fit=offset_fit,
+         ret2=TRUE
+      )
+      out2 <- MethylSet(
+         Meth = out$methylated,
+         Unmeth = out$unmethylated,
+         colData = colData(object),
+         annotation = annotation(object),
+         metadata = metadata(object)
+      )
+      out2$preprocessMethod <- c(rg.norm = ifelse(offset_fit, 'adjustedDasen (wateRmelon)', 'adjustedNasen (wateRmelon)'),
+                                 minfi = as.character(packageVersion('minfi')),
+                                 manifest = as.character(packageVersion(.getManifestString(object@annotation))))
+      return(out)
+  }
+)
+
+setMethod(
+  f= "adjustedDasen",
+  signature(mns="RGChannelSet"),
+  definition = function(mns, offset_fit=TRUE, cores=1, fudge=100, ...){
+      object  <- preprocessRaw(mns)
+      return(adjustedDasen(object, cores = cores, fudge = fudge, offset_fit = offset_fit, ...))
+  }
+)
+

@@ -181,6 +181,7 @@ IDATtoMatrix2 <- function(x,fileExts=list(Cy3="Grn",Cy5="Red"),idatPath='.'){#{{
   names(chs) = fileExts
   processed = lapply(fileExts, function(ch) {
     ext = paste(ch, 'idat', sep='.')
+    message(sprintf('Reading in: %s', paste(x, ext, sep='_')))
     dat = readIDAT(file.path(idatPath, paste(x, ext, sep='_')))
     Quants = data.matrix(dat$Quants)
     colnames(Quants) = paste(chs[ch], colnames(Quants), sep='.')
@@ -697,7 +698,7 @@ generateManifest <- function(anno=c('450k', 'EPIC', 'EPICv2')){
   anno <- match.arg(anno)
   anno <- switch(anno, # Possible to add more manifests here!
                  '450k' = "IlluminaHumanMethylation450kanno.ilmn12.hg19",
-                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", # The one minfi uses...
+                 'EPIC' = "IlluminaHumanMethylationEPICanno.ilm10b4.hg19" # The one minfi uses...
 		 'EPICv2' = "IlluminaHumanMethylationEPICv2anno.20a1.hg38" 
                  )
   man <- getAnnotationObject(anno)
@@ -733,23 +734,4 @@ generateManifest <- function(anno=c('450k', 'EPIC', 'EPICv2')){
   return(x1)
 }
 
-
-# first step in revamping handling of manifest s and chip types:  no hard coded manifest or annotation packages 
-# LS work in progress aug 2023
-
-readEPIC2 <- function(idatPath, barcodes=NULL, pdat=NULL,parallel=F,n=T,oob=F,force=F, ...){ # {{{
- # path: file path to folder containing idat files, if working directory is
- #       folder containing idats, use path <- "./"
- #       the gsub will catch all types of arrays as it is technically
- #       impossible to distinguish chiptype through barcode.
-  if(is.null(barcodes)){
-    barcodes <- idatPath
-    methylumIDATepic(bfp(barcodes),pdat = pdat, parallel = parallel, n = n,
-                     n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
-  } else {
-    methylumIDATepic(barcodes, pdat = pdat, parallel = parallel, n = n,
-                     n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
-  }
-
-} # }}}
 

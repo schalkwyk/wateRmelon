@@ -2,6 +2,7 @@
 % Please edit documentation in R/estimateSex.R
 \name{estimateSex}
 \alias{estimateSex}
+\alias{sex_coef}
 \title{Predict sex by using robust sex-related CpG sites on ChrX and ChrY}
 \usage{
 estimateSex(betas, do_plot = FALSE)
@@ -18,7 +19,8 @@ dataframe contains predicted sex information.
 Predict sex by using robust sex-related CpG sites on ChrX and ChrY
 }
 \examples{
-pred_XY <- estimateSex(betas, do_plot=TRUE)
+data(melon)
+pred_XY <- estimateSex(betas(melon), do_plot=TRUE)
 }
 \author{
 Wang, Yucheng

@@ -41,7 +41,7 @@ Additional arguments passed to \code{pcout}
 }
 %\details{}
 \value{
-Returns a dataframe of TRUE/FALSE per sample where TRUE is outlying.
+Returns a dataframe of TRUE/FALSE per sample where TRUE is outlying. Dataframe contains 3 columns, the first column (iqr) denotes samples which are outlying according to IQR on Principal component 1, the second column (mv) denotes outliers according to mahalanobis distances. And the third column (outliers) denotes samples that are TRUE in the first two columns. 
 }
 %\references{}
 \author{
