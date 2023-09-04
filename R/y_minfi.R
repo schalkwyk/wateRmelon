@@ -769,18 +769,19 @@ setMethod(
          fudge=fudge,
          cores=cores,
          offset_fit=offset_fit,
-         ret2=TRUE
+         ret2=FALSE
       )
-      out2 <- MethylSet(
-         Meth = out$methylated,
-         Unmeth = out$unmethylated,
-         colData = colData(object),
-         annotation = annotation(object),
-         metadata = metadata(object)
-      )
-      out2$preprocessMethod <- c(rg.norm = ifelse(offset_fit, 'adjustedDasen (wateRmelon)', 'adjustedNasen (wateRmelon)'),
-                                 minfi = as.character(packageVersion('minfi')),
-                                 manifest = as.character(packageVersion(.getManifestString(object@annotation))))
+      ## TO DO return a MethylSet object
+      # out2 <- MethylSet(
+         # Meth = out$methylated,
+         # Unmeth = out$unmethylated,
+         # colData = colData(object),
+         # annotation = annotation(object),
+         # metadata = metadata(object)
+      # )
+      # out2$preprocessMethod <- c(rg.norm = ifelse(offset_fit, 'adjustedDasen (wateRmelon)', 'adjustedNasen (wateRmelon)'),
+                                 # minfi = as.character(packageVersion('minfi')),
+                                 # manifest = as.character(packageVersion(.getManifestString(object@annotation))))
       return(out)
   }
 )

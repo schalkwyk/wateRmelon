@@ -1,0 +1,47 @@
+
+@article{Pidsley:2013aa,
+	abstract = {As the most stable and experimentally accessible epigenetic mark, DNA methylation is of great interest to the research community. The landscape of DNA methylation across tissues, through development and in disease pathogenesis is not yet well characterized. Thus there is a need for rapid and cost effective methods for assessing genome-wide levels of DNA methylation. The Illumina Infinium HumanMethylation450 (450K) BeadChip is a very useful addition to the available methods for DNA methylation analysis but its complex design, incorporating two different assay methods, requires careful consideration. Accordingly, several normalization schemes have been published. We have taken advantage of known DNA methylation patterns associated with genomic imprinting and X-chromosome inactivation (XCI), in addition to the performance of SNP genotyping assays present on the array, to derive three independent metrics which we use to test alternative schemes of correction and normalization. These metrics also have potential utility as quality scores for datasets.|The standard index of DNA methylation at any specific CpG site is β = M/(M + U + 100) where M and U are methylated and unmethylated signal intensities, respectively. Betas (βs) calculated from raw signal intensities (the default GenomeStudio behavior) perform well, but using 11 methylomic datasets we demonstrate that quantile normalization methods produce marked improvement, even in highly consistent data, by all three metrics. The commonly used procedure of normalizing betas is inferior to the separate normalization of M and U, and it is also advantageous to normalize Type I and Type II assays separately. More elaborate manipulation of quantiles proves to be counterproductive.|Careful selection of preprocessing steps can minimize variance and thus improve statistical power, especially for the detection of the small absolute DNA methylation changes likely associated with complex disease phenotypes. For the convenience of the research community we have created a user-friendly R software package called wateRmelon, downloadable from bioConductor, compatible with the existing methylumi, minfi and IMA packages, that allows others to utilize the same normalization methods and data quality tests on 450K data.},
+	author = {Pidsley, R. and Y Wong, C. C. and Volta, M. and Lunnon, K. and Mill, J. and Schalkwyk, L. C.},
+	date-added = {2015-02-23 11:13:43 +0000},
+	date-modified = {2015-02-23 11:13:52 +0000},
+	doi = {10.1186/1471-2164-14-293},
+	issn = {1471-2164},
+	journal = {BMC Genomics},
+	keywords = {Chromosomes, Human, X Computational Biology DNA Methylation Genomic Imprinting Humans Oligonucleotide Array Sequence Analysis Polymorphism, Single Nucleotide Statistics as Topic},
+	pages = {293},
+	title = {A data-driven approach to preprocessing Illumina 450K methylation array data},
+	type = {Journal Article},
+	url = {http://www.ncbi.nlm.nih.gov/pubmed/23631413},
+	volume = {14},
+	year = {2013},
+	bdsk-url-1 = {http://www.ncbi.nlm.nih.gov/pubmed/23631413},
+	bdsk-url-2 = {http://dx.doi.org/10.1186/1471-2164-14-293}}
+
+
+
+@article {Wang2020.10.19.345090,
+	author = {Wang, Yucheng and Hannon, Eilis and Grant, Olivia A and Gorrie-Stone, Tyler J and Kumari, Meena and Mill, Jonathan and Zhai, Xiaojun and McDonald-Maier, Klaus D and Schalkwyk, Leonard C},
+	title = {DNA methylation-based sex classifier to predict sex and identify sex chromosome aneuploidy},
+	elocation-id = {2020.10.19.345090},
+	year = {2020},
+	doi = {10.1101/2020.10.19.345090},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Sex is an important covariate of epigenome-wide association studies due to its strong influence on DNA methylation patterns across numerous genomic positions. Nevertheless, many samples on the Gene Expression Omnibus (GEO) frequently lack a sex annotation or are incorrectly labelled. Considering the influence that sex imposes on DNA methylation patterns, it is necessary to ensure that methods for filtering poor samples and checking of sex assignment are accurate and widely applicable. In this paper, we presented a novel method to predict sex using only DNA methylation density signals, which can be readily applied to almost all DNA methylation datasets of different formats (raw IDATs or text files with only density signals) uploaded to GEO. We identified 4345 significantly (p \&lt; 0.01) sex-associated CpG sites present on both 450K and EPIC arrays, and constructed a sex classifier based on the two first components of PCAs from the two sex chromosomes. The proposed method is constructed using whole blood samples and exhibits good performance across a wide range of tissues. We further demonstrated that our method can be used to identify samples with sex chromosome aneuploidy, this function is validated by five Turner syndrome cases and one Klinefelter syndrome case. The proposed method has been integrated into the wateRmelon Bioconductor package.Competing Interest StatementThe authors have declared no competing interest.},
+	URL = {https://www.biorxiv.org/content/early/2020/10/19/2020.10.19.345090},
+	eprint = {https://www.biorxiv.org/content/early/2020/10/19/2020.10.19.345090.full.pdf},
+	journal = {bioRxiv}
+}
+
+
+@article {Wang2021.09.30.462546,
+	author = {Wang, Yucheng and Gorrie-Stone, Tyler J. and Grant, Olivia A. and Andrayas, Alexandria D. and Zhai, Xiaojun and McDonald-Maier, Klaus D. and Schalkwyk, Leonard C.},
+	title = {interpolatedXY: a two-step strategy to normalise DNA methylation microarray data avoiding sex bias},
+	elocation-id = {2021.09.30.462546},
+	year = {2021},
+	doi = {10.1101/2021.09.30.462546},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Motivation Data normalization is an essential step to reduce technical variation within and between arrays. Due to the different karyotypes and the effects of X chromosome inactivation, females and males exhibit distinct methylation patterns on sex chromosomes, thus it poses a significant challenge to normalise sex chromosome data without introducing bias. Currently, existing methods do not provide unbiased solutions to normalise sex chromosome data, usually, they just process autosomal and sex chromosomes indiscriminately.Results Here, we demonstrate that ignoring this sex difference will lead to introducing artificial sex bias, especially for thousands of autosomal CpGs. We present a novel two-step strategy (interpolatedXY) to address this issue, which is applicable to all quantile-based normalisation methods. By this new strategy, the autosomal CpGs are first normalised independently by conventional methods, such as funnorm or dasen; then the corrected methylation values of sex chromosome linked CpGs are estimated as the weighted average of their nearest neighbours on autosomes. The proposed two-step strategy can also be applied to other non-quantile-based normalisation methods, as well as other array-based data types. Moreover, we propose a useful concept: the sex explained fraction of variance, to quantitatively measure the normalisation effect.Availability The proposed methods are available by calling the function {\textquoteleft}adjustedDasen{\textquoteright} or {\textquoteleft}adjustedFunnorm{\textquoteright} in the latest wateRmelon package (https://github.com/schalkwyk/wateRmelon), with methods compatible with all the major workflows, including minfi.Contact xzhai{at}essex.ac.uk; lschal{at}essex.ac.ukSupplementary information Supplementary data are available at...Competing Interest StatementThe authors have declared no competing interest.},
+	URL = {https://www.biorxiv.org/content/early/2021/10/01/2021.09.30.462546},
+	eprint = {https://www.biorxiv.org/content/early/2021/10/01/2021.09.30.462546.full.pdf},
+	journal = {bioRxiv}
+}

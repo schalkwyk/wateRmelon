@@ -3,13 +3,14 @@ title: "The wateRmelon User's Guide"
 shorttitle: "wateRmelon guide"
 author:
 - name: Tyler Gorrie-Stone
-  affiliation: First Author's Affiliation
+  affiliation: Diamond Light Source
 - name: Leonard Schalkwyk
-  affiliation: Second Author's Affiliation
+  affiliation: University of Essex
   email: lschal@essex.ac.uk
 package: wateRmelon
 output:
   BiocStyle::html_document
+  bibliography: references.bib
 abstract: |
   The comprehensive guide to using the wateRmelon package analysing DNA methylation data.
 vignette: |
@@ -18,15 +19,14 @@ vignette: |
   %\VignetteEncoding{UTF-8}
 ---
 # Introduction
-The `r Biocpkg("wateRmelon")` provides a set of tools for importing, quality controlly and normalizing Illumina DNA methylation microarray data. All of the functions described in this vignette are fully compatible with the `r Biocpkg("minfi")` package, including any workflows or pipelines that involves it. Additionally wateRmelon extends the `r Biocpkg("methylumi")` package to allow for MethyLumiSet representations of EPIC array data.
+The `r Biocpkg("wateRmelon")` provides a set of tools for importing, quality control and normalizing Illumina DNA methylation microarray data. All of the functions described in this vignette are fully compatible with the `r Biocpkg("minfi")` package, including any workflows or pipelines that involves it. Additionally wateRmelon extends the `r Biocpkg("methylumi")` package to allow for MethyLumiSet representations of EPIC array data. If you are using many hundreds of arrays, you could consider using the related  `r Biocpkg("wateRmelon")`.
 
 In addition to our own functions we provide implementations for a variety of age-prediction and cell-type estimations which work for both 450k and EPIC data.
 
 ## Citing the wateRmelon R package
-- If you use wateRmelon please cite our new publication
-- If you use any of the old normalization methods e.g. dasen Please additionally cite Pidsley et al
-- If you use adjustedDasen or adjustedFunnorm please cite the interpolatedXY (currently a preprint) paper Wang et al. 20XX
-- If you use estimateSex please cite Wang et al. 2021
+- If you use wateRmelon please cite [@Pidsley:2013aa] and our new publication
+- If you use adjustedDasen or adjustedFunnorm please cite [@Wang2020.10.19.345090]
+- If you use estimateSex please cite [@article {Wang2021.09.30.462546]
 
 # Installation
 wateRmelon is designed to extend the `r Biocpkg("methylumi")` and `r Biocpkg("minfi")` R packages so there is quite the number of dependencies which need to be installed. This can be handled by simply running:

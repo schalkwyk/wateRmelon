@@ -1,16 +1,27 @@
 #' Predict sex by using robust sex-related CpG sites on ChrX and ChrY
 #'
-#' @param betas raw beta values, ideally: beta = M / (M + U + 100).
+#' @param betas 
+#' A matrix with sample IDs as column names, and probe names as row names, 
+#' ideally: beta = M / (M + U + 100). Take a look at an example betas with:
+#' "data(melon); print(betas(melon)[1:10, 1:3])".
 #' @param do_plot logical. Should plot the predicted results? Default: FALSE
 #'
 #' @return dataframe contains predicted sex information.
 #' @export
-#' @author Wang, Yucheng
+#' @author
+#' Wang, Yucheng, et al. "DNA methylation-based sex classifier to predict sex 
+#' and identify sex chromosome aneuploidy." BMC genomics 22.1 (2021): 1-11.
 #'
 #' @examples
 #' data(melon)
 #' pred_XY <- estimateSex(betas(melon), do_plot=TRUE)
 estimateSex <- function(betas, do_plot=FALSE){
+  betas <- as.matrix(betas)
+  single_sample <- FALSE
+  if(ncol(betas) == 1) {
+    betas <- cbind(betas, betas)
+    single_sample <- TRUE
+  }
   # predict sex by two PCAs on X and Y chromosomes
   data("sexCoef")
   # Z score normalization
@@ -43,6 +54,10 @@ estimateSex <- function(betas, do_plot=FALSE){
   pred_XY$'predicted_sex'[(pred_XY$X < 0) & (pred_XY$Y > 0)] <- 'Male'
   pred_XY$'predicted_sex'[(pred_XY$X > 0) & (pred_XY$Y > 0)] <- '47,XXY'
   pred_XY$'predicted_sex'[(pred_XY$X < 0) & (pred_XY$Y < 0)] <- '45,XO'
+  if(single_sample){
+    pred_XY <- pred_XY[1, ]
+  }
+  
   if(do_plot){
     plot_predicted_sex(pred_XY)
   }else{

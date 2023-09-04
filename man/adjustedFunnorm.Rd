@@ -50,6 +50,7 @@ corrected autosomal CpGs.
 \dontrun{
 GRset <- adjustedFunnorm(RGSet)
 }
+
 }
 \references{
 Functional normalization of 450k methylation array data improves replication 
