@@ -10,7 +10,7 @@ author:
 package: wateRmelon
 output:
   BiocStyle::html_document
-  bibliography: references.bib
+bibliography: "references.bib"
 abstract: |
   The comprehensive guide to using the wateRmelon package analysing DNA methylation data.
 vignette: |
