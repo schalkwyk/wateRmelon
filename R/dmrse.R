@@ -19,7 +19,7 @@
 #' 'comp2'} %% ... return a standard error of the mean of betas for all samples
 #' and iDMR probes (dmrse) or the standard error of the mean for just the
 #' between sample component(dmrse_row) or between probe(dmrse_col) component.
-#' @author %% ~~who you are~~ Leonard.Schalkwyk@@kcl.ac.uk
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' \code{\link{seabi}}, a sex-difference metric, and \code{\link{genki}}, based
 #' on SNPs.

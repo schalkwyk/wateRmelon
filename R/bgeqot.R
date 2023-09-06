@@ -78,7 +78,7 @@
 #' of strings like 'R01C01' (only 3rd and 6th characters used).
 #' @return a matrix (default method) or object of the same shape and order as
 #' the first argument containing betas.
-#' @author Leonard.Schalkwyk@@kcl.ac.uk
+#' @author lschal@@essex.ac.uk
 #' @seealso % ~~objects to See Also as \code{\link{help}}, ~~~
 #' \code{\link{pfilter}}, \code{\link{as.methylumi}}
 #' @references [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk

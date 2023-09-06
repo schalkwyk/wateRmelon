@@ -27,7 +27,7 @@
 #' @returnItem gcoms_c see \code{genki }
 #' @returnItem gcose_c see \code{genki }
 #' @returnItem seabird see \code{seabi }
-#' @author %% ~~who you are~~ Leonard.Schalkwyk@@kcl.ac.uk
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted)

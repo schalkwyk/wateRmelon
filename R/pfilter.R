@@ -13,7 +13,8 @@
 #' @return A matrix of bead counts with bead counts <3 represented by NA for
 #' use in the pfilter function for quality control
 #' @note The beadcount function is internal to the pfilter function
-#' @author Ruth.Pidsley@@kcl.ac.uk
+#' @author Ruth.Pidsley
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk
 #' LC: A data-driven approach to preprocessing Illumina 450K methylation array
 #' data (submitted)
@@ -76,7 +77,8 @@ beadcount<-function(x){
 #' @param x matrix of bead count values returned by the beadcount function
 #' @return Vector of number of samples with bead count <3 for each probe
 #' @note The beadc function is internal to the pfilter function
-#' @author ruth.pidsley@@kcl.ac.uk
+#' @author Ruth.Pidsley
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk
 #' LC: A data-driven approach to preprocessing Illumina 450K methylation array
 #' data (submitted)
@@ -146,7 +148,8 @@ beadc<-function(x){
 #' MethyLumiSet objects produced by methylumiR.  } \item{list("signature(mn =
 #' \"RGChannelSetExtended\")")}{ This is used for performing the pfilter method
 #' on RGChannelSetExtended objects produced by minfi.  } }
-#' @author Ruth.Pidsley@@kcl.ac.uk
+#' @author Ruth.Pidsley
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk
 #' LC: A data-driven approach to preprocessing Illumina 450K methylation array
 #' data (submitted)

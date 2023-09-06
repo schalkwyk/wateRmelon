@@ -15,7 +15,7 @@
 #' \item{comp1 }{Description of 'comp1'} %% \item{comp2 }{Description of
 #' 'comp2'} %% ... Returns an area value between 0 and 1, where 1 is the best
 #' possible performance.
-#' @author Leonard C Schalkwyk 2012 Leonard.Schalkwyk@@kcl.ac.uk
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted) %% ~put references to the literature/web site here ~
@@ -96,7 +96,7 @@ function(pr, N=length(pr), X){ # sexdiff pvalue ROC AUC
 #' 
 #' %% ~Describe the value returned %% If it is a LIST, use %% \item{comp1
 #' }{Description of 'comp1'} %% \item{comp2 }{Description of 'comp2'} %% ...
-#' @author leonard.schalkwyk@@kcl.ac.uk
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted)

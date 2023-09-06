@@ -106,7 +106,7 @@ setMethod(
 #' @param obj a MethylSet
 #' @param fd a character vector of the desired annotation columns
 #' @param rn a character vector of the desired features
-#' @author Leonard.Schalkwyk@@kcl.ac.uk
+#' @author lschal@@essex.ac.uk
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted)
@@ -769,19 +769,18 @@ setMethod(
          fudge=fudge,
          cores=cores,
          offset_fit=offset_fit,
-         ret2=FALSE
+         ret2=TRUE
       )
-      ## TO DO return a MethylSet object
-      # out2 <- MethylSet(
-         # Meth = out$methylated,
-         # Unmeth = out$unmethylated,
-         # colData = colData(object),
-         # annotation = annotation(object),
-         # metadata = metadata(object)
-      # )
-      # out2$preprocessMethod <- c(rg.norm = ifelse(offset_fit, 'adjustedDasen (wateRmelon)', 'adjustedNasen (wateRmelon)'),
-                                 # minfi = as.character(packageVersion('minfi')),
-                                 # manifest = as.character(packageVersion(.getManifestString(object@annotation))))
+      out2 <- MethylSet(
+         Meth = out$methylated,
+         Unmeth = out$unmethylated,
+         colData = colData(object),
+         annotation = annotation(object),
+         metadata = metadata(object)
+      )
+      out2$preprocessMethod <- c(rg.norm = ifelse(offset_fit, 'adjustedDasen (wateRmelon)', 'adjustedNasen (wateRmelon)'),
+                                 minfi = as.character(packageVersion('minfi')),
+                                 manifest = as.character(packageVersion(.getManifestString(object@annotation))))
       return(out)
   }
 )

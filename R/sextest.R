@@ -12,7 +12,7 @@
 #' @param \dots additional arguments to be passed to \code{lm}
 #' @return Returns a vector of p-values of length equal to the number of rows
 #' of betas
-#' @author Leonard.Schalkwyk@@kcl.ac.uk
+#' @author lschal@@essex.ac.uk
 #' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
 #' \code{\link{seabi}} \code{\link{seabird}}
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A

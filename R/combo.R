@@ -20,7 +20,7 @@
 #' @note the function uses \code{sampleNames} and gets rid of duplicates.
 #' Numeric sampleNames cause problems (and are a Bad Idea anyway).  They should
 #' be turned into names with \code{make.names()} first.
-#' @author Leo Schalkwyk <leonard.schalkwyk@@kcl.ac.uk>
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @seealso \code{\link{as.methylumi}}
 #' @references [1] Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk
 #' LC: A data-driven approach to preprocessing Illumina 450K methylation array

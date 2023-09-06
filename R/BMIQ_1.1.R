@@ -101,7 +101,7 @@
 #' @returnItem th2 estimated thresholds for calling unmethylated and methylated
 #' type2 probes
 #' @author Andrew Teschendorff, MethyLumiSet method by Leo Schalkwyk
-#' Leonard.Schalkwyk@@kcl.ac.uk
+#' lschal@@essex.ac.uk
 #' @references Teschendorff AE, Marabita F, Lechner M, Bartlett T, Tegner J,
 #' Gomez-Cabrero D, Beck S. A Beta-Mixture Quantile Normalisation method for
 #' correcting probe design bias in Illumina Infinium 450k DNA methylation data.

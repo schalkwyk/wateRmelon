@@ -16,7 +16,7 @@
 #' @return see \code{\link{tost}} %% ~Describe the value returned %% If it is a
 #' LIST, use %% \item{comp1 }{Description of 'comp1'} %% \item{comp2
 #' }{Description of 'comp2'} %% ...
-#' @author Nizar Touleimat, wrapper by Leonard.Schalkwyl@@kcl.ac.uk
+#' @author Nizar Touleimat, wrapper by lschal@@essex.ac.uk
 #' @references Touleimat N, Tost J: Complete pipeline for Infinium R Human
 #' Methylation 450K BeadChip data processing using subset quantile
 #' normalization for accurate DNA methylation estimation. Epigenomics 2012,

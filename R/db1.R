@@ -34,7 +34,7 @@
 #' 
 #' %% ~Describe the value returned %% If it is a LIST, use %% \item{comp1
 #' }{Description of 'comp1'} %% \item{comp2 }{Description of 'comp2'} %% ...
-#' @author Leonard.Schalkwyk@@kcl.ac.uk
+#' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted)
