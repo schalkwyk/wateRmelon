@@ -22,6 +22,9 @@ estimateSex <- function(betas, do_plot=FALSE){
     betas <- cbind(betas, betas)
     single_sample <- TRUE
   }
+  if (length(grep('_', head(rownames(manea), n = 10L)))==10){
+      betas <- epicv2clean(betas)
+  }
   # predict sex by two PCAs on X and Y chromosomes
   data("sexCoef")
   # Z score normalization

@@ -91,3 +91,16 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
   return(ages[,c(TRUE, n_missing, missing_probes)])
 }
 
+epicv2clean <- function(x){ 
+  # allow use of EPIC/450K/27K coefficients with EPICv2 data by stripping suffix
+  # and discarding duplicated probenames. Names in ageCoefs don't include any of the dups.
+  # x can be anything subsettable with rownames
+    
+    rn <- rownames(x)
+    rn <- gsub('_.*$','',rn)
+    go <- !duplicated(rn)
+    x  <- x[go,]
+    rownames(x) <- rn[go]
+    x
+}
+

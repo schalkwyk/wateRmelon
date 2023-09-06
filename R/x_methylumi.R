@@ -650,6 +650,9 @@ setMethod(
   signature(betas="MethyLumiSet"),
   definition=function(betas, coeff = NULL, method='horvath'){
     object <- betas(betas)
+    if (length(annotation(betas)) > 0 && annotation(betas) == "IlluminaHumanMethylationEpicv2"){
+        object <- epicv2clean(object)
+    }
     agep(betas=object, coeff=coeff, method=method)
   }
 )
