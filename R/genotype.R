@@ -92,8 +92,12 @@ c(
 
 # genotype everything available from an object with a betas() method
 genall <- function( object, locs=c(anSNP(),goodSNP())){
-   locs <- locs[ locs %in% featureNames(object)]
-   genus(betas(object)[locs,])
+  betas <- betas(object)
+  if (length(grep('_', head(featureNames(object), n = 10L)))==10){
+      betas <- epicv2clean(betas)
+  }
+   locs <- locs[ locs %in% rownames(betas)]
+   genus(betas[locs,])
 }
 
 
