@@ -471,9 +471,12 @@ setMethod(
    f= "dmrse",
    signature(betas="MethyLumiSet"),
    definition=function(betas, idmr=iDMR()){
-      object    <- betas
-      betas     <- betas(object)
-      dmrse( betas, idmr )
+
+    object <- betas(betas)
+    if (length(annotation(betas)) > 0 && annotation(betas) == "IlluminaHumanMethylationEpicv2"){
+        object <- epicv2clean(object)
+    }
+    dmrse( object, idmr )
 
    }
 )
@@ -483,9 +486,13 @@ setMethod(
    f= "dmrse_row",
    signature(betas="MethyLumiSet"),
    definition=function(betas, idmr=iDMR()){
-      object    <- betas
-      betas     <- betas(object)
-      dmrse_row( betas, idmr )
+
+
+    object <- betas(betas)
+    if (length(annotation(betas)) > 0 && annotation(betas) == "IlluminaHumanMethylationEpicv2"){
+        object <- epicv2clean(object)
+    }
+    dmrse_row( object, idmr )
 
    }
 )
@@ -495,9 +502,12 @@ setMethod(
    f= "dmrse_col",
    signature(betas="MethyLumiSet"),
    definition=function(betas, idmr=iDMR()){
-      object    <- betas
-      betas     <- betas(object)
-      dmrse_col( betas, idmr )
+
+    object <- betas(betas)
+    if (length(annotation(betas)) > 0 && annotation(betas) == "IlluminaHumanMethylationEpicv2"){
+        object <- epicv2clean(object)
+    }
+   dmrse_col( object, idmr )
 
    }
 )

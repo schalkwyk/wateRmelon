@@ -514,6 +514,10 @@ setMethod(
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
+      if (length(grep('_', head(rownames(bn), n = 10L)))==10){
+          bn <- epicv2clean(bn)
+      }
+      
       dmrse( bn, idmr )
 
    }
@@ -524,6 +528,9 @@ setMethod(
    signature(betas= "RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
+      if (length(grep('_', head(rownames(bn), n = 10L)))==10){
+          bn <- epicv2clean(bn)
+      }
       dmrse( bn, idmr )
 
    }
@@ -537,6 +544,9 @@ setMethod(
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
+      if (length(grep('_', head(rownames(bn), n = 10L)))==10){
+          bn <- epicv2clean(bn)
+      }
       dmrse_row( bn, idmr )
 
    }
@@ -547,6 +557,9 @@ setMethod(
    signature(betas="RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
+      if (length(grep('_', head(rownames(bn), n = 10L)))==10){
+          bn <- epicv2clean(bn)
+      }
       dmrse_row( bn, idmr )
 
    }
@@ -559,6 +572,9 @@ setMethod(
    signature(betas="MethylSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
+      if (length(grep('_', head(rownames(bn), n = 10L)))==10){
+          bn <- epicv2clean(bn)
+      }
       dmrse_col( bn, idmr )
 
    }
@@ -569,6 +585,9 @@ setMethod(
    signature(betas="RGChannelSet"),
    definition=function(betas, idmr=iDMR()){
       bn     <- getBeta(betas)
+      if (length(grep('_', head(rownames(bn), n = 10L)))==10){
+          bn <- epicv2clean(bn)
+      }
       dmrse_col( bn, idmr )
 
    }
