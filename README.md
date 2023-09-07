@@ -17,8 +17,11 @@ and
 
   https://github.com/jokergoo/IlluminaHumanMethylationEPICv2manifest
 
-You can read in EPICv2 array IDAT files, but I am curently testing and working through a number 
-of functions that are broken by the changed probe naming convention.
+....  as well as this version of wateRmelon, you can read in EPICv2 array IDAT files with wateRmelon and bigmelon.
+
+Most functions including dasen and the other Pidsley et al 2013 normalisers, genki, dmrse,
+ and agep work at least in wateRmelon but have only been superficially tested, additional testingand improvement is underway.  Bug reports are welcome at lschal@essex.ac.uk or via github.
+
 
 ## 1. Installation
 
