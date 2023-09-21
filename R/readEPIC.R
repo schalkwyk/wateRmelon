@@ -189,7 +189,7 @@ DataToNChannelSet2 <- function(mats, chans = c(Cy3 = "GRN", Cy5 = "RED"), parall
     epic = hm27 = hm450 = 0
     qw <- unlist(lapply(mats, function(x) attr(x, "ChipType")))
     epic = sum(grepl("BeadChip 8x5", qw))
-    message(paste(epic, "HumanMethylationEpic pr Epicv2 samples found"))
+    message(paste(epic, "HumanMethylationEpic / Epicv2 samples found"))
     hm450 = sum(grepl("BeadChip 12x8", qw))
     message(paste(hm450, "HumanMethylation450 samples found"))
     hm27 = sum(grepl("BeadChip 12x1", qw))
@@ -263,7 +263,7 @@ DataToNChannelSet2 <- function(mats, chans = c(Cy3 = "GRN", Cy5 = "RED"), parall
                 annotation(obj) = "IlluminaHumanMethylationEpic"
             }
 
-            if (ChipType == "BeadChip 8x5" && dim(obj)[1] > 1e+06) {
+            if (ChipType == "BeadChip 8x5" && dim(obj)[1] > 1.1e+06) {
                 annotation(obj) = "IlluminaHumanMethylationEpicv2"
             }
         }  
@@ -663,7 +663,7 @@ generateManifest <- function(anno = c("450k", "EPIC", "EPICv2")) { #{{{
     # Possible to add more manifests here!
     anno <- switch(anno, 
         `450k` = "IlluminaHumanMethylation450kanno.ilmn12.hg19",
-        EPICi  = "IlluminaHumanMethylationEPICanno.ilm10b4.hg19", 
+        EPIC   = "IlluminaHumanMethylationEPICanno.ilm10b4.hg19", 
         EPICv2 = "IlluminaHumanMethylationEPICv2anno.20a1.hg38"
     )
     man <- getAnnotationObject(anno)
