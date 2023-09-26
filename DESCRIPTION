@@ -45,6 +45,6 @@ Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
         robustQuantileNorm_Illumina450K.R seabird.R sextest.R summits.R
         swan2.R uniqueAnnotationCategory.R qual.R uSexQN.R AllGenerics.R
         x_methylumi.R y_minfi.R
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.3
 NeedsCompilation: no
 VignetteBuilder: knitr
