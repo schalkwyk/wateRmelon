@@ -270,7 +270,9 @@ p.v <- pbeta(beta2.v[selMR.idx],em2.o$a[lt,1],em2.o$b[lt,1],lower.tail=FALSE);
 q.v <- qbeta(p.v,em1.o$a[lt,1],em1.o$b[lt,1],lower.tail=FALSE);
 nbeta2.v[selMR.idx] <- q.v;
 
-
+## initializing the dilation factor
+hf <- NULL
+   
 if(doH){ ### if TRUE also correct type2 hemimethylated probes
 ### select H probes and include ML probes (left ML tail is not well described by a beta-distribution).
 lt <- 2;
