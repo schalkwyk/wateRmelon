@@ -45,6 +45,9 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
     pkg <- paste0("FDb.InfiniumMethylation.", genome)
     require(pkg, character.only = TRUE)  ## and
 
+
+
+
     chipType <- sub("^IlluminaHumanMethylation", "", chipType)
     if (class(chipType) %in% c("NChannelSet", "MethyLumiSet", "MethyLumiM")) {
         chipType <- sub("^IlluminaHumanMethylation", "", annotation(chipType))
@@ -71,7 +74,7 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
         } else {
             return(r[[design]])
         }
-    }, Epic = function(design = NULL, color = NULL, ...) {
+    }, Epic = { function(design = NULL, color = NULL, ...) {
         # data(epic.ordering)
         epic.ordering <<- generateManifest("EPIC")
         what <- c("Probe_ID", "M", "U")
@@ -84,7 +87,7 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
             r <- return(r[[design]][[substr(color, 1, 1)]])
         } else {
             r <- return(r[[design]])
-        }
+        }}
     }, Epicv2 = function(design = NULL, color = NULL, ...) {
         # data(epic.ordering)
         epicV2.ordering <<- generateManifest("EPICv2")

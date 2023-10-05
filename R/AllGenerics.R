@@ -1,4 +1,4 @@
-# generic cornucopia
+# generic cornucopia  S4
 
 setGeneric ( name= "naten"          )
 setGeneric ( name= "betaqn"         )
@@ -29,3 +29,10 @@ setGeneric ( name= "pwod"           )
 setGeneric ( name= "agep"           )
 setGeneric ( name= "uSexQN"         )
 setGeneric ( name= "estimateCellCounts.wmln" )
+
+
+# S3 generics to work with gds (bigmelon)
+
+epicv2clean <- function(x){
+   UseMethod('epicv2clean', x)
+}

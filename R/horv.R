@@ -92,33 +92,3 @@ agep <- function(betas, coeff = NULL, method = c('horvath', 'hannum', 'phenoage'
 }
 
 
-#{{{   epicv2clean 
-
-#' Strip and subset EPICv2 data to work with legacy data and methods
-#' 
-#' @description
-#' Returns an object with rownames stripped of the EPICv2 suffixes, duplicate probes are omitted.
-#'
-#' @details
-#' EPICv2 manifests contain a few thousand probes with up to 10 replicate syntheses. 
-#' To accomodate this a modified naming scheme is used, so none of the probe names match
-#' those on the EPIC and previous arrays (even though most of the probes are the same sequence
-#' and presumably simiar performance). 
-#' 
-#' This simple function relies on the rowname and subsetting methods and will work for matrix, 
-#' dataframe, MethyLumiSet, or MethylSet objects, but not currently for gds (bigmelon).
-
-epicv2clean <- function(x){ 
-  # allow use of EPIC/450K/27K coefficients with EPICv2 data by stripping suffix
-  # and discarding duplicated probenames. Names in ageCoefs don't include any of the dups.
-  # x can be anything subsettable with rownames
-    
-    rn <- rownames(x)
-    rn <- gsub('_.*$','',rn)
-    go <- !duplicated(rn)
-    x  <- x[go,]
-    rownames(x) <- rn[go]
-    x
-}
-
-# }}}
