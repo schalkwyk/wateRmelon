@@ -1,7 +1,7 @@
 Package: wateRmelon
 Type: Package
 Title: Illumina 450 and EPIC methylation array normalization and metrics
-Version: 2.8.0
+Version: 2.9.0
 Authors@R: c(person(c("Leo", "C"), "Schalkwyk", role = c("cre", "aut"),
                     email = "lschal@essex.ac.uk"),
              person(c("Tyler", "J"), "Gorrie-Stone", role = "aut"),
