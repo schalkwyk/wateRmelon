@@ -16,17 +16,18 @@
 #' DMRs.  Can be obtained with \code{iDMR()} or \code{data(iDMR)}
 #' @param subset index or character vector giving a subset of betas to be
 #' tested
-#' @return
-#' @returnItem dmrse_row see \code{dmrse_row}
-#' @returnItem dmrse_col see \code{dmrse_col}
-#' @returnItem dmrse see \code{dmrse }
-#' @returnItem gcoms_a see \code{genki }
-#' @returnItem gcose_a see \code{genki }
-#' @returnItem gcoms_b see \code{genki }
-#' @returnItem gcose_b see \code{genki }
-#' @returnItem gcoms_c see \code{genki }
-#' @returnItem gcose_c see \code{genki }
-#' @returnItem seabird see \code{seabi }
+#' @return {
+#' \item{name dmrse_row}{description see \code{dmrse_row}}
+#' \item{name dmrse_col}{description see \code{dmrse_col}}
+#' \item{name dmrse}{description see \code{dmrse }}
+#' \item{name gcoms_a}{description see \code{genki }}
+#' \item{name gcose_a}{description see \code{genki }}
+#' \item{name gcoms_b}{description see \code{genki }}
+#' \item{name gcose_b}{description see \code{genki }}
+#' \item{name gcoms_c}{description see \code{genki }}
+#' \item{name gcose_c}{description see \code{genki }}
+#' \item{name seabird}{description see \code{seabi }}
+#' }
 #' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data

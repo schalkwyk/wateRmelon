@@ -11,10 +11,7 @@
 #' you the area for the lowest 10\% of p-values.
 #' @param X logical vector the same length as pv, true for features mapped to
 #' X-chromosome
-#' @return %% ~Describe the value returned %% If it is a LIST, use %%
-#' \item{comp1 }{Description of 'comp1'} %% \item{comp2 }{Description of
-#' 'comp2'} %% ... Returns an area value between 0 and 1, where 1 is the best
-#' possible performance.
+#' @return Returns an area value between 0 and 1, where 1 is the best possible performance.
 #' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
@@ -88,9 +85,7 @@ function(pr, N=length(pr), X){ # sexdiff pvalue ROC AUC
 #' @param sex a factor giving the sex of each sample (column)
 #' @param X a logical vector of length equal to the number of probes, true for
 #' features mapped to X-chromosome
-#' @return
-#' 
-#' a value between 0 and 1.  values close to zero indicate high data quality as
+#' @return a value between 0 and 1.  values close to zero indicate high data quality as
 #' judged by the ability to discriminate male from female X-chromosome DNA
 #' methylation.
 #' 

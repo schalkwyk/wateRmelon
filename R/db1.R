@@ -28,12 +28,10 @@
 #' by default.  roco=NULL disables model fitting (and speeds up processing),
 #' otherwise roco can be supplied as a character vector of strings like
 #' 'R01C01' (3rd and 6th characters used).
-#' @return db1 - a list of 2 matrices of intensities, methylated and
-#' unmethylated dfsfit - a matrix of adjusted intensities dfs2 - a background
-#' offset value
-#' 
-#' %% ~Describe the value returned %% If it is a LIST, use %% \item{comp1
-#' }{Description of 'comp1'} %% \item{comp2 }{Description of 'comp2'} %% ...
+#' @return{ \item{name db1}{description a list of 2 matrices of intensities, methylated and
+#' unmethylated} \item{nmae dfsfit}{description a matrix of adjusted intensities} \item{name dfs2}{description a background
+#' offset value}
+#' }
 #' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data

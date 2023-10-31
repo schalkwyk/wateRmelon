@@ -13,9 +13,7 @@
 #' referenceQuantiles robustQuantileNorm_Illumina450K
 #' robustQuantileNorm_Illumina450K.probeCategories uniqueAnnotationCategory
 #' bgIntensitySwan.methylumi
-#' @return see \code{\link{tost}} %% ~Describe the value returned %% If it is a
-#' LIST, use %% \item{comp1 }{Description of 'comp1'} %% \item{comp2
-#' }{Description of 'comp2'} %% ...
+#' @return see \code{\link{tost}}
 #' @author Nizar Touleimat, wrapper by lschal@@essex.ac.uk
 #' @references Touleimat N, Tost J: Complete pipeline for Infinium R Human
 #' Methylation 450K BeadChip data processing using subset quantile

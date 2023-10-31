@@ -1,5 +1,5 @@
-# Create Arbitrary Manifest using minfi engine: This needs to become much much
-# more sophisticated...
+#' Internal function to guess correct pData and retrieve using minfi
+#'
 
 .createAnnotation <- function(object) {
     rn = rownames(object)
@@ -13,7 +13,7 @@
     new_data <- do.call(cbind, lapply(all_data, function(wh) {
         minfi:::.annoGet(wh, envir = annoObj@data)
     }))
-    new_data <- new_data[rn, ]  # SNP probes will be missing, and be NA’d
+    new_data <- new_data[rn, ]  # SNP probes will be missing, and be NA
     rownames(new_data) <- rn
     return(new_data)
 }

@@ -11,7 +11,7 @@
 #' homozygote).  By default these are further divided by the square root of the
 #' number of samples to get a standard error-like statistic.
 #' 
-#' %% ~~ If necessary, more details than the description above ~~ There are 65
+#' There are 65
 #' well-behaved SNP genotyping probes included on the array.  These each
 #' produce a distribution of betas with tight peaks for the three possible
 #' genotypes, which will be broadened by technical variation between samples.
@@ -24,9 +24,7 @@
 #' @param g vector of SNP names
 #' @param se TRUE or FALSE specifies whether to calculate the standard
 #' error-like statistic
-#' @return %% ~Describe the value returned %% If it is a LIST, use %%
-#' \item{comp1 }{Description of 'comp1'} %% \item{comp2 }{Description of
-#' 'comp2'} %% ... a vector of 3 values for the dispersion of the three
+#' @return  a vector of 3 values for the dispersion of the three
 #' genotype peaks (AA, AB, BB : low, medium and high beta values)
 #' @author Leo Schalkwyk <lschal@@essex.ac.uk>
 

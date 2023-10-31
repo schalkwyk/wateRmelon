@@ -35,7 +35,7 @@
 
 
 
-#' Beta-Mixture Quantile (BMIQ) Normalisation method for Illumina 450k arrays
+#' Beta-Mixture Quantile (BMIQ) Normalisation method for Illumina arrays
 #' 
 #' BMIQ is an intra-sample normalisation procedure, correcting the bias of
 #' type-2 probe values. BMIQ uses a 3-step procedure: (i) fitting of a 3-state
@@ -86,20 +86,18 @@
 #' @param sampleID the ID of the sample being normalised.
 #' @param pri logical: print verbose progress information?
 #' @param pnbeta.v BMIQ normalised profile.
-#' @return Default method: A list with following entries:
+#' @return {Default method: A list with following entries:
 #' 
 #' MethyLumiSet method: A methyLumiSet object
-#' @returnItem nbeta the normalised beta-profile for the sample
-#' @returnItem class1 the assigned methylation state of type1 probes
-#' @returnItem class2 the assigned methylation state of type2 probes
-#' @returnItem av1 the mean beta-values for the nL states for type1 probes
-#' @returnItem av2 the mean beta-values for the nL states for type2 probes
-#' @returnItem hf the estimated "Hubble" dilation factor used in the
-#' normalisation of hemi-methylated probes
-#' @returnItem th1 estimated thresholds for calling unmethylated and methylated
-#' type1 probes
-#' @returnItem th2 estimated thresholds for calling unmethylated and methylated
-#' type2 probes
+#' \item{name nbet}{description the normalised beta-profile for the sample}
+#' \item{name class1}{description the assigned methylation state of type1 probes}
+#' \item{name class2}{description the assigned methylation state of type2 probes}
+#' \item{name av1}{description the mean beta-values for the nL states for type1 probes}
+#' \item{name av2}{description the mean beta-values for the nL states for type2 probes}
+#' \item{name hf}{description the estimated "Hubble" dilation factor used in the normalisation of hemi-methylated probes}
+#' \item{name th1}{description estimated thresholds for calling unmethylated and methylated type1 probes}
+#' \item{name th2}{description estimated thresholds for calling unmethylated and methylated type2 probes}
+#' }
 #' @author Andrew Teschendorff, MethyLumiSet method by Leo Schalkwyk
 #' lschal@@essex.ac.uk
 #' @references Teschendorff AE, Marabita F, Lechner M, Bartlett T, Tegner J,

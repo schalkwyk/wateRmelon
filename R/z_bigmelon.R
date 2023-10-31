@@ -14,6 +14,8 @@
 #' 
 #' This simple function relies on the rowname and subsetting methods and will work for matrix, 
 #' dataframe, MethyLumiSet, or MethylSet objects, and there is a method for gds (bigmelon) objects.
+#' @aliases epicv2clean.gds.class epicv2clean
+
 
 epicv2clean.default <- function(x){ 
   # allow use of EPIC/450K/27K coefficients with EPICv2 data by stripping suffix

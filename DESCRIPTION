@@ -48,3 +48,4 @@ Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
 RoxygenNote: 7.2.3
 NeedsCompilation: no
 VignetteBuilder: knitr
+Encoding: UTF-8

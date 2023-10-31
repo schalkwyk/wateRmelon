@@ -4,11 +4,8 @@
 #' 
 #' 
 #' @aliases Beta2M M2Beta correctI correctII summits
-#' @param B %% ~~Describe \code{B} here~~ a vector or matrix of beta values for
-#' conversion
-#' @return %% ~Describe the value returned %% If it is a LIST, use %%
-#' \item{comp1 }{Description of 'comp1'} %% \item{comp2 }{Description of
-#' 'comp2'} %% ... a vector or matrix of the same shape as the input
+#' @param B  a vector or matrix of beta values for conversion
+#' @return  a vector or matrix of the same shape as the input
 #' @author Matthieu Defrance <defrance@@bigre.ulb.ac.be>
 #' @references
 #' 

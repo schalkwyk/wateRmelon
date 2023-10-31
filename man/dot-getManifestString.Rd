@@ -33,5 +33,5 @@ data-driven approach to preprocessing Illumina 450K methylation array data
 (submitted)
 }
 \author{
-Leonard.Schalkwyk@kcl.ac.uk
+lschal@essex.ac.uk
 }
