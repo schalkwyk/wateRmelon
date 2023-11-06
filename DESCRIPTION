@@ -1,7 +1,7 @@
 Package: wateRmelon
 Type: Package
 Title: Illumina 450 and EPIC methylation array normalization and metrics
-Version: 2.9.1
+Version: 2.9.2
 Authors@R: c(person(c("Leo", "C"), "Schalkwyk", role = c("cre", "aut"),
                     email = "lschal@essex.ac.uk"),
              person(c("Tyler", "J"), "Gorrie-Stone", role = "aut"),
@@ -13,6 +13,7 @@ Authors@R: c(person(c("Leo", "C"), "Schalkwyk", role = c("cre", "aut"),
              person(c("Jovana"), "Maksimovic", role='ctb'),
              person(c("Louis", "Y"), "El Khoury", role='ctb'),
              person(c("Yucheng"), "Wang", role='ctb')
+             person(c("Alexandria"), "Andrayas", role='ctb')
              )
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi and minfi packages.
 License: GPL-3
@@ -43,7 +44,7 @@ Collate: as.methylumi.R bscon.R bscon_methy.R bscon_minfi.R getAnn.R
         referenceQuantiles.R adjustedDasen.R adjustedFunnorm.R
         robustQuantileNorm_Illumina450K.probeCategories.R
         robustQuantileNorm_Illumina450K.R seabird.R sextest.R summits.R
-        swan2.R uniqueAnnotationCategory.R qual.R uSexQN.R AllGenerics.R
+        swan2.R uniqueAnnotationCategory.R qual.R uSexQN.R smokp.R AllGenerics.R
         x_methylumi.R y_minfi.R z_bigmelon.R
 RoxygenNote: 7.2.3
 NeedsCompilation: no

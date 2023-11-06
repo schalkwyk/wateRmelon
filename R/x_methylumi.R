@@ -668,6 +668,15 @@ setMethod(
 )
 
 setMethod(
+  f= "smokp",
+  signature(betas="MethyLumiSet"),
+  definition=function(betas, method='SSt', sst = NULL){
+    object <- betas(betas)
+    smokp(betas=object, method=method, sst=sst)
+  }
+)
+
+setMethod(
    f = "uSexQN",
    signature(mns="MethyLumiSet"),
    definition = function(mns, cores=1, fudge=100, ...){
