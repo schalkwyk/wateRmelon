@@ -103,9 +103,8 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
             r <- return(r[[design]])
         }
     })
-#}}}
 
-    getControls <- switch(chipType, `27k` = function() { #{{{
+    getControls <- switch(chipType, `27k` = function() {
         data(hm27.controls)
         return(hm27.controls)
     }, `450k` = function() {
@@ -137,7 +136,7 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
     return(mapper)
 }  # }}}
 
-## IDATtoMatrix2: process a single IDAT (just the mean intensities) {{{
+#{{{ IDATtoMatrix2: process a single IDAT (just the mean intensities) {{{
 IDATtoMatrix2 <- function(x, fileExts = list(Cy3 = "Grn", Cy5 = "Red"), idatPath = ".") {
     chs = names(fileExts)
     names(chs) = fileExts
@@ -601,24 +600,23 @@ methylumIDATepic <- function(barcodes = NULL, pdat = NULL, parallel = F, n = F, 
             barcodes = barcodes[which(!duplicated(barcodes))]
         }
     } 
-    files.present = rep(TRUE, length(barcodes))  # {{{
+    files.present = rep(TRUE, length(barcodes)) 
     idats = sapply(barcodes, function(b) paste(b, c("_Red", "_Grn"), ".idat", sep = ""))
     for (i in colnames(idats)) for (j in idats[, i]) if (!j %in% list.files(idatPath,
         recursive = TRUE)) {
         message(paste("Error: file", j, "is missing for sample", i))
         files.present = FALSE
     }
-    stopifnot(all(files.present))  # }}}
+    stopifnot(all(files.present)) 
 
     mats <- IDATsToMatrices2(barcodes, parallel = parallel, idatPath = idatPath)
     dats <- DataToNChannelSet2(mats, IDAT = T, parallel = parallel, force = force)
     mlumi <- NChannelSetToMethyLumiSet2(dats, parallel = parallel, oob = oob, n = n)
 
     if (is.null(pdat)) {
-        # {{{
         pdat = data.frame(barcode = as.character(barcodes))
         rownames(pdat) = pdat$barcode
-        pData(mlumi) = pdat  # }}}
+        pData(mlumi) = pdat 
     } else {
         pData(mlumi) = pdat
     }
@@ -723,4 +721,12 @@ generateManifest <- function(anno = c("450k", "EPIC", "EPICv2")) { #{{{
 #  return(which(fData(object)$COLOR_CHANNEL=='Red'))
 #} # }}}
 
+#.onLoad = function(libname, pkgname){ 
+#  anchorenv <- new.env(parent = getNamespace("wateRmelon"))
+#  assign("anchorenv", anchorenv, envir = getNamespace("wateRmelon"))
+#  assign("types", character(0), envir=anchorenv)
+#  assign("index", list(), envir=anchorenv)
+#  assign("history", list(), envir=anchorenv)
+#}  method of creading a hidey hole for packge variables see 
+#https://hydroecology.net/implementing-session-cache-r-packages/
 

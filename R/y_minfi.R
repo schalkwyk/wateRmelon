@@ -106,13 +106,15 @@ setMethod(
 #' @param obj a MethylSet
 #' @param fd a character vector of the desired annotation columns
 #' @param rn a character vector of the desired features
+#' @param annotation A string naming the array type
 #' @author lschal@@essex.ac.uk
 #' @references Pidsley R, Wong CCY, Volta M, Lunnon K, Mill J, Schalkwyk LC: A
 #' data-driven approach to preprocessing Illumina 450K methylation array data
 #' (submitted)
 #' @export got
 
-# 'Borrow Internal, unexported, function from minfi'
+# Borrow Internal, unexported, function from minfi for internal use
+#
 .getManifestString <- function(annotation) {
     if(length(annotation) == 1)
         return(paste0(annotation, "manifest"))
