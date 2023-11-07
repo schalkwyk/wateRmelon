@@ -12,7 +12,7 @@ Authors@R: c(person(c("Leo", "C"), "Schalkwyk", role = c("cre", "aut"),
              person(c("Andrew"), "Teschendorff", role='ctb'),
              person(c("Jovana"), "Maksimovic", role='ctb'),
              person(c("Louis", "Y"), "El Khoury", role='ctb'),
-             person(c("Yucheng"), "Wang", role='ctb')
+             person(c("Yucheng"), "Wang", role='ctb'),
              person(c("Alexandria"), "Andrayas", role='ctb')
              )
 Description: 15 flavours of betas and three performance metrics, with methods for objects produced by methylumi and minfi packages.
