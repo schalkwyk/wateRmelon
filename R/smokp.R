@@ -1,4 +1,7 @@
-smokp <- function(betas, method='SSt', sst=NULL){
+smokp <- function(betas, method='Sst', sst=NULL){
+  method <- match.arg(method, choices=c('Sst', 'AHRR', 'McCartney', 'Maas', 'Sugden',
+          'Teschendorff', 'Yu', 'Gao', 'Yang', 'Zhang', 'Wen',
+          'Langdon',  'Packyears', 'Cessation', 'All'))
   data("smokp_cpgs")
   if(method == 'SSt'){
     intercept <- lapply(smokp_cpgs[c('Never','Former','Current')], function(x){x['(Intercept)']})
