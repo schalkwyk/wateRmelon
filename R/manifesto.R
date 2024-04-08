@@ -126,10 +126,10 @@ canno <- function (man= "EPIC-8v2-0_A1.csv", name=NULL){
 idet <- function(idat){
 
    knowns <- c(
-      `2f96172b55a56a146c47b4d48cdfb3e0`  = "IlluminaHumanMethylationEpic",    
-      `d4e153ca79918396f3371bad7ef8082d`  = "IlluminaHumanMethylationEpic",    
-      `e28439b7c9a50e3a0f11252f02d09c7e`  = "IlluminaHumanMethylationEpic",    
-      `485216d14ac9190d13df19681ec775c7`  = "IlluminaHumanMethylationEpicv2"  
+      `2f96172b55a56a146c47b4d48cdfb3e0`  = "IlluminaHumanMethylationEPICmanifest",
+      `d4e153ca79918396f3371bad7ef8082d`  = "IlluminaHumanMethylationEPICmanifest",
+      `e28439b7c9a50e3a0f11252f02d09c7e`  = "IlluminaHumanMethylationEPICmanifest",
+      `485216d14ac9190d13df19681ec775c7`  = "IlluminaHumanMethylationEPICv2manifest"
 
    )
 
