@@ -8,6 +8,7 @@
 #' @param n keep beadcounts.
 #' @param keep out-of-band (OOB) or opposite-channel signals
 #' @param pdat optional data.frame describing the samples.
+#' @param two are there two different assay types (true of human methylation arrays except 27k)
 #' @return  A ‘MethyLumiSet’ object.
 #' @examples
 #'
@@ -16,7 +17,8 @@
 
 readPepo <- function (  idatdir='.' , filelist=NULL,
                         barcodelist=NULL, manifest=NULL, 
-                        parallel=F, n=F, pdat=NULL, oob=F
+                        parallel=F, n=F, pdat=NULL, oob=F,
+                        two=TRUE
                      ){
 
 
@@ -42,12 +44,13 @@ readPepo <- function (  idatdir='.' , filelist=NULL,
 # identify and if necessary process manifest.  
 # manifest should be a IlluminaMethylationManifest obj when done.
 
-   if(is.null(manifest)){ manifest <- idet(filelist[1])[3] }
-   if(is.character(manifest)){
-      if(!is.na(file.info(manifest)$size)){ manifest <- canno(manifest) }
+   if(is.null(manifest)){ manifest <- idet(filelist[1])[3] } # name object from loaded package
+   if(is.character(manifest)){   # file or name of object from loaded package
+      if(!is.na(file.info(manifest)$size)){ manifest <- canno(manifest) } 
       else{ manifest <- eval(parse(text=manifest)) }
    }
-   stopifnot( is(manifest, 'IlluminaMethylationManifest'))
+   stopifnot( is(manifest, 'IlluminaMethylationManifest'))  # manifest now variable in function env
+   .manifest <<- manifest
 
 # now we do the thing (copied from methylumIDATepic)
 
@@ -66,9 +69,16 @@ readPepo <- function (  idatdir='.' , filelist=NULL,
       sampleNames(mlumi@QC) = sampleNames(mlumi)}
    colnames(mlumi) <- as.character(colnames(mlumi))
 #    return(mlumi[sort(featureNames(mlumi)), ])
-
-
-    mlumi
+#  we need to tag the NChannelSet with a meaningful Annotation tag that points to the 
+#  appropriate manifest.  minfi -> readEPIC does this indirectly with a lookup table 
+#  implmented as 3 switch statements in getMethylationBeadMappers2() and another in  
+#  generateManifest(), which is called by getMethylationBeadMappers2().  We want to 
+#  specify the manifest object directly.  
+#  Ideally we would also clean up  getMethylationBeadMappers2() 
+#  for the moment I am going to use the expedient of setting the Annotation to "manifest"
+#  and <<- the manifest to a hidden var in globalenv
+   
+   mlumi
 
 
 

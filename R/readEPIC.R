@@ -39,7 +39,7 @@ columnMatrix <- function(x, row.names = NULL) {
 ## require()s the appropriate package for annotating a chip & sets up mappings
 ## Potentially may temporarily require more indepth ordering file for 450k
 ## arrays until the 450k is completely replaced by epic chips.
-getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epicv2"),
+getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epicv2", "unknown"),
     genome = c("hg19", "hg18", "hg38")) {
     genome <- match.arg(genome)  ## default to FDb.InfiniumMethylation.hg19
     pkg <- paste0("FDb.InfiniumMethylation.", genome)
@@ -295,24 +295,23 @@ getControlProbes2 <- function(NChannelSet) {
 ## {{{ designItoMandU2 
 ## 27k design, both probes same channel; ~100,000 of the 450k probes as well
 designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T) {
-    mapper <- getMethylationBeadMappers2(annotation(NChannelSet))
-    probes <- mapper$probes(design = "I")  # as list(G=..., R=...)
-    channels <- c("G", "R")
-    names(channels) <- channels
+   mapper <- getMethylationBeadMappers2(annotation(NChannelSet))
+   probes <- mapper$probes(design = "I")  # as list(G=..., R=...)
+   channels <- c("G", "R")
+   names(channels) <- channels
 
-    getIntCh <- function(NChannelSet, ch, al) {
-        # {{{
-        newprobes <- lapply(probes, function(y) {
-            lapply(y, function(x) {
-                x[probes[[ch]][[al]] %in% rownames(assayDataElement(NChannelSet,
-                  ch))]
+   getIntCh <- function(NChannelSet, ch, al) {
+      
+      newprobes <- lapply(probes, function(y) {
+         lapply(y, function(x) {
+            x[probes[[ch]][[al]] %in% rownames(assayDataElement(NChannelSet, ch))]
             })
         })
         a = assayDataElement(NChannelSet, ch)[as.character(newprobes[[ch]][[al]]),
             , drop = FALSE]
         rownames(a) = as.character(newprobes[[ch]][["Probe_ID"]])
         return(a)
-    }  # }}}
+    }  
 
     getOOBCh <- function(NChannelSet, ch, al) {
         # {{{
@@ -447,58 +446,39 @@ designIItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T
 
 #{{{ mergeProbeDesigns2
 ## TGS: possible to do this better?
-mergeProbeDesigns2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T) {
+mergeProbeDesigns2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T, too=TRUE) {
 
-    if (annotation(NChannelSet) == "IlluminaHumanMethylationEpicv2") {
-        design1 = designItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-        ## this is the source of the problem currently:
-        design2 = designIItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-        res <- list()
-        for (i in names(design1)) {
-            res[[i]] <- rbind(design1[[i]], design2[[i]])
-            rownames(res[[i]]) <- c(rownames(design1[[i]]), rownames(design2[[i]]))
-        }
+   if(length(annotation(NChannelSet))==0) annotation(NChannelSet) <- 'unknown'
+   if ( !too |  annotation(NChannelSet) == "IlluminaHumanMethylation27k") {
 
-    } else if (annotation(NChannelSet) == "IlluminaHumanMethylationEpic") {
-        design1 = designItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-        ## this is the source of the problem currently:
-        design2 = designIItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-        res <- list()
-        for (i in names(design1)) {
-            res[[i]] <- rbind(design1[[i]], design2[[i]])
-            rownames(res[[i]]) <- c(rownames(design1[[i]]), rownames(design2[[i]]))
-        }
+      res <- designItoMandU2(
+          NChannelSet, parallel = parallel, n = n, n.sd = n.sd, oob = oob
+      )
 
-    } else if (annotation(NChannelSet) == "IlluminaHumanMethylation450k") {
-        design1 = designItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-        ## this is the source of the problem currently:
-        design2 = designIItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-        res <- list()
-        for (i in names(design1)) {
-            res[[i]] <- rbind(design1[[i]], design2[[i]])
-            rownames(res[[i]]) <- c(rownames(design1[[i]]), rownames(design2[[i]]))
-        }
-    } else if (annotation(NChannelSet) == "IlluminaHumanMethylation27k") {
-        res <- designItoMandU2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob)
-    } else {
-        stop("don't know how to process chips of type", annotation(NChannelSet))
+   } else {  # all subsequent human arrays
+
+      design1 <- designItoMandU2(
+         NChannelSet, parallel = parallel, n = n, n.sd = n.sd, oob = oob
+      )
+      design2 <- designIItoMandU2(
+         NChannelSet, parallel = parallel, n = n, n.sd = n.sd, oob = oob
+      )
+      res <- list()
+      for (i in names(design1)) {
+         res[[i]] <- rbind(design1[[i]], design2[[i]])
+         rownames(res[[i]]) <- c(rownames(design1[[i]]), rownames(design2[[i]]))
+      }
+
     }
     return(res)  # reorder on the way out...
 }  # }}}
 
 # {{{ NChannelSetToMethyLumiSet2
 NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel = F, pval = 0.05, n = F,
-    n.sd = F, oob = T) {
+    n.sd = F, oob = T, to=TRUE) {
     history.submitted = as.character(Sys.time())
     results = mergeProbeDesigns2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-        oob = oob)
+        oob = oob, too=to)
     # The next part is somewhat messy, I will think of an better way to do this
     if (oob && n) {
         aDat <- with(results, assayDataNew(methylated = methylated, unmethylated = unmethylated,
@@ -568,7 +548,7 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel = F, pval = 0.05, n
 
 # {{{ methylumIDATepic
 methylumIDATepic <- function(barcodes = NULL, pdat = NULL, parallel = F, n = F, n.sd = F,
-    oob = T, idatPath = getwd(), force = F, ...) {
+    oob = T, idatPath = getwd(), force = F, tw=TRUE, ...) {
     if (is(barcodes, "data.frame"))
         pdat = barcodes
     if ((is.null(barcodes)) & (is.null(pdat) | (!("barcode" %in% names(pdat)))))
@@ -611,7 +591,7 @@ methylumIDATepic <- function(barcodes = NULL, pdat = NULL, parallel = F, n = F, 
 
     mats <- IDATsToMatrices2(barcodes, parallel = parallel, idatPath = idatPath)
     dats <- DataToNChannelSet2(mats, IDAT = T, parallel = parallel, force = force)
-    mlumi <- NChannelSetToMethyLumiSet2(dats, parallel = parallel, oob = oob, n = n)
+    mlumi <- NChannelSetToMethyLumiSet2(dats, parallel = parallel, oob = oob, n = n, to=tw)
 
     if (is.null(pdat)) {
         pdat = data.frame(barcode = as.character(barcodes))
@@ -632,7 +612,7 @@ methylumIDATepic <- function(barcodes = NULL, pdat = NULL, parallel = F, n = F, 
 
 #{{{ readEPIC
 readEPIC <- function(idatPath, barcodes = NULL, pdat = NULL, parallel = F, n = T,
-    oob = F, force = F, ...) {
+    oob = F, force = F, two=TRUE, ...) {
     # path: file path to folder containing idat files, if working directory
     # is folder containing idats, use path <- './' the gsub will catch all
     # types of arrays as it is technically impossible to distinguish chiptype
@@ -640,10 +620,10 @@ readEPIC <- function(idatPath, barcodes = NULL, pdat = NULL, parallel = F, n = T
     if (is.null(barcodes)) {
         barcodes <- idatPath
         methylumIDATepic(bfp(barcodes), pdat = pdat, parallel = parallel, n = n,
-            n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, ...)
+            n.sd = n.sd, oob = oob, idatPath = idatPath, force = force, tw=two, ...)
     } else {
         methylumIDATepic(barcodes, pdat = pdat, parallel = parallel, n = n, n.sd = n.sd,
-            oob = oob, idatPath = idatPath, force = force, ...)
+            oob = oob, idatPath = idatPath, force = force, tw=two, ...)
     }
 
 }  # }}}
