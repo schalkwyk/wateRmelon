@@ -72,10 +72,8 @@
   }
   \examples{
     data(melon)
-    
+    # note, melon is not a complete dataset, does not work with all methods
     smokp(melon, method="McCartney", sst=NULL)
     
-    smokp(melon, method="Gao", sst=sst)
     
-    smokp(melon, method="All", sst=sst)
   }
