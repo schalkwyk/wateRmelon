@@ -10,11 +10,13 @@ read.manifest(file)
 \item{file}{}
 }
 \value{
-a list of of dataframes of data prepared for making IlluminaMethylationManifest
+a list of of dataframes of data prepared for making 
+  IlluminaMethylationManifest
 }
 \description{
 read.manifest - read in csv format Illumina chip manifest files
 }
 \details{
-This function is probably not much use for calling directly, it mostly exists to be called by canno.
+This function is probably not much use for calling directly. 
+  It mostly exists to be called by canno.
 }

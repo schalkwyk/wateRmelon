@@ -5,27 +5,50 @@
 #' read.manifest - read in csv format Illumina chip manifest files
 #'
 #' @param file 
-#' @return  a list of of dataframes of data prepared for making IlluminaMethylationManifest
+#' @return  a list of of dataframes of data prepared for making 
+#'   IlluminaMethylationManifest
 #' @details
-#'   This function is probably not much use for calling directly, it mostly exists to be called by canno.
+#'   This function is probably not much use for calling directly. 
+#'   It mostly exists to be called by canno.
 #'   
 
 read.manifest <- function(file) {
     
    seps <- grep('^\\[', readLines(file) )
-   manifest <- read.csv(file, skip=seps[2], nrows=seps[3]-seps[2]-2, as.is=T)
-   manifest$Name ->  manifest$oldName  # with EPICv2 names are no longer unique!
-   manifest$Name <- manifest$IlmnID
+   manifest <- read.csv(
+      file, 
+      skip=seps[2], 
+      nrows=seps[3]-seps[2]-2, 
+      as.is=T
+   )
+   # with EPICv2 names are no longer unique!
+   manifest$Name ->  manifest$oldName  
+   manifest$Name <-  manifest$IlmnID
+   
+   stopifnot (exists('Infinium_Design_Type', manifest))
+   if (1 %in% names(table(manifest$Infinium_Design_Type))){
+    manifest$Infinium_Design_Type[manifest$Infinium_Design_Type==1] <- 'I'
+    manifest$Infinium_Design_Type[manifest$Infinium_Design_Type==2] <-'II'
+   }
+
    TypeI <- manifest[
         manifest$Infinium_Design_Type == "I",
-        c("Name", "AddressA_ID", "AddressB_ID", "Color_Channel", "AlleleB_ProbeSeq" )]
+        c(
+           "Name", 
+           "AddressA_ID", 
+           "AddressB_ID", 
+           "Color_Channel", 
+           "AlleleB_ProbeSeq" 
+        )
+    ]
    names(TypeI)[c(2, 3, 4)] <- c( "AddressA", "AddressB", "Color" )
    TypeI <- as(TypeI, "DataFrame")
    TypeI$ProbeSeqB <- DNAStringSet(TypeI$AlleleB_ProbeSeq)
    TypeI$nCpG <- as.integer(
         oligonucleotideFrequency(TypeI$ProbeSeqB, width = 2)[, "CG"] - 1L)
    TypeI$nCpG[TypeI$nCpG < 0] <- 0L
-       # there are 295 probes including 30 cpg probes and nv- and rs- annotated SNPs with no CG 
+       # there are 295 probes including 30 cpg probes and nv- and 
+       # rs- annotated SNPs with no CG 
 
    TypeI$Name     <- as.character(TypeI$Name    ) 
    TypeI$AddressA <- as.character(TypeI$AddressA) 
@@ -33,18 +56,25 @@ read.manifest <- function(file) {
    TypeI$Color    <- as.character(TypeI$Color   ) 
    TypeI$nCpG     <- as.integer  (TypeI$nCpG    )
     
-   TypeSnpI <- TypeI[grep("^rs", TypeI$Name), ]   # unlike minfi we want these in the main data set
+   TypeSnpI <- TypeI[grep("^rs", TypeI$Name), ]   
+   # unlike minfi we want these in the main data set (as well)
 
    TypeII <- manifest[
        manifest$Infinium_Design_Type == "II",
-       c("Name", "AddressA_ID", "AlleleA_ProbeSeq")]
+       c("Name", "AddressA_ID", "AlleleA_ProbeSeq")
+   ]
    names(TypeII)[c(2,3)] <- c("AddressA", "ProbeSeqA")
    TypeII <- as(TypeII, "DataFrame")
    TypeII$ProbeSeqA <- DNAStringSet(TypeII$ProbeSeqA)
-   TypeII$nCpG <- as.integer(letterFrequency(TypeII$ProbeSeqA, letters = "R"))
-       # probeseqA don't contain CG because designed to anneal to BS DNA, complement of CG is RC
-       # this correct if there are no other Rs in the sequences, haven't studied in detail, but 
-       # there do seem to be more probes with Rs than RC. 
+   TypeII$nCpG <- as.integer(
+      letterFrequency(TypeII$ProbeSeqA, letters = "R")
+   )
+   # probeseqA don't contain CG because designed to anneal to BS DNA, 
+   # complement of CG is RC
+       
+   # correct if there are no other Rs in the sequences, haven't studied 
+   # in detail, but there do seem to be more probes with Rs than RC. 
+   
    TypeII$nCpG[TypeII$nCpG < 0] <- 0L
 
    TypeII$Name       <- as.character(TypeII$Name    ) 
@@ -53,13 +83,14 @@ read.manifest <- function(file) {
   
    TypeSnpII <- TypeII[grep("^rs", TypeII$Name), ]
 
-    controls <- read.table(
+   controls <- read.table(
         file = file,
         skip = seps[3],
         sep = ",",
         comment.char = "",
         quote = "",
-        colClasses = c(rep("character", 5)))[, 1:5]
+        colClasses = c(rep("character", 5))
+    )[, 1:5]
     TypeControl <- controls[, 1:4]
     names(TypeControl) <- c("Address", "Type", "Color", "ExtendedType")
     TypeControl <- as(TypeControl, "DataFrame")
@@ -84,8 +115,10 @@ read.manifest <- function(file) {
 #' @param man name 
 #' @return  IlluminaMethylationManifest
 #' @details    
-#' This is based on the scripts shipped with minfi annotation packages. It is based on existing 
-#' Illumina Human Methylation csv format manifests, but because reverse-engineered, may require
+#' This is based on the scripts shipped with minfi annotation packages. 
+#' It is based on existing 
+#' Illumina Human Methylation csv format manifests, but because 
+#' reverse-engineered, may require
 #' updates to work on future products.
 #'   
 #' 
@@ -112,30 +145,41 @@ canno <- function (man= "EPIC-8v2-0_A1.csv", name=NULL){
 
 #' idet - identify idats by a hash of the addresses
 #'
-#' @param idat cn be an idat file or the list produced by reading one with readIDAT()
-#' @return  three strings: ChipType, an md5 hash of the MidBlock (address vector) and if known the annotation name
+#' @param idat can be an idat file or the list produced by reading one with readIDAT()
+#' @return  three strings: ChipType, an md5 hash of the MidBlock (address vector) and if known, the annotation name
 #' @details
-#'   this function is a response to the fact that IlluminaHumanMethylationEPIC and EPICv2
-#'   idats both have the ChipType "BeadChip 8x5" but different manifests.  They did have
-#'   different numbers of addresses.  Subsequently we have had some confusion....
-#'   This hash (certainly taken together with the ChipType) should be bombproof
-#'   as an identifier.  Warning: this is slow.
+#'this function is a response to the fact that IlluminaHumanMethylationEPIC 
+#' and EPICv2 idats both have the ChipType "BeadChip 8x5" but different 
+#' manifests.  They did have different numbers of addresses.  
+#' Subsequently we have had some confusion....
+#' This hash (certainly taken together with the ChipType) should be bomb
+#' proof as an identifier.  Warning: this is slow.
 
 
 
 idet <- function(idat){
 
    knowns <- c(
-      `2f96172b55a56a146c47b4d48cdfb3e0`  = "IlluminaHumanMethylationEPICmanifest",
-      `d4e153ca79918396f3371bad7ef8082d`  = "IlluminaHumanMethylationEPICmanifest",
-      `e28439b7c9a50e3a0f11252f02d09c7e`  = "IlluminaHumanMethylationEPICmanifest",
-      `485216d14ac9190d13df19681ec775c7`  = "IlluminaHumanMethylationEPICv2manifest"
-
+      `2f96172b55a56a146c47b4d48cdfb3e0`  = 
+         "IlluminaHumanMethylationEPICmanifest"  ,
+      `d4e153ca79918396f3371bad7ef8082d`  = 
+         "IlluminaHumanMethylationEPICmanifest"  ,
+      `e28439b7c9a50e3a0f11252f02d09c7e`  = 
+         "IlluminaHumanMethylationEPICmanifest"  ,
+      `485216d14ac9190d13df19681ec775c7`  = 
+         "IlluminaHumanMethylationEPICv2manifest",
+      `02b6dbc3e237054ac03ceb9e209b40cd`  = 
+         "IlluminaHumanMethylation450kmanifest"  ,
+      `94aebb309839982e2f887a3d32ac8593`  =
+         "MSA-48v1-0_20102838_A1.csv"            ,
+      `882b1fa6f0cef31805e098a037310775`  =
+         "MouseMethylation-12v1-0_A2.csv"
+         
    )
 
    if(is.character(idat)) idat <- readIDAT(idat)
    write(idat$MidBlock, x<-R.utils::tmpfile())
-   hesh <- tools::md5sum(x) ; unlink(x)
+   hesh <- tools::md5sum(x) #; unlink(x) tmpfile does this
    names(hesh) <- NULL
    c(idat$ChipType, hesh, knowns[hesh])
 

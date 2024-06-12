@@ -7,18 +7,19 @@
 idet(idat)
 }
 \arguments{
-\item{idat}{cn be an idat file or the list produced by reading one with readIDAT()}
+\item{idat}{can be an idat file or the list produced by reading one with readIDAT()}
 }
 \value{
-three strings: ChipType, an md5 hash of the MidBlock (address vector) and if known the annotation name
+three strings: ChipType, an md5 hash of the MidBlock (address vector) and if known, the annotation name
 }
 \description{
 idet - identify idats by a hash of the addresses
 }
 \details{
-this function is a response to the fact that IlluminaHumanMethylationEPIC and EPICv2
-  idats both have the ChipType "BeadChip 8x5" but different manifests.  They did have
-  different numbers of addresses.  Subsequently we have had some confusion....
-  This hash (certainly taken together with the ChipType) should be bombproof
-  as an identifier.  Warning: this is slow.
+this function is a response to the fact that IlluminaHumanMethylationEPIC 
+and EPICv2 idats both have the ChipType "BeadChip 8x5" but different 
+manifests.  They did have different numbers of addresses.  
+Subsequently we have had some confusion....
+This hash (certainly taken together with the ChipType) should be bomb
+proof as an identifier.  Warning: this is slow.
 }

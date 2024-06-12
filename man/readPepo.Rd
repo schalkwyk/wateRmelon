@@ -2,7 +2,8 @@
 % Please edit documentation in R/readAny.R
 \name{readPepo}
 \alias{readPepo}
-\title{readPepo - (unfinished) read any kind of Illumina DNA methylation array idat files into a methylumi object}
+\title{readPepo - read (any kind of) Illumina DNA methylation array idat 
+files into a methylumi object}
 \usage{
 readPepo(
   idatdir = ".",
@@ -39,5 +40,8 @@ readPepo(
 A ‘MethyLumiSet’ object.
 }
 \description{
-readPepo - (unfinished) read any kind of Illumina DNA methylation array idat files into a methylumi object
+Pepo is a botanical term for any melon-like fruit. Given the 
+appropriate manifest file, this function should be able to read
+any of the Illumina Infinium DNAm arrays including 450k, EPIC, EPIC2,
+MSA and Mouse.
 }

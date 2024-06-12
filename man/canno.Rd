@@ -16,7 +16,9 @@ IlluminaMethylationManifest
 canno  - process csv manifest into annotation object for illumina methylation preprocessing
 }
 \details{
-This is based on the scripts shipped with minfi annotation packages. It is based on existing 
-Illumina Human Methylation csv format manifests, but because reverse-engineered, may require
+This is based on the scripts shipped with minfi annotation packages. 
+It is based on existing 
+Illumina Human Methylation csv format manifests, but because 
+reverse-engineered, may require
 updates to work on future products.
 }

@@ -15,7 +15,7 @@ Returns an object with rownames stripped of the EPICv2 suffixes, duplicate probe
 EPICv2 manifests contain a few thousand probes with up to 10 replicate syntheses. 
 To accomodate this a modified naming scheme is used, so none of the probe names match
 those on the EPIC and previous arrays (even though most of the probes are the same sequence
-and presumably similar performance). 
+and presumably simiar performance). 
 
 This simple function relies on the rowname and subsetting methods and will work for matrix, 
 dataframe, MethyLumiSet, or MethylSet objects, and there is a method for gds (bigmelon) objects.

@@ -10,6 +10,8 @@
 .getManifestString(annotation)
 }
 \arguments{
+\item{annotation}{A string naming the array type}
+
 \item{x}{a MethyLumiSet}
 
 \item{obj}{a MethylSet}

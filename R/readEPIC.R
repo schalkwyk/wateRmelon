@@ -13,16 +13,18 @@
 
 ###
  # Usage:
- # readEPIC    : Instead of inputting the barcodes, it is possible to input filepath
- #               of a folder (containing idats or folders containing idats).
- #               This constructs a vector of the barcodes which is
- #               passed to methylumIDAT.
+ # readEPIC : Instead of inputting the barcodes, it is possible to input 
+ # path to a directory (containing idats or folders containing idats).
+ # This constructs a vector of the barcodes which is passed to 
+ # methylumIDAT.
  #
- # methylumIDATepic: Usage remains the same as methylumIDAT. Although might be slightly changed
- #               due to the introduction of recursive=T argument in the list.files()
+ # methylumIDATepic: Usage remains the same as methylumIDAT. Although 
+ # might be slightly changed due to the introduction of recursive=T 
+ # argument in the list.files()
 ###
- # Leaving 27k and 450k array functionality in function for the purpose of convenience
- # however may be removed in the future when such arrays are not used anymore.
+ # Leaving 27k and 450k array functionality in function for the purpose 
+ # of convenience, however may be removed in the future when such arrays 
+ # are not used anymore.
 ###
 
 # {{{ # Utility function for dealing with single samples (still not 100% perfect...)
@@ -39,21 +41,22 @@ columnMatrix <- function(x, row.names = NULL) {
 ## require()s the appropriate package for annotating a chip & sets up mappings
 ## Potentially may temporarily require more indepth ordering file for 450k
 ## arrays until the 450k is completely replaced by epic chips.
-getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epicv2", "unknown"),
+getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epicv2", ".manifest"),
     genome = c("hg19", "hg18", "hg38")) {
+    #### genomic annotation package
     genome <- match.arg(genome)  ## default to FDb.InfiniumMethylation.hg19
     pkg <- paste0("FDb.InfiniumMethylation.", genome)
-    require(pkg, character.only = TRUE)  ## and
-
-
-
+    require(pkg, character.only = TRUE)  
+    ####  I think we can now do away with this
 
     chipType <- sub("^IlluminaHumanMethylation", "", chipType)
+    #### this appears to be dispensable cruft.  chipType is a string
     if (class(chipType) %in% c("NChannelSet", "MethyLumiSet", "MethyLumiM")) {
         chipType <- sub("^IlluminaHumanMethylation", "", annotation(chipType))
         chipType <- sub(".db$", "", annotation(chipType))
     }
     chipType <- match.arg(chipType)  # backwards compatibility purposes
+    #### have added .manifest chiptype to work with readPepo 
 
     ## addressA=U, addressB=M
     getProbes <- switch(chipType, `27k` = function(color = NULL, ...) {
@@ -102,7 +105,32 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
         } else {
             r <- return(r[[design]])
         }
-    })
+    } , .manifest = function(design = NULL, color = NULL, ...) {
+        # data(epic.ordering)
+        # epicV2.ordering <<- generateManifest("EPICv2")
+        what <- c("Probe_ID", "M", "U")
+        #r <- split(epicV2.ordering[, c(what, "col")], epicV2.ordering$DESIGN)
+        r <- list()
+        #r$I <- split(r$I[, what], r$I$col)
+        I <- data.frame(.manifest@data$TypeI)
+        nI <- colnames(I)
+        nI[1:3] <- c("Probe_ID", "U", "M")
+        colnames(I) <- nI
+        r$I <- split(I[,what], I$Color)
+        names(r$I)<-  c('G','R')
+
+        r$II <- data.frame(.manifest@data$TypeII) 
+        colnames(r$II)[c(1,2)] <- nI[c(1,2)]
+
+        if (is.null(design)) {
+            r <- return(r)
+        } else if (design == "I" && !is.null(color)) {
+            r <- return(r[[design]][[substr(color, 1, 1)]])
+        } else {
+            r <- return(r[[design]])
+        }
+    }
+    )
 
     getControls <- switch(chipType, `27k` = function() {
         data(hm27.controls)
@@ -116,8 +144,13 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
     }, Epicv2 = function() {
         data(epicV2.controls)
         return(epicV2.controls)
-    })
-
+    }, .manifest = function(){
+       kont <- data.frame(.manifest@data$TypeControl)
+       colnames(kont) <- c("Address", "Type", "Color_Channel", "Name") 
+       kont
+    }
+    )
+    ## we may be able to eliminate ordering <<no, this is the fData 
     getOrdering <- switch(chipType, `27k` = function() {
         ord <- c("Probe_ID", "DESIGN", "COLOR_CHANNEL")
         return(hm27.ordering[, ord])
@@ -130,7 +163,22 @@ getMethylationBeadMappers2 <- function(chipType = c("450k", "27k", "Epic", "Epic
     }, Epicv2 = function() {
         ord <- c("Probe_ID", "DESIGN", "COLOR_CHANNEL")
         return(epicV2.ordering[, ord])
-    })
+    }, .manifest = function(){ 
+        ord <- c("Probe_ID", "DESIGN", "COLOR_CHANNEL")
+        man1 <- data.frame( 
+           Probe_ID = .manifest@data$TypeI$Name, 
+           DESIGN   = 'I',
+           COLOR_CHANNEL = .manifest@data$TypeI$Color
+        )
+        man2 <- data.frame( 
+           Probe_ID = .manifest@data$TypeII$Name, 
+           DESIGN   = 'II',
+           COLOR_CHANNEL = ''
+        )
+        rbind(man1,man2)
+    }
+
+    )
 
     mapper <- list(probes = getProbes, controls = getControls, ordering = getOrdering)
     return(mapper)
@@ -182,92 +230,122 @@ extractAssayDataFromList2 <- function(assay, mats, fnames) {
 }  # }}}
 
 #{{{  DataToNChannelSet2
-## a faster rewrite of DFsToNChannelSet() so that I can decommission it... 
-## Stop-check to ensure different platforms are read simulatenously.  note EPIC
-## and EPICv2 have the same chip type and there are several different EPIC
-## manifests
-DataToNChannelSet2 <- function(mats, chans = c(Cy3 = "GRN", Cy5 = "RED"), parallel = F,
-    protocol.data = F, IDAT = TRUE, force = F) {
-    epic = hm27 = hm450 = 0
-    qw <- unlist(lapply(mats, function(x) attr(x, "ChipType")))
-    epic = sum(grepl("BeadChip 8x5", qw))
-    message(paste(epic, "HumanMethylationEpic / Epicv2 samples found"))
-    hm450 = sum(grepl("BeadChip 12x8", qw))
-    message(paste(hm450, "HumanMethylation450 samples found"))
-    hm27 = sum(grepl("BeadChip 12x1", qw))
-    message(paste(hm27, "HumanMethylation27 samples found"))
-    if (hm27 > 0 && hm450 > 0 | hm27 > 0 && epic > 0 | hm450 > 0 && epic > 0) {
-        stop("Cannot process multiple platforms simultaneously; please run separately.")
-    }
+## a faster rewrite of DFsToNChannelSet() so that I can decommission it...
+## Stop-check to ensure different platforms are read simulatenously.  
+## note EPIC and EPICv2 have the same chip type and there are several 
+## different EPIC manifests
 
-    stopifnot(is(mats, "list"))
-    assayNames = paste0(names(chans), c(".Mean"))
-    assayNames = c(assayNames, paste0(names(chans), c(".NBeads")))
-    names(assayNames) = assayNames
-    assaylengths <- sapply(mats, nrow)
-    names(assaylengths) <- names(mats)
-    # Minfi Method for handling early version epic IDATS. from read.meth.R by
-    # Kaspar Hansen.
-    if (length(unique(assaylengths)) > 1) {
-        commonAddresses <- as.character(Reduce("intersect", lapply(mats, function(x) rownames(x))))
+DataToNChannelSet2 <- function(
+   mats, 
+   chans = c(Cy3 = "GRN", Cy5 = "RED"), 
+   parallel = F,
+   protocol.data = F, 
+   IDAT = TRUE, 
+   force = F
+   ) {
+      epic = hm27 = hm450 = 0
+      qw <- unlist(lapply(mats, function(x) attr(x, "ChipType")))
+      epic = sum(grepl("BeadChip 8x5", qw))
+      message(paste(epic, "HumanMethylationEpic / Epicv2 samples found"))
+      hm450 = sum(grepl("BeadChip 12x8", qw))
+      message(paste(hm450, "HumanMethylation450 samples found"))
+      hm27 = sum(grepl("BeadChip 12x1", qw))
+      message(paste(hm27, "HumanMethylation27 samples found"))
+      if (
+         hm27 > 0 && hm450 > 0 | 
+         hm27 > 0 && epic  > 0 | 
+         hm450 > 0 && epic > 0
+         ) {
+           stop(
+           "Cannot process multiple platforms simultaneously; 
+            please run separately."
+            )
+      }
+
+      stopifnot(is(mats, "list"))
+      assayNames = paste0(names(chans), c(".Mean"))
+      assayNames = c(assayNames, paste0(names(chans), c(".NBeads")))
+      names(assayNames) = assayNames
+      assaylengths <- sapply(mats, nrow)
+      names(assaylengths) <- names(mats)
+# Minfi Method for handling early version epic IDATS. from read.meth.R by
+# Kaspar Hansen.
+      if (length(unique(assaylengths)) > 1) {
+        commonAddresses <- as.character(
+           Reduce(
+              "intersect", 
+              lapply(mats, function(x) rownames(x))
+           )
+        )
         if (!force) {
-            if (!all(assaylengths == length(commonAddresses))) {
+           if (!all(assaylengths == length(commonAddresses))) {
                 print(as.matrix(assaylengths))
-                stop("Cannot combine IDATs of differing lengths, try force = T")
+                stop(
+                   "Cannot combine IDATs of differing lengths, 
+                    possibly try force = T")
             }
         }
         fnames <- commonAddresses
-    } else {
+        } else {
         fnames <- rownames(mats[[1]])
-    }
+        }
 
-    extract <- function(assay) extractAssayDataFromList2(assay, mats, fnames)
-    assays = lapply(assayNames, extract)
-    nb <- pmin(assays[["Cy3.NBeads"]], assays[["Cy5.NBeads"]])
-    obj = new("NChannelSet", assayData = assayDataNew(R = assays[["Cy5.Mean"]], G = assays[["Cy3.Mean"]],
-        N = nb))
-    featureNames(obj) = fnames
-    if (IDAT)
-        {
+        extract <- function(assay){
+           extractAssayDataFromList2(assay, mats, fnames)
+        }
+        assays = lapply(assayNames, extract)
+        nb <- pmin(assays[["Cy3.NBeads"]], assays[["Cy5.NBeads"]])
+        obj = new(
+          "NChannelSet", 
+          assayData = assayDataNew(
+             R = assays[["Cy5.Mean"]], 
+             G = assays[["Cy3.Mean"]],
+             N = nb)
+        )
+        featureNames(obj) = fnames
+        if (IDAT){
             message("Attempting to extract protocolData() from list...")
             ChipType = attr(mats[[1]], "ChipType")
             RunInfo = lapply(mats, function(d) attr(d, "RunInfo"))
-            if (protocol.data)
-                {
-                  scanDates = data.frame(
-                     DecodeDate = rep(NA, length(mats)), 
-                     ScanDate = rep(NA, length(mats))
-                  )
-                  rownames(scanDates) = names(mats)
+            if (protocol.data){
+               scanDates <- data.frame(
+                  DecodeDate = rep(NA, length(mats)), 
+                  ScanDate = rep(NA, length(mats))
+               )
+               rownames(scanDates) <- names(mats)
                   for (i in seq_along(mats)) {
-                    cat("decoding protocolData for", names(mats)[i], "...\n")
-                    if (nrow(RunInfo[[i]]) >= 2) {
-                        scanDates$DecodeDate[i] = RunInfo[[i]][1, 1]
-                        scanDates$ScanDate[i] = RunInfo[[i]][2, 1]
-                    }
-                }
-                protocoldata = new("AnnotatedDataFrame",
+                     cat(
+                     "decoding protocolData for", 
+                     names(mats)[i], 
+                     "...\n"
+                     )
+                     if (nrow(RunInfo[[i]]) >= 2) {
+                        scanDates$DecodeDate[i] <- RunInfo[[i]][1, 1]
+                        scanDates$ScanDate[i]   <- RunInfo[[i]][2, 1]
+                     }
+                 }
+                 protocoldata = new("AnnotatedDataFrame",
                     data = scanDates,
                     varMetadata = data.frame(
                         labelDescription = colnames(scanDates),
                         row.names = colnames(scanDates)
-                    )
-                )
+                     )
+                 )
                 protocolData(obj) = protocoldata
-                }
+          }
 
-            message("Determining chip type from IDAT protocolData...")
-            if (ChipType == "BeadChip 12x1") {
-                annotation(obj) = "IlluminaHumanMethylation27k"
-            } else if (ChipType == "BeadChip 12x8") {
-                annotation(obj) = "IlluminaHumanMethylation450k"
-            } else if (ChipType == "BeadChip 8x5") {
-                annotation(obj) = "IlluminaHumanMethylationEpic"
-            }
+          message("Determining chip type from IDAT protocolData...")
+          if (ChipType == "BeadChip 12x1") {
+             annotation(obj) = "IlluminaHumanMethylation27k"
+          } else if (ChipType == "BeadChip 12x8") {
+              annotation(obj) = "IlluminaHumanMethylation450k"
+          } else if (ChipType == "BeadChip 8x5") {
+              annotation(obj) = "IlluminaHumanMethylationEpic"
+          }
 
-            if (ChipType == "BeadChip 8x5" && dim(obj)[1] > 1.1e+06) {
-                annotation(obj) = "IlluminaHumanMethylationEpicv2"
-            }
+          if (ChipType == "BeadChip 8x5" && dim(obj)[1] > 1.1e+06) {
+             annotation(obj) = "IlluminaHumanMethylationEpicv2"
+          }
         }  
     return(obj)
 }  # }}}
@@ -280,6 +358,7 @@ getControlProbes2 <- function(NChannelSet) {
     ## FIXME: make this happen in the annotations, to avoid redundancy in
     ## names!
     rownames(fD) <- ctlnames <- make.names(fD[, "Name"], unique = T)
+    fD <- data.frame(fD)
     fvD <- data.frame(labelDescription = c("Address of this control bead", "Purpose of this control bead",
         "Color channel for this bead", "Reporter group ID for this bead"))
     fDat <- new("AnnotatedDataFrame", data = fD, varMetadata = fvD)
@@ -294,6 +373,8 @@ getControlProbes2 <- function(NChannelSet) {
 
 ## {{{ designItoMandU2 
 ## 27k design, both probes same channel; ~100,000 of the 450k probes as well
+## epic and epic II too
+
 designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T) {
    mapper <- getMethylationBeadMappers2(annotation(NChannelSet))
    probes <- mapper$probes(design = "I")  # as list(G=..., R=...)
@@ -314,7 +395,7 @@ designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T)
     }  
 
     getOOBCh <- function(NChannelSet, ch, al) {
-        # {{{
+     
         ch.oob <- ifelse(ch == "R", "G", "R")
         newprobes <- lapply(probes, function(y) {
             lapply(y, function(x) {
@@ -326,10 +407,10 @@ designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T)
             , drop = FALSE]
         rownames(a) = as.character(newprobes[[ch]][["Probe_ID"]])
         return(a)
-    }  # }}}
+    } 
 
     getNbeadCh <- function(NChannelSet, ch, al) {
-        # {{{ #tgs
+         #tgs
         newprobes <- lapply(probes, function(y) {
             lapply(y, function(x) {
                 x[probes[[ch]][[al]] %in% rownames(assayDataElement(NChannelSet,
@@ -340,10 +421,10 @@ designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T)
             , drop = FALSE]
         rownames(n) = as.character(newprobes[[ch]][["Probe_ID"]])
         return(n)
-    }  # }}}
+    } 
 
     getAllele <- function(NChannelSet, al, parallel = F, n = n, n.sd = T, oob = T) {
-        # {{{
+     
         fluor = lapply(channels, function(ch) getIntCh(NChannelSet, ch, al))
         fluor.oob = lapply(channels, function(ch) getOOBCh(NChannelSet, ch, al))
         bc = lapply(channels, function(ch) getNbeadCh(NChannelSet, ch, al))  #tgs
@@ -357,7 +438,7 @@ designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T)
             names(r) = channels
             return(r)
         })
-    }  # }}}
+    } 
 
     signal <- lapply(c(M = "M", U = "U"), function(al) {
         getAllele(NChannelSet, al, parallel = F, n = n, n.sd = n.sd, oob = oob)
@@ -386,10 +467,10 @@ designItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T)
 designIItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T) {
     mapper <- getMethylationBeadMappers2(annotation(NChannelSet))
     probes2 <- mapper$probes(design = "II")
-    probes2$M <- probes2$U  ## horrid kludge
+    probes2$M <- probes2$U  ## horrid kludge   
+    #readPepo assigns $U to match
 
     getIntCh <- function(NChannelSet, ch = NULL, al) {
-        # {{{
         ch <- ifelse(al == "M", "G", "R")
         newprobes <- lapply(probes2, function(x) {
             x[probes2[[al]] %in% rownames(assayDataElement(NChannelSet, ch))]
@@ -397,10 +478,10 @@ designIItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T
         a <- assayDataElement(NChannelSet, ch)[as.character(newprobes[[al]]), , drop = F]
         rownames(a) <- as.character(newprobes[["Probe_ID"]])
         return(a)
-    }  # }}}
+    }
 
     getNbeadCh <- function(NChannelSet, ch = NULL, al) {
-        # {{{ tgs
+        #  tgs
         ch <- ifelse(al == "M", "G", "R")
         newprobes <- lapply(probes2, function(x) {
             x[probes2[[al]] %in% rownames(assayDataElement(NChannelSet, ch))]
@@ -409,10 +490,9 @@ designIItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T
             drop = F]
         rownames(n) <- as.character(newprobes[["Probe_ID"]])
         return(n)
-    }  # }}}
+    } 
 
     getAllele <- function(NChannelSet, al, n = F, n.sd = F, oob = F) {
-        # {{{
         ch <- ifelse(al == "M", "G", "R")
         res <- list()
         res[["I"]] <- getIntCh(NChannelSet, ch, al)
@@ -423,7 +503,7 @@ designIItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T
             is.na(res[["OOB"]]) <- TRUE
         }
         return(res)
-    }  # }}}
+    }  # 
 
     ## M == Grn/Cy3 and U == Red/Cy5, same address
     alleles = c(M = "M", U = "U")
@@ -446,10 +526,15 @@ designIItoMandU2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T
 
 #{{{ mergeProbeDesigns2
 ## TGS: possible to do this better?
-mergeProbeDesigns2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob = T, too=TRUE) {
+mergeProbeDesigns2 <- function(
+   NChannelSet, 
+   parallel = F, 
+   n = F, n.sd = F, 
+   oob = T, too=TRUE
+) {
 
-   if(length(annotation(NChannelSet))==0) annotation(NChannelSet) <- 'unknown'
-   if ( !too |  annotation(NChannelSet) == "IlluminaHumanMethylation27k") {
+   if(length(annotation(NChannelSet))==0) annotation(NChannelSet) <- '.manifest'
+   if( !too | annotation(NChannelSet)== "IlluminaHumanMethylation27k") {
 
       res <- designItoMandU2(
           NChannelSet, parallel = parallel, n = n, n.sd = n.sd, oob = oob
@@ -473,32 +558,95 @@ mergeProbeDesigns2 <- function(NChannelSet, parallel = F, n = F, n.sd = F, oob =
     return(res)  # reorder on the way out...
 }  # }}}
 
-# {{{ NChannelSetToMethyLumiSet2
-NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel = F, pval = 0.05, n = F,
-    n.sd = F, oob = T, to=TRUE) {
-    history.submitted = as.character(Sys.time())
-    results = mergeProbeDesigns2(NChannelSet, parallel = parallel, n = n, n.sd = n.sd,
-        oob = oob, too=to)
-    # The next part is somewhat messy, I will think of an better way to do this
-    if (oob && n) {
-        aDat <- with(results, assayDataNew(methylated = methylated, unmethylated = unmethylated,
-            methylated.N = m.beadcount, unmethylated.N = u.beadcount, methylated.OOB = methylated.OOB,
-            unmethylated.OOB = unmethylated.OOB, betas = methylated/(methylated +
-                unmethylated), pvals = methylated/(methylated + unmethylated), NBeads = NBeads))
-    } else if (oob) {
-        aDat <- with(results, assayDataNew(methylated = methylated, unmethylated = unmethylated,
-            methylated.OOB = methylated.OOB, unmethylated.OOB = unmethylated.OOB,
-            betas = methylated/(methylated + unmethylated), pvals = methylated/(methylated +
-                unmethylated)))
-    } else if (n) {
-        aDat <- with(results, assayDataNew(methylated = methylated, unmethylated = unmethylated,
-            methylated.N = m.beadcount, unmethylated.N = u.beadcount, betas = methylated/(methylated +
-                unmethylated), pvals = methylated/(methylated + unmethylated), NBeads = NBeads))
+# {{{ NChannelSetToMethyLumiSet2 
 
+#' For internal use, is read using minfi-like machinery and then
+#'   preprocessed into the more flexible and convenient methylumi 
+#'   object used by wateRmelon/bigmelon
+#'
+#' @param NChannelSet an NChannelSet (raw red and green values not yet 
+#'    mapped to Illumina IDs/CpG names
+#' @param parallel  no effect, included for future parallelisation
+#' @param pval detection pval threshold for filtering.  Inactivated.
+#' @param n keep nbeads data (min of m & u)
+#' @param n.sd process SD of U and M (not currently implemented) 
+#' @param oob  keep out-of-band signals
+#' @param to does chip have type I and II probes?
+#' 
+#' @return  A methylumi object with betas, U and M, optionally 
+#'   additional data
+
+NChannelSetToMethyLumiSet2 <- function(
+   NChannelSet, 
+   parallel = F, 
+   pval = 0.05, 
+   n = F,
+   n.sd = F, 
+   oob = T, 
+   to=TRUE
+){
+   history.submitted = as.character(Sys.time())
+   results = mergeProbeDesigns2(
+      NChannelSet, 
+      parallel = parallel, 
+      n = n, 
+      n.sd = n.sd,
+      oob = oob, 
+      too=to
+   )
+#The next part is somewhat messy, will think of an better way to do this
+# ----especially since these are non-options
+   if (oob && n) {
+      aDat <- with(
+         results, 
+         assayDataNew(
+            methylated = methylated, 
+            unmethylated = unmethylated,
+            methylated.N = m.beadcount, 
+            unmethylated.N = u.beadcount, 
+            methylated.OOB = methylated.OOB,
+            unmethylated.OOB = unmethylated.OOB, 
+            betas = methylated/(methylated + unmethylated), 
+            # should this not be +100 in denom?
+            pvals = methylated/(methylated + unmethylated), 
+            # is there really not a less shit alternative?
+            NBeads = NBeads)
+        )
+    } else if (oob) {
+        aDat <- with(
+           results, 
+           assayDataNew(
+              methylated = methylated, 
+              unmethylated = unmethylated,
+              methylated.OOB = methylated.OOB, 
+              unmethylated.OOB = unmethylated.OOB,
+              betas = methylated/(methylated + unmethylated), 
+              pvals = methylated/(methylated + unmethylated)
+           )
+        )
+    } else if (n) {
+        aDat <- with(
+           results, 
+           assayDataNew(
+              methylated = methylated, 
+              unmethylated = unmethylated,
+              methylated.N = m.beadcount, 
+              unmethylated.N = u.beadcount, 
+              betas = methylated/(methylated + unmethylated), 
+              pvals = methylated/(methylated + unmethylated), 
+              NBeads = NBeads
+           )
+        )
     } else {
-        aDat <- with(results, assayDataNew(methylated = methylated, unmethylated = unmethylated,
-            betas = methylated/(methylated + unmethylated), pvals = methylated/(methylated +
-                unmethylated)))
+        aDat <- with(
+           results, 
+           assayDataNew(
+              methylated = methylated, 
+              unmethylated = unmethylated,
+              betas = methylated/(methylated + unmethylated), 
+              pvals = methylated/(methylated + unmethylated)
+           )
+        )
     }
     rm(results)
     gc()
@@ -536,12 +684,18 @@ NChannelSetToMethyLumiSet2 <- function(NChannelSet, parallel = F, pval = 0.05, n
         "SNP (dbSNP build 128) within 10bp of target?", "Gene symbol (if probe is annotated to a gene)",
         "Chromosome mapping for probe in hg18 assembly", "Coordinates of interrogated cytosine in hg18",
         "Number of CpG dinucleotides in probe sequence")
+    # something happens to readPepo betas after this point
     fvarMetadata(x.lumi)[, 1] <- possibleMetadata[1:ncol(fdat)]
-    pval.detect(x.lumi) <- pval  # default value
-    history.finished <- as.character(Sys.time())
-    history.command <- deparse(match.call())
-    x.lumi@history <- rbind(x.lumi@history, data.frame(submitted = history.submitted,
-        finished = history.finished, command = history.command))
+    #pval.detect(x.lumi) <- pval  # culprit!
+    history.finished <- as.character(Sys.time())  
+    history.command <- deparse(match.call()) # can't be it
+    x.lumi@history <- rbind(
+       x.lumi@history, 
+       data.frame(
+          submitted = history.submitted,
+          finished = history.finished, 
+          command = history.command)
+       ) # cbi
     # if(normalize) x.lumi = normalizeMethyLumiSet(x.lumi)
     return(x.lumi)
 }  # }}}
@@ -639,15 +793,17 @@ bfp <- function(path) { #{{{
     return(bar)
 }#}}}
 
-generateManifest <- function(anno = c("450k", "EPIC", "EPICv2")) { #{{{
+generateManifest <- function(anno = c("450k", "EPIC", "EPICv2", ".manifest")) { #{{{
     anno <- match.arg(anno)
     # Possible to add more manifests here!
     anno <- switch(anno, 
         `450k` = "IlluminaHumanMethylation450kanno.ilmn12.hg19",
         EPIC   = "IlluminaHumanMethylationEPICanno.ilm10b4.hg19", 
-        EPICv2 = "IlluminaHumanMethylationEPICv2anno.20a1.hg38"
+        EPICv2 = "IlluminaHumanMethylationEPICv2anno.20a1.hg38",
+        .manifest = "alreadyCooked"
     )
-    man <- getAnnotationObject(anno)
+    if (anno == "alreadyCooked") {man <- .manifest} else
+    {man <- getAnnotationObject(anno)}
     x <- getAnnotation(man)[, c("Name", "AddressB", "AddressA", "Type", "Color")]
     # Name = Name AddressB = M AddressA = U Type = DESIGN Color = COLOR_CHANNEL
     # Generate manifest.
