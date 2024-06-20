@@ -35,8 +35,8 @@ readPepo <- function (  idatdir='.' , filelist=NULL,
          message("Both file and barcode lists specified, using barcodes")
       }   
       filelist <- c(
-         paste(barcodelist, '_Red.idat', sep=''), 
-         paste(barcodelist, '_Grn.idat', sep='')
+         paste(idatdir, '/', barcodelist, '_Red.idat', sep=''), 
+         paste(idatdir, '/', barcodelist, '_Grn.idat', sep='')
       )
    } else {
       if (is.null(filelist)) filelist <- dir(idatdir, patt='idat') 
@@ -44,8 +44,8 @@ readPepo <- function (  idatdir='.' , filelist=NULL,
       barcodelist <- unique(substr(filelist,0,nchar(filelist)-9))  
       # this should prepend idatdir
       filelist <- c(
-         paste(barcodelist, '_Red.idat', sep=''), 
-         paste(barcodelist, '_Grn.idat', sep='')
+         paste(idatdir, '/', barcodelist, '_Red.idat', sep=''), 
+         paste(idatdir, '/', barcodelist, '_Grn.idat', sep='')
       )
    }
 

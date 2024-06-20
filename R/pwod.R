@@ -1,4 +1,5 @@
- # Author: Tyler Gorrie-Stone, tgorri@essex.ac.uk
+ # Author: Tyler Gorrie-Stone
+ # Maint: lschal@essex.ac.uk
  # Revision Date: 07-01-2016
 pwod <- function(object, mul=4){
  # 'P'robe-'W'ise 'O'utlier 'D'etection via interquartile ranges.
