@@ -687,6 +687,8 @@ NChannelSetToMethyLumiSet2 <- function(
     # something happens to readPepo betas after this point
     fvarMetadata(x.lumi)[, 1] <- possibleMetadata[1:ncol(fdat)]
     #pval.detect(x.lumi) <- pval  # culprit!
+    pv <- detectP(x.lumi)
+    pvals(x.lumi) <- pv
     history.finished <- as.character(Sys.time())  
     history.command <- deparse(match.call()) # can't be it
     x.lumi@history <- rbind(
