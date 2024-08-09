@@ -2,9 +2,9 @@
 # the original detection pval was produced by Illumina's software and 
 # afaik not documented.  It's basically a way of thresholding signal
 # intensity to filter and/or check for numbers of failed probes and
-# its use is enshrined in pfilter.
+# its use is enshrined in pfilter().
 
-# There are several confusingly named functions
+# There are several confusingly named functions in methylumi and minfi
 # including accessors of detection pvalues.  
 
 # minfi's detectionP calculates a reasonable t-test like detection
@@ -27,9 +27,14 @@ detectP <- function(mlo){
    
    # mean and mad controls for each sample 
    
-   control <- methylated(qc)[neg,] + unmethylated(qc)[neg,]
-   Mean <- colMedians(control)
-   Mad  <- colMads(control)
+   control <- methylated(qc)[neg,,drop=FALSE] + 
+            unmethylated(qc)[neg,,drop=FALSE]
+   Mean <- colMedians(
+      x=control, rows=NULL, cols=NULL, na.rm=T, use.names=TRUE 
+   )
+   Mad  <- colMads(
+      x=control, rows=NULL, cols=NULL, na.rm=T, use.names=TRUE 
+   )
 
    # test.  Note 'good' samples have low numbers, eg p < .05.
    # also note the transpose is needed because of recycling:
